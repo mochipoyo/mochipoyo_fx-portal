@@ -8,12 +8,521 @@
 <title>もちぽよ マーケットポータル</title>
 <meta name="description" content="Fincs会員向けのFXマーケット情報ポータル（相場時計・チャート・通貨の強弱・金利と中央銀行・経済指標・AIまとめ）">
 <meta name="theme-color" content="#16203A">
-<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%231B2A5C'/><polyline points='7,27 14,15 19,22 26,10 33,24' fill='none' stroke='%23F2B42A' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
 <link rel="preconnect" href="https://s3.tradingview.com" crossorigin>
-<link rel="stylesheet" href="assets/app.css">
+<style>
+/* もちぽよ マーケットポータル
+   色は役割ごとのトークンで定義し、暗い表示はトークンの差し替えだけで切り替える */
+:root {
+  color-scheme: light;
+  --paper: #eef1f6;
+  --surface: #ffffff;
+  --sunken: #f5f7fb;
+  --ink: #16203a;
+  --ink-2: #3a4661;
+  --ink-3: #5f6a84;
+  --line: #dce1ea;
+  --line-strong: #c4cbd9;
+  --brand: #22389a;
+  --brand-ink: #ffffff;
+  --brand-soft: #e6eaf8;
+  --wave: #e3a008;
+  --up: #0e7c57;
+  --down: #bf344a;
+  --warn-bg: #fff4d6;
+  --warn-ink: #6b4a00;
+  --focus: #22389a;
+
+  /* 相場時計（夜の藍色の帯） */
+  --hero-bg: #172447;
+  --hero-ink: #f2f5fb;
+  --hero-muted: #aab5d0;
+  --hero-grid: rgba(255, 255, 255, 0.12);
+  --hero-track: rgba(255, 255, 255, 0.06);
+  --hero-now: #f2b42a;
+  --s-syd: #4fb39b;
+  --s-tky: #e58a8a;
+  --s-ldn: #9c8ce6;
+  --s-ny: #5b9be6;
+
+  /* グラフ（検証済みの配色：dataviz 既定パレットの1〜3番） */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-past: #a9b1c3;
+  --series-past-2: #cfd5e1;
+  --pos: #2a78d6;
+  --neg: #e34948;
+  --grid: #e6e9f0;
+  --axis: #c3c9d6;
+
+  --r-panel: 12px;
+  --r-ctl: 8px;
+  --font-body: "BIZ UDPGothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  --font-head: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "BIZ UDPGothic", system-ui, sans-serif;
+  --fs-xs: 12px;
+  --fs-sm: 13.5px;
+  --fs-md: 15px;
+  --fs-lg: 17.5px;
+  --fs-xl: 22px;
+  --fs-2xl: 28px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0c1222;
+    --surface: #141c30;
+    --sunken: #10172a;
+    --ink: #e9edf6;
+    --ink-2: #bdc5d7;
+    --ink-3: #8f9ab2;
+    --line: #263150;
+    --line-strong: #34406a;
+    --brand: #94a8ff;
+    --brand-ink: #0c1222;
+    --brand-soft: #1d2850;
+    --wave: #f2b21b;
+    --up: #39c290;
+    --down: #f27389;
+    --warn-bg: #3b3016;
+    --warn-ink: #f6dc9a;
+    --focus: #94a8ff;
+    --hero-bg: #121b36;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-past: #5d6884;
+    --series-past-2: #3d4763;
+    --pos: #3987e5;
+    --neg: #e66767;
+    --grid: #222c47;
+    --axis: #36415f;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0c1222;
+  --surface: #141c30;
+  --sunken: #10172a;
+  --ink: #e9edf6;
+  --ink-2: #bdc5d7;
+  --ink-3: #8f9ab2;
+  --line: #263150;
+  --line-strong: #34406a;
+  --brand: #94a8ff;
+  --brand-ink: #0c1222;
+  --brand-soft: #1d2850;
+  --wave: #f2b21b;
+  --up: #39c290;
+  --down: #f27389;
+  --warn-bg: #3b3016;
+  --warn-ink: #f6dc9a;
+  --focus: #94a8ff;
+  --hero-bg: #121b36;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-past: #5d6884;
+  --series-past-2: #3d4763;
+  --pos: #3987e5;
+  --neg: #e66767;
+  --grid: #222c47;
+  --axis: #36415f;
+}
+
+/* ---------- 基本 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  line-height: 1.7;
+  font-feature-settings: "palt" 0;
+  overflow-x: hidden;
+}
+h1, h2, h3, .tl-label, .brief-headline, .chip, .brief-points li, .stat-label { word-break: auto-phrase; }
+h1, h2, h3 { font-family: var(--font-head); font-weight: 700; line-height: 1.35; margin: 0; letter-spacing: 0.01em; }
+a { color: var(--brand); text-underline-offset: 3px; }
+button { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.skip { position: absolute; left: 12px; top: -48px; z-index: 100; background: var(--surface); color: var(--ink); padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); }
+.skip:focus { top: 12px; }
+.num, table { font-variant-numeric: tabular-nums; }
+.fine { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.6; margin: 10px 0 0; }
+.empty { color: var(--ink-3); font-size: var(--fs-sm); margin: 6px 0; }
+.up { color: var(--up); }
+.down { color: var(--down); }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border-radius: var(--r-ctl);
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink);
+  cursor: pointer; text-decoration: none; font-weight: 700; font-size: var(--fs-sm);
+}
+.btn-primary { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+.link-btn { background: none; border: 0; padding: 0; color: var(--brand); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; font-size: inherit; }
+.icon-btn {
+  width: 38px; height: 38px; display: inline-grid; place-items: center;
+  border-radius: 10px; border: 1px solid transparent; background: transparent; cursor: pointer; color: inherit;
+}
+.icon-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn:hover { background: rgba(127, 140, 170, 0.14); }
+
+/* ---------- 会員確認 ---------- */
+.gate { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+.gate-card { max-width: 460px; width: 100%; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 36px 28px; }
+.gate-mark svg, .brand-mark svg { display: block; }
+.gate-mark { width: 56px; margin: 0 auto 14px; }
+.gate-mark rect, .brand-mark rect { fill: #1b2a5c; }
+.gate-mark polyline, .brand-mark polyline { fill: none; stroke: #f2b42a; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.gate-title { font-size: var(--fs-xl); margin-bottom: 12px; }
+.gate-msg { color: var(--ink-2); margin: 0 0 18px; }
+.gate-debug { text-align: left; font-size: 12px; background: var(--sunken); border: 1px solid var(--line); border-radius: 8px; padding: 10px; white-space: pre-wrap; word-break: break-all; }
+
+/* ---------- ヘッダー ---------- */
+.site-head { background: var(--surface); border-bottom: 1px solid var(--line); }
+.head-inner { max-width: 1240px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; min-width: 0; }
+.brand-mark { width: 38px; flex: none; }
+.brand-text { display: flex; flex-direction: column; min-width: 0; }
+.brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-lg); line-height: 1.25; white-space: nowrap; }
+.brand-tag { font-size: var(--fs-xs); color: var(--ink-3); white-space: nowrap; }
+.head-clock { margin-left: auto; display: flex; align-items: baseline; gap: 8px; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: var(--fs-sm); }
+.clock-time { font-size: var(--fs-lg); font-weight: 700; color: var(--ink); }
+.clock-zone { font-size: var(--fs-xs); color: var(--ink-3); }
+.head-actions { display: flex; gap: 2px; }
+.preview-bar { background: var(--warn-bg); color: var(--warn-ink); font-size: var(--fs-sm); text-align: center; padding: 8px 16px; border-top: 1px solid var(--line); line-height: 1.5; }
+
+.tape { background: var(--surface); border-bottom: 1px solid var(--line); min-height: 46px; }
+.tv-tape { height: 46px; max-width: 1240px; margin: 0 auto; }
+
+/* ---------- タブ ---------- */
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.tabs-inner { max-width: 1240px; margin: 0 auto; padding: 0 10px; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabs-inner::-webkit-scrollbar { display: none; }
+.tabs-inner.more { -webkit-mask-image: linear-gradient(to right, #000 82%, transparent); mask-image: linear-gradient(to right, #000 82%, transparent); }
+.tabs [role="tab"] {
+  flex: none; position: relative; border: 0; background: none; cursor: pointer;
+  padding: 13px 14px 12px; font-family: var(--font-head); font-weight: 700; font-size: var(--fs-md); color: var(--ink-3);
+}
+.tabs [role="tab"]:hover { color: var(--ink); }
+.tabs [role="tab"][aria-selected="true"] { color: var(--ink); }
+.tabs [role="tab"][aria-selected="true"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--brand); }
+
+/* ---------- レイアウト ---------- */
+.main { max-width: 1240px; margin: 0 auto; padding: 18px 16px 40px; outline: none; }
+.pane > * + * { margin-top: 16px; }
+.grid { display: grid; gap: 16px; }
+.g-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g-home { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+@media (max-width: 960px) { .g-2, .g-home { grid-template-columns: minmax(0, 1fr); } }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-panel); padding: 16px 18px 18px; min-width: 0; }
+.panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.panel-head h2 { font-size: var(--fs-lg); }
+.meta { font-size: var(--fs-xs); color: var(--ink-3); }
+.meta.link, .meta.link-btn { color: var(--brand); }
+.sub { font-size: var(--fs-sm); color: var(--ink-2); margin: 4px 0 8px; font-family: var(--font-body); font-weight: 700; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin-bottom: 12px; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2);
+  border-radius: 999px; padding: 5px 12px; font-size: var(--fs-sm); cursor: pointer; line-height: 1.4;
+}
+.pill:hover { border-color: var(--brand); color: var(--ink); }
+.pill[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); font-weight: 700; }
+.select-wrap select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 6px; padding: 3px 6px; margin-left: 4px; max-width: 220px; }
+
+/* ---------- TradingView 枠 ---------- */
+.tv-box { position: relative; width: 100%; min-height: 60px; }
+.tv-box .tv-placeholder { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 8px 12px; color: var(--ink-3); font-size: var(--fs-xs); line-height: 1.5; border: 1px dashed var(--line-strong); border-radius: 8px; background: var(--sunken); }
+.tv-box .tv-placeholder b { display: block; color: var(--ink-2); font-size: var(--fs-sm); }
+.tv-tape .tv-placeholder { border-radius: 0; border-width: 0 0 1px; }
+.tv-box .tv-fallback { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 16px; color: var(--ink-3); font-size: var(--fs-sm); background: var(--sunken); border-radius: 8px; }
+.tv-credit { text-align: right; margin: 4px 0 0; }
+.tape .tv-credit { max-width: 1240px; margin: 0 auto; padding: 0 16px 3px; }
+.tv-h420 { height: 420px; }
+.tv-h460 { height: 460px; }
+.tv-h640 { height: 640px; }
+.tv-main { height: min(72vh, 680px); min-height: 420px; }
+.mtf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.mtf-cell h3 { font-size: var(--fs-sm); font-family: var(--font-body); color: var(--ink-2); margin: 0 0 6px; }
+.mtf-cell .tv-box { height: 380px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+@media (max-width: 760px) { .mtf-grid { grid-template-columns: minmax(0, 1fr); } .mtf-cell .tv-box { height: 320px; } }
+.mkt-group + .mkt-group { margin-top: 18px; }
+.mkt-group h3 { font-size: var(--fs-sm); font-family: var(--font-body); color: var(--ink-2); margin-bottom: 8px; }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.mkt-cell { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.mkt-cell .tv-box { height: 200px; }
+
+/* ---------- 相場時計 ---------- */
+.clock-hero { background: var(--hero-bg); color: var(--hero-ink); border-radius: 16px; padding: 18px 20px 16px; }
+.hero-head { display: flex; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; margin-bottom: 12px; }
+.hero-title { font-size: var(--fs-xl); }
+.hero-status { margin: 0; color: var(--hero-ink); font-size: var(--fs-md); }
+.hero-status b { color: var(--hero-now); font-weight: 700; }
+.clock-hero .fine { color: var(--hero-muted); }
+.session-board { position: relative; }
+.sb-row { display: grid; grid-template-columns: 74px minmax(0, 1fr); align-items: center; min-height: 30px; }
+.sb-label { font-size: var(--fs-sm); color: var(--hero-muted); white-space: nowrap; }
+.sb-label b { color: var(--hero-ink); font-weight: 700; }
+.sb-track { position: relative; height: 22px; border-radius: 6px; background: var(--hero-track); }
+.sb-ticks { position: relative; height: 22px; }
+.sb-tick { position: absolute; top: 0; transform: translateX(-50%); font-size: 11.5px; color: var(--hero-muted); font-variant-numeric: tabular-nums; }
+.sb-gridline { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--hero-grid); pointer-events: none; }
+.sb-band { position: absolute; top: 3px; bottom: 3px; border-radius: 5px; opacity: 0.9; }
+.sb-band.is-holiday { opacity: 0.35; background-image: repeating-linear-gradient(135deg, transparent 0 5px, rgba(0,0,0,.25) 5px 7px); }
+.sb-band .sb-hol { position: absolute; left: 6px; top: 50%; transform: translateY(-50%); font-size: 11px; color: #0c1222; font-weight: 700; white-space: nowrap; }
+.band-syd { background-color: var(--s-syd); }
+.band-tky { background-color: var(--s-tky); }
+.band-ldn { background-color: var(--s-ldn); }
+.band-ny { background-color: var(--s-ny); }
+.sb-events { position: relative; height: 58px; }
+.sb-ev { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; font-size: 11.5px; line-height: 1.35; color: var(--hero-ink); white-space: nowrap; }
+.sb-ev.at-start { transform: translateX(-4px); align-items: flex-start; }
+.sb-ev.at-end { transform: translateX(calc(-100% + 4px)); align-items: flex-end; }
+.sb-ev::before { content: ""; width: 8px; height: 8px; transform: rotate(45deg); background: var(--hero-ink); margin: 4px 0 4px; border-radius: 1px; }
+.sb-ev.is-cb::before { background: var(--hero-now); }
+.sb-ev span { position: relative; background: rgba(0, 0, 0, 0.28); padding: 0 5px; border-radius: 4px; }
+.sb-ev.is-cb span { color: var(--hero-now); font-weight: 700; }
+.sb-ev.row2 span { margin-top: 20px; }
+.sb-ev.row2 span::before { content: ""; position: absolute; left: 50%; top: -20px; height: 19px; width: 1px; background: var(--hero-muted); opacity: .5; }
+.sb-ev.row2.at-start span::before { left: 4px; }
+.sb-ev.row2.at-end span::before { left: auto; right: 4px; }
+.sb-now { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--hero-now); border-radius: 2px; pointer-events: none; z-index: 2; }
+.sb-now::before { content: ""; position: absolute; top: -3px; left: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--hero-now); }
+.sb-closed { position: absolute; inset: 0; display: grid; place-items: center; font-size: var(--fs-sm); color: var(--hero-muted); background: rgba(0, 0, 0, 0.22); border-radius: 8px; z-index: 1; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); padding: 3px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); color: var(--hero-ink); line-height: 1.6; }
+.chip.is-key { background: var(--hero-now); color: #1a1405; font-weight: 700; }
+@media (max-width: 640px) {
+  .clock-hero { padding: 14px 12px 12px; border-radius: 12px; }
+  .sb-row { grid-template-columns: 52px minmax(0, 1fr); }
+  .sb-label { font-size: 12px; }
+  .sb-tick.minor { display: none; }
+}
+
+/* ---------- このあとの予定 ---------- */
+.timeline-list { list-style: none; margin: 0; padding: 0; }
+.timeline-list li { display: grid; grid-template-columns: 60px minmax(0, 1fr) auto; gap: 4px 10px; align-items: baseline; padding: 8px 0; border-top: 1px solid var(--line); }
+.timeline-list li:first-child { border-top: 0; }
+.tl-time { font-weight: 700; font-variant-numeric: tabular-nums; }
+.tl-day { display: block; font-size: 11px; color: var(--ink-3); font-weight: 400; }
+.tl-label { min-width: 0; }
+.tl-label small { display: block; color: var(--ink-3); font-size: var(--fs-xs); line-height: 1.5; }
+.tl-left { font-size: var(--fs-xs); color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tag { display: inline-block; font-size: 11px; line-height: 1.5; padding: 0 6px; border-radius: 4px; background: var(--sunken); border: 1px solid var(--line); color: var(--ink-2); margin-right: 6px; vertical-align: 1px; white-space: nowrap; }
+.tag.cb { background: var(--brand-soft); border-color: transparent; color: var(--brand); font-weight: 700; }
+.tag.hol { background: var(--warn-bg); border-color: transparent; color: var(--warn-ink); }
+
+/* ---------- AIまとめ ---------- */
+.brief-headline { font-family: var(--font-head); font-size: var(--fs-xl); line-height: 1.45; margin: 2px 0 10px; }
+.brief-points { margin: 0 0 12px; padding-left: 1.2em; }
+.brief-points li + li { margin-top: 4px; }
+.brief-box { background: var(--sunken); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-top: 12px; }
+.brief-box h3 { font-size: var(--fs-sm); font-family: var(--font-body); color: var(--ink-2); margin-bottom: 4px; }
+.brief-box p { margin: 0; }
+.watch-list { list-style: none; padding: 0; margin: 0; }
+.watch-list li { display: flex; gap: 12px; padding: 6px 0; border-top: 1px dashed var(--line); }
+.watch-list li > span:last-child { min-width: 0; }
+.watch-list li:first-child { border-top: 0; }
+.watch-when { flex: none; min-width: 48px; white-space: nowrap; font-weight: 700; font-variant-numeric: tabular-nums; }
+.watch-note { display: block; font-size: var(--fs-xs); color: var(--ink-3); }
+.src { font-size: var(--fs-xs); color: var(--ink-3); margin-top: 2px; }
+.src a { color: var(--ink-3); }
+.src a:hover { color: var(--brand); }
+.brief-section { margin-top: 20px; }
+.brief-section h3 { font-size: var(--fs-md); padding-bottom: 4px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.brief-item + .brief-item { margin-top: 12px; }
+.brief-item h4 { margin: 0 0 2px; font-size: var(--fs-md); }
+.brief-item p { margin: 0; color: var(--ink-2); }
+.notice-ai { font-size: var(--fs-xs); color: var(--ink-3); margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
+.brief-more { margin-top: 12px; }
+
+/* ---------- 表 ---------- */
+.table-wrap { overflow-x: auto; }
+table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+.tbl th, .tbl td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl th { font-weight: 700; color: var(--ink-3); font-size: var(--fs-xs); white-space: nowrap; }
+.tbl td.r, .tbl th.r { text-align: right; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl .big { font-size: var(--fs-md); font-weight: 700; }
+.tbl .note { display: block; font-size: var(--fs-xs); color: var(--ink-3); }
+.warn-note { display: inline-block; margin-top: 2px; font-size: var(--fs-xs); color: var(--warn-ink); background: var(--warn-bg); border-radius: 4px; padding: 0 6px; }
+
+.policy-mini { list-style: none; margin: 0; padding: 0; }
+.policy-mini li { display: grid; grid-template-columns: 56px max-content minmax(0, 1fr); gap: 8px 14px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); font-size: var(--fs-sm); }
+.nw { white-space: nowrap; }
+.nw.left { color: var(--ink-3); }
+.policy-mini li:first-child { border-top: 0; }
+.policy-mini .pm-bank { font-weight: 700; }
+.policy-mini .pm-rate { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.policy-mini .pm-next { color: var(--ink-2); }
+
+.cb-calendar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 960px) { .cb-calendar { grid-template-columns: minmax(0, 1fr); } }
+.cb-month h3 { font-size: var(--fs-md); margin-bottom: 6px; }
+.cb-month ul { list-style: none; margin: 0; padding: 0; }
+.cb-month li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); font-size: var(--fs-sm); line-height: 1.5; }
+.cb-month li.is-past { color: var(--ink-3); }
+.cb-month .when { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.cb-month .cb-time { display: block; font-weight: 400; color: var(--ink-2); }
+.cb-month .note { display: block; font-size: var(--fs-xs); color: var(--ink-3); }
+
+/* ---------- 指標タイル ---------- */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.tile { text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 12px 14px 10px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tile:hover { border-color: var(--line-strong); }
+.tile[aria-pressed="true"] { border-color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
+.tile-label { font-size: var(--fs-xs); color: var(--ink-2); font-weight: 700; }
+.tile-label small { font-weight: 400; color: var(--ink-3); }
+.tile-value { font-size: var(--fs-2xl); font-weight: 700; line-height: 1.2; }
+.tile-value small { font-size: var(--fs-sm); font-weight: 400; margin-left: 2px; color: var(--ink-2); }
+.tile-meta { font-size: var(--fs-xs); color: var(--ink-3); }
+.tile .spark { height: 36px; margin-top: 4px; }
+.tile .flag { font-size: 11px; color: var(--warn-ink); background: var(--warn-bg); border-radius: 4px; padding: 0 6px; align-self: flex-start; }
+.macro-detail { margin-top: 14px; }
+.macro-detail:empty { display: none; }
+.macro-detail h3 { font-size: var(--fs-md); margin-bottom: 2px; }
+
+/* ---------- CFTC ---------- */
+.cot-layout { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 22px; margin-top: 8px; }
+@media (max-width: 960px) { .cot-layout { grid-template-columns: minmax(0, 1fr); } }
+.stat-row { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 6px; }
+.stat { min-width: 0; }
+.stat-label { display: block; font-size: var(--fs-xs); color: var(--ink-3); }
+.stat-value { font-size: var(--fs-lg); font-weight: 700; }
+
+/* ---------- 休場・時間 ---------- */
+.dst-list { list-style: none; margin: 0; padding: 0; }
+.dst-list li { padding: 8px 0; border-top: 1px solid var(--line); font-size: var(--fs-sm); }
+.dst-list li:first-child { border-top: 0; }
+.dst-list .when { font-weight: 700; margin-right: 8px; }
+.dst-list small { display: block; color: var(--ink-3); }
+
+/* ---------- お知らせ・チェックリスト ---------- */
+.notices { list-style: none; margin: 0; padding: 0; }
+.notices li + li { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.notices time { font-size: var(--fs-xs); color: var(--ink-3); }
+.notices h3 { font-size: var(--fs-md); margin: 2px 0 4px; }
+.notices p { margin: 0; color: var(--ink-2); white-space: pre-wrap; }
+.checklist { list-style: none; margin: 0; padding: 0; }
+.checklist li { border-top: 1px solid var(--line); }
+.checklist li:first-child { border-top: 0; }
+.checklist label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; cursor: pointer; }
+.checklist input { width: 18px; height: 18px; margin-top: 4px; accent-color: var(--brand); flex: none; }
+.checklist input:checked + span { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+
+/* ---------- グラフ ---------- */
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; overflow: visible; }
+.chart .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: var(--fs-xs); color: var(--ink-2); margin-bottom: 4px; }
+.chart .legend span { display: inline-flex; align-items: center; gap: 6px; }
+.chart .legend i { width: 16px; height: 0; border-top: 2px solid; display: inline-block; }
+.chart .legend i.past { border-top-width: 2px; }
+.chart .tip {
+  position: absolute; pointer-events: none; z-index: 5; min-width: 120px;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong); border-radius: 8px;
+  padding: 7px 10px; font-size: var(--fs-xs); line-height: 1.5; box-shadow: 0 6px 18px rgba(10, 20, 40, 0.14);
+}
+.chart .tip .tip-x { color: var(--ink-3); margin-bottom: 2px; }
+.chart .tip .tip-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.chart .tip .tip-row b { font-size: var(--fs-sm); }
+.chart .tip i { width: 12px; height: 0; border-top: 2px solid; display: inline-block; }
+.chart .axis-t { fill: var(--ink-3); font-size: 11px; font-family: var(--font-body); }
+.chart .axis-base { stroke: var(--axis); stroke-width: 1; }
+.chart .gridline { stroke: var(--grid); stroke-width: 1; }
+.chart .zero { stroke: var(--axis); stroke-width: 1; }
+.chart .ref { stroke: var(--ink-3); stroke-width: 1; }
+.chart .ref-label { fill: var(--ink-3); font-size: 11px; }
+.chart .crosshair { stroke: var(--ink-3); stroke-width: 1; }
+.chart .end-label { fill: var(--ink-2); font-size: 11.5px; font-weight: 700; font-family: var(--font-body); }
+.chart .bar-label { fill: var(--ink-2); font-size: 12px; font-family: var(--font-body); }
+.chart .bar-name { fill: var(--ink); font-size: 12.5px; font-family: var(--font-body); }
+.chart .bar-row { cursor: pointer; }
+.chart .bar-row:focus { outline: none; }
+.chart .bar-row:focus .bar-hit, .chart .bar-row:hover .bar-hit { fill: var(--sunken); }
+.chart .bar-row.is-selected .bar-hit { fill: var(--brand-soft); }
+.chart details { margin-top: 6px; font-size: var(--fs-xs); }
+.chart details summary { cursor: pointer; color: var(--ink-3); }
+.chart details .table-wrap { max-height: 260px; overflow: auto; margin-top: 6px; }
+.chart details table { font-size: var(--fs-xs); }
+.chart details th, .chart details td { padding: 3px 8px; }
+.spark svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.stack-charts > div + div { margin-top: 14px; }
+
+/* ---------- フッター ---------- */
+.site-foot { border-top: 1px solid var(--line); background: var(--surface); }
+.foot-inner { max-width: 1240px; margin: 0 auto; padding: 22px 16px 34px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; font-size: var(--fs-xs); color: var(--ink-3); }
+@media (max-width: 760px) { .foot-inner { grid-template-columns: minmax(0, 1fr); } }
+.foot-title { font-size: var(--fs-sm); color: var(--ink-2); margin-bottom: 6px; }
+.foot-notes p { margin: 0 0 8px; }
+.source-status { list-style: none; margin: 0; padding: 0; }
+.source-status li { display: flex; gap: 8px; padding: 3px 0; }
+.source-status .st { width: 16px; flex: none; text-align: center; }
+.source-status .st-ok { color: var(--up); }
+.source-status .st-err { color: var(--down); }
+.source-status .st-skip { color: var(--ink-3); }
+
+/* ---------- ダイアログ ---------- */
+.dlg { border: 1px solid var(--line); border-radius: 14px; padding: 0; width: min(720px, calc(100vw - 24px)); max-height: calc(100vh - 48px); background: var(--surface); color: var(--ink); }
+.dlg::backdrop { background: rgba(8, 14, 30, 0.55); }
+.dlg-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); }
+.dlg-head h2 { font-size: var(--fs-lg); }
+.dlg-body { padding: 14px 20px 22px; }
+.prose { font-size: var(--fs-sm); }
+.prose h3 { font-size: var(--fs-md); margin: 14px 0 6px; }
+.prose ul { padding-left: 1.2em; margin: 0; }
+.prose li + li { margin-top: 6px; }
+.dlg-search { width: min(560px, calc(100vw - 24px)); margin-top: 12vh; }
+.search-form { padding: 12px; }
+.search-form input { width: 100%; font: inherit; font-size: var(--fs-md); padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--sunken); color: var(--ink); }
+.search-list { list-style: none; margin: 8px 0 0; padding: 0; max-height: 50vh; overflow: auto; }
+.search-list li { padding: 8px 10px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; gap: 12px; }
+.search-list li[aria-selected="true"], .search-list li:hover { background: var(--brand-soft); }
+.search-list small { color: var(--ink-3); white-space: nowrap; }
+
+/* ---------- 小さい画面 ---------- */
+@media (max-width: 640px) {
+  .head-inner { gap: 4px 8px; padding: 8px 12px 6px 16px; flex-wrap: wrap; }
+  .brand { gap: 9px; }
+  .brand-mark { width: 32px; }
+  .brand-name { font-size: 14.5px; }
+  .brand-tag { font-size: 11px; }
+  .head-clock { order: 3; width: 100%; margin-left: 0; justify-content: flex-start; }
+  .head-actions { margin-left: auto; }
+  .icon-btn { width: 34px; height: 34px; }
+  .timeline-list li { grid-template-columns: 74px minmax(0, 1fr); grid-template-rows: auto 1fr; }
+  .tl-label { grid-column: 2; grid-row: 1 / span 2; }
+  .tl-left { grid-column: 1; grid-row: 2; white-space: normal; }
+  .main { padding: 14px 16px 32px; }
+  .panel { padding: 14px 14px 16px; }
+  .brief-headline { font-size: var(--fs-lg); }
+  .tv-h640 { height: 560px; }
+  .tv-h420 { height: 380px; }
+  .policy-mini li { grid-template-columns: 48px max-content minmax(0, 1fr); }
+  /* 4列の表は、1行を2×2のまとまりにして縦に並べる */
+  .tbl-stack thead { display: none; }
+  .tbl-stack, .tbl-stack tbody { display: block; }
+  .tbl-stack tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px 14px; padding: 10px 2px; border-bottom: 1px solid var(--line); }
+  .tbl-stack tr:last-child { border-bottom: 0; }
+  .tbl-stack td { display: block; padding: 0; border: 0; }
+  .tbl-stack td[data-label]::before { content: attr(data-label); display: block; font-size: 11px; color: var(--ink-3); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+@media print {
+  .tabs, .tape, .head-actions, .site-foot, .tv-box { display: none !important; }
+  .pane[hidden] { display: block !important; }
+  body { background: #fff; }
+}
+
+</style>
 <script>
   // 表示テーマ（保存済みの選択 → なければOSの設定）を描画前に反映してちらつきを防ぐ
   (function () {
@@ -23,14 +532,396 @@
     } catch (e) {}
   })();
 </script>
-<script src="config.js"></script>
-<script src="assets/gate.js"></script>
+<script>
+/*
+ * もちぽよ マーケットポータル 設定ファイル
+ * ------------------------------------------------------------
+ * このファイルだけ書き換えれば、サイト名・会員認証・表示銘柄などを変更できます。
+ * GitHubの画面でこのファイルを開き、鉛筆アイコンから編集 → 「Commit changes」で反映されます
+ * （反映まで数分かかります）。
+ */
+window.PORTAL_CONFIG = {
+  // ── サイトの表示名 ───────────────────────────────
+  siteName: "もちぽよ マーケットポータル",
+  tagline: "波形で読むFX　Fincs会員専用",
+
+  // ── Fincs会員認証（トークンアクセスリンク） ────────────
+  gate: {
+    // false にすると認証なしで誰でも見られます（動作確認用）。本番は true のまま。
+    enabled: false,
+    // Fincsが発行するトークン（JWT）の発行元。通常は変更不要。
+    issuer: "https://api.fincs.jp",
+    // 署名検証用の公開鍵。上から順に試します。
+    //  1) data/fincs_jwks.json … GitHub Actionsが毎日Fincsから取得して保存するコピー
+    //  2) Fincsの公開URL（ブラウザから直接取得できない環境もあります）
+    jwksUrls: ["data/fincs_jwks.json", "https://api.fincs.jp/token_access_link/jwks"],
+    // Fincsの外部アプリ設定で登録した audience（通常はこのサイトのURL）。
+    // 空の配列なら「このサイトのオリジン」と「このページのURL」を自動で許可します。
+    // 認証に失敗する場合は、URLの末尾に ?gate=debug を付けて開くと、トークンの aud が表示されます。
+    audiences: [],
+    // 閲覧を許可するプランID。空の配列なら、Fincsが発行したトークンはプランを問わず許可します。
+    allowedPlanIds: [],
+    // プランIDが入っているトークン内の項目名
+    planClaim: "plan_id",
+    // 一度認証したら、何時間はFincsを経由せずに再訪問できるか
+    sessionHours: 24,
+    // 未認証の人に表示する「Fincsを開く」ボタンのリンク先（空ならボタンを出しません）
+    fincsUrl: ""
+  },
+
+  // ── ヘッダー下に流れるレート（TradingView） ─────────────
+  ticker: [
+    { s: "FX:GBPJPY", t: "ポンド円" },
+    { s: "FX:USDJPY", t: "ドル円" },
+    { s: "FX:EURJPY", t: "ユーロ円" },
+    { s: "FX:AUDJPY", t: "豪ドル円" },
+    { s: "FX:GBPUSD", t: "ポンドドル" },
+    { s: "FX:EURUSD", t: "ユーロドル" },
+    { s: "TVC:DXY", t: "ドル指数" },
+    { s: "TVC:US10Y", t: "米10年債" },
+    { s: "TVC:JP10Y", t: "日本10年債" },
+    { s: "OANDA:XAUUSD", t: "金" },
+    { s: "OANDA:JP225USD", t: "日経225" },
+    { s: "OANDA:SPX500USD", t: "S&P500" }
+  ],
+
+  // ── チャートタブで切り替えられる銘柄 ──────────────────
+  chartSymbols: [
+    { s: "FX:GBPJPY", t: "ポンド円" },
+    { s: "FX:USDJPY", t: "ドル円" },
+    { s: "FX:EURJPY", t: "ユーロ円" },
+    { s: "FX:AUDJPY", t: "豪ドル円" },
+    { s: "FX:GBPUSD", t: "ポンドドル" },
+    { s: "FX:EURUSD", t: "ユーロドル" },
+    { s: "FX:EURGBP", t: "ユーロポンド" },
+    { s: "TVC:DXY", t: "ドル指数" },
+    { s: "OANDA:XAUUSD", t: "金" }
+  ],
+  defaultChartSymbol: "FX:GBPJPY",
+
+  // ── マーケット一覧（ミニチャート） ─────────────────────
+  marketGroups: [
+    { title: "円クロス", symbols: [
+      ["FX:GBPJPY", "ポンド円"], ["FX:USDJPY", "ドル円"], ["FX:EURJPY", "ユーロ円"],
+      ["FX:AUDJPY", "豪ドル円"], ["FX:NZDJPY", "NZドル円"], ["FX:CADJPY", "カナダドル円"], ["FX:CHFJPY", "スイスフラン円"]
+    ]},
+    { title: "ドルストレート・その他", symbols: [
+      ["FX:GBPUSD", "ポンドドル"], ["FX:EURUSD", "ユーロドル"], ["FX:AUDUSD", "豪ドル米ドル"],
+      ["FX:USDCHF", "ドルスイスフラン"], ["FX:USDCAD", "ドルカナダドル"], ["FX:EURGBP", "ユーロポンド"]
+    ]},
+    { title: "ドル指数・金利", symbols: [
+      ["TVC:DXY", "ドル指数"], ["TVC:US10Y", "米10年債利回り"], ["TVC:JP10Y", "日本10年債利回り"], ["TVC:GB10Y", "英10年債利回り"]
+    ]},
+    { title: "株価指数", symbols: [
+      ["OANDA:JP225USD", "日経225"], ["OANDA:SPX500USD", "S&P500"], ["OANDA:NAS100USD", "NASDAQ100"], ["OANDA:UK100GBP", "英FTSE100"]
+    ]},
+    { title: "商品・暗号資産", symbols: [
+      ["OANDA:XAUUSD", "金"], ["TVC:USOIL", "WTI原油"], ["BITSTAMP:BTCUSD", "ビットコイン"]
+    ]}
+  ],
+
+  // ── 主要国の10年債利回り（TradingView） ────────────────
+  yieldSymbols: [
+    ["TVC:US10Y", "米国"], ["TVC:JP10Y", "日本"], ["TVC:GB10Y", "英国"], ["TVC:DE10Y", "ドイツ"],
+    ["TVC:AU10Y", "豪州"], ["TVC:NZ10Y", "NZ"], ["TVC:CA10Y", "カナダ"], ["TVC:CH10Y", "スイス"]
+  ],
+
+  // ── 経済指標カレンダー（TradingView）の対象国 ──────────
+  calendarCountries: "us,jp,gb,eu,au,nz,ca,ch",
+
+  // ── ホームの「朝のチェックリスト」 ─────────────────────
+  // 自由に書き換えてください（チェック状態は各自のブラウザに1日だけ保存されます）
+  checklist: [
+    "きょうの予定（指標・中銀・休場）を確認した",
+    "ポンド円の日足・4時間足で、いまの波の向きを確認した",
+    "通貨の強弱で、強い通貨・弱い通貨を確認した",
+    "大きな予定の前後は取引を控える時間を決めた",
+    "損切りの位置と1回の取引で許容する損失を決めた"
+  ],
+
+  // ── お問い合わせ・ご意見の案内（空なら表示しません） ─────────
+  feedbackUrl: ""
+};
+
+</script>
+<script>
+window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z", "source": "内閣府「国民の祝日について」（https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html）を加工して作成", "license": "公共データ利用規約（第1.0版）", "seed": true, "days": [["2026-10-12", "スポーツの日"], ["2026-11-03", "文化の日"], ["2026-11-23", "勤労感謝の日"], ["2027-01-01", "元日"], ["2027-01-11", "成人の日"], ["2027-02-11", "建国記念の日"], ["2027-02-23", "天皇誕生日"], ["2027-03-21", "春分の日"], ["2027-03-22", "休日"], ["2027-04-29", "昭和の日"], ["2027-05-03", "憲法記念日"], ["2027-05-04", "みどりの日"], ["2027-05-05", "こどもの日"], ["2027-07-19", "海の日"], ["2027-08-11", "山の日"], ["2027-09-20", "敬老の日"], ["2027-09-23", "秋分の日"], ["2027-10-11", "スポーツの日"], ["2027-11-03", "文化の日"], ["2027-11-23", "勤労感謝の日"]]}, "holidays_uk.json": {"updated": "2026-10-03T00:00:00.000Z", "source": "GOV.UK Bank holidays（England and Wales）", "license": "Contains public sector information licensed under the Open Government Licence v3.0.", "seed": true, "days": [["2026-12-25", "クリスマス", "Christmas Day"], ["2026-12-28", "ボクシングデー（振替）", "Boxing Day"], ["2027-01-01", "元日", "New Year's Day"], ["2027-03-26", "聖金曜日（グッドフライデー）", "Good Friday"], ["2027-03-29", "イースターマンデー", "Easter Monday"], ["2027-05-03", "アーリー・メイ・バンクホリデー", "Early May bank holiday"], ["2027-05-31", "スプリング・バンクホリデー", "Spring bank holiday"], ["2027-08-30", "サマー・バンクホリデー", "Summer bank holiday"], ["2027-12-27", "クリスマス（振替）", "Christmas Day"], ["2027-12-28", "ボクシングデー（振替）", "Boxing Day"]]}, "manual/notices.json": {"items": []}, "manual/holidays_us.json": {"checked": "2026-10-03", "sources": ["NYSE: ICE（NYSEの親会社）2025年12月23日発表 2026〜2028年の休場・短縮取引日 https://ir.theice.com/press/news-details/2025/NYSE-Group-Announces-2026-2027-and-2028-Holiday-and-Early-Closings-Calendar/default.aspx", "連邦祝日: 米人事管理局（OPM）https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/"], "note": "type … both: NYSE休場かつ連邦祝日 / nyse: NYSEのみ休場 / fed: 連邦祝日（NYSEは通常取引）/ early: NYSE短縮取引。2028年分はNYSE・OPMの公表内容を確認して追記してください。", "days": [["2026-10-12", "fed", "コロンブス・デー", "連邦祝日（NYSEは通常取引）"], ["2026-11-11", "fed", "ベテランズ・デー", "連邦祝日（NYSEは通常取引）"], ["2026-11-26", "both", "サンクスギビング（感謝祭）", "NYSE休場"], ["2026-11-27", "early", "感謝祭の翌日", "NYSEは米東部13:00で取引終了"], ["2026-12-24", "early", "クリスマス・イブ", "NYSEは米東部13:00で取引終了"], ["2026-12-25", "both", "クリスマス", "NYSE休場"], ["2027-01-01", "both", "元日", "NYSE休場"], ["2027-01-18", "both", "キング牧師記念日", "NYSE休場"], ["2027-02-15", "both", "ワシントン誕生日", "NYSE休場"], ["2027-03-26", "nyse", "聖金曜日（グッドフライデー）", "NYSE休場（連邦祝日ではありません）"], ["2027-05-31", "both", "メモリアル・デー", "NYSE休場"], ["2027-06-18", "both", "ジューンティーンス（振替）", "NYSE休場"], ["2027-07-05", "both", "独立記念日（振替）", "NYSE休場"], ["2027-09-06", "both", "レイバー・デー", "NYSE休場"], ["2027-10-11", "fed", "コロンブス・デー", "連邦祝日（NYSEは通常取引）"], ["2027-11-11", "fed", "ベテランズ・デー", "連邦祝日（NYSEは通常取引）"], ["2027-11-25", "both", "サンクスギビング（感謝祭）", "NYSE休場"], ["2027-11-26", "early", "感謝祭の翌日", "NYSEは米東部13:00で取引終了"], ["2027-12-24", "both", "クリスマス（振替）", "NYSE休場"], ["2027-12-31", "fed", "元日（2028年）の振替", "連邦祝日（NYSEは通常取引）"]]}, "manual/central_banks.json": {"checked": "2026-10-03", "note": "各中央銀行の公式サイトで確認した会合日程と政策金利です。会合のたびに current を更新してください（BIS・FREDのデータの方が新しい場合は、そちらが自動で表示されます）。", "banks": [{"id": "fed", "short": "FRB", "name": "米連邦準備制度（FRB）", "ccy": "USD", "flag": "米", "bis": "US", "meeting": "FOMC", "rateName": "FF金利の誘導目標", "tz": "America/New_York", "time": "14:00", "timeLabel": "声明発表", "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm", "scheduleNote": "日程は直前の会合で確定します（公式発表の注記による）", "current": {"display": "3.75〜4.00%", "value": 3.875, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-16", "effective": "2026-09-17", "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm"}, "meetings": [{"date": "2026-10-28", "start": "2026-10-27"}, {"date": "2026-12-09", "start": "2026-12-08", "tag": "経済見通しあり"}, {"date": "2027-01-27", "start": "2027-01-26"}, {"date": "2027-03-17", "start": "2027-03-16", "tag": "経済見通しあり"}, {"date": "2027-04-28", "start": "2027-04-27"}, {"date": "2027-06-09", "start": "2027-06-08", "tag": "経済見通しあり"}, {"date": "2027-07-28", "start": "2027-07-27"}, {"date": "2027-09-15", "start": "2027-09-14", "tag": "経済見通しあり"}, {"date": "2027-10-27", "start": "2027-10-26"}, {"date": "2027-12-08", "start": "2027-12-07", "tag": "経済見通しあり"}]}, {"id": "boj", "short": "日銀", "name": "日本銀行", "ccy": "JPY", "flag": "日", "bis": "JP", "meeting": "金融政策決定会合", "rateName": "無担保コールレート（オーバーナイト物）の誘導目標", "tz": "Asia/Tokyo", "time": null, "timeLabel": "公表（時刻は事前に決まっていません）", "url": "https://www.boj.or.jp/mopo/mpmsche_minu/index.htm", "current": {"display": "1.25%程度", "value": 1.25, "lastAction": "利上げ", "decided": "2026-09-18", "effective": "2026-09-24", "source": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k260918a.pdf"}, "meetings": [{"date": "2026-10-30", "start": "2026-10-29", "tag": "展望レポート"}, {"date": "2026-12-18", "start": "2026-12-17"}, {"date": "2027-01-22", "start": "2027-01-21", "tag": "展望レポート"}, {"date": "2027-03-18", "start": "2027-03-17"}, {"date": "2027-04-28", "start": "2027-04-27", "tag": "展望レポート"}, {"date": "2027-06-11", "start": "2027-06-10"}, {"date": "2027-07-22", "start": "2027-07-21", "tag": "展望レポート"}, {"date": "2027-09-22", "start": "2027-09-21"}, {"date": "2027-10-29", "start": "2027-10-28", "tag": "展望レポート"}, {"date": "2027-12-17", "start": "2027-12-16"}]}, {"id": "ecb", "short": "ECB", "name": "欧州中央銀行（ECB）", "ccy": "EUR", "flag": "欧", "bis": "XM", "meeting": "理事会（金融政策）", "rateName": "預金ファシリティ金利", "tz": "Europe/Berlin", "time": "14:15", "timeLabel": "政策決定（14:45から記者会見）", "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html", "current": {"display": "2.50%", "value": 2.5, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-10", "effective": "2026-09-16", "source": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html"}, "meetings": [{"date": "2026-10-29", "start": "2026-10-28"}, {"date": "2026-12-17", "start": "2026-12-16"}, {"date": "2027-02-04", "start": "2027-02-03"}, {"date": "2027-03-18", "start": "2027-03-17"}, {"date": "2027-04-29", "start": "2027-04-28"}, {"date": "2027-06-10", "start": "2027-06-09"}, {"date": "2027-07-22", "start": "2027-07-21"}, {"date": "2027-09-09", "start": "2027-09-08"}, {"date": "2027-10-28", "start": "2027-10-27"}, {"date": "2027-12-16", "start": "2027-12-15"}]}, {"id": "boe", "short": "BOE", "name": "イングランド銀行（BOE）", "ccy": "GBP", "flag": "英", "bis": "GB", "meeting": "金融政策委員会（MPC）", "rateName": "バンクレート", "tz": "Europe/London", "time": "12:00", "timeLabel": "政策発表", "url": "https://www.bankofengland.co.uk/monetary-policy/upcoming-mpc-dates", "current": {"display": "3.75%", "value": 3.75, "lastAction": "据え置き", "decided": "2026-09-17", "lastChange": "2025-12-18", "source": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/september-2026"}, "meetings": [{"date": "2026-11-05", "tag": "金融政策報告"}, {"date": "2026-12-17"}, {"date": "2027-02-04", "tag": "金融政策報告"}, {"date": "2027-03-18"}, {"date": "2027-04-29", "tag": "金融政策報告"}, {"date": "2027-06-17"}, {"date": "2027-07-29", "tag": "金融政策報告"}, {"date": "2027-09-16"}, {"date": "2027-11-04", "tag": "金融政策報告"}, {"date": "2027-12-16"}]}, {"id": "rba", "short": "RBA", "name": "豪州準備銀行（RBA）", "ccy": "AUD", "flag": "豪", "bis": "AU", "meeting": "金融政策理事会", "rateName": "キャッシュレート誘導目標", "tz": "Australia/Sydney", "time": "14:30", "timeLabel": "政策発表", "url": "https://www.rba.gov.au/schedules-events/board-meeting-schedules.html", "current": {"display": "4.60%", "value": 4.6, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-29", "effective": "2026-09-30", "source": "https://www.rba.gov.au/cash-rate-target-overview.html"}, "meetings": [{"date": "2026-11-03", "start": "2026-11-02", "tag": "金融政策報告"}, {"date": "2026-12-08", "start": "2026-12-07"}, {"date": "2027-02-09", "start": "2027-02-08", "tag": "金融政策報告"}, {"date": "2027-03-23", "start": "2027-03-22"}, {"date": "2027-05-04", "start": "2027-05-03", "tag": "金融政策報告"}, {"date": "2027-06-22", "start": "2027-06-21"}, {"date": "2027-08-10", "start": "2027-08-09", "tag": "金融政策報告"}, {"date": "2027-09-28", "start": "2027-09-27"}, {"date": "2027-11-02", "start": "2027-11-01", "tag": "金融政策報告"}, {"date": "2027-12-14", "start": "2027-12-13"}]}, {"id": "rbnz", "short": "RBNZ", "name": "NZ準備銀行（RBNZ）", "ccy": "NZD", "flag": "NZ", "bis": "NZ", "meeting": "政策金利（OCR）発表", "rateName": "オフィシャル・キャッシュレート（OCR）", "tz": "Pacific/Auckland", "time": "14:00", "timeLabel": "政策発表", "url": "https://www.rbnz.govt.nz/news-and-events/how-we-release-information/ocr-decision-dates-and-financial-stability-report-dates-to-feb-2028", "current": {"display": "2.75%", "value": 2.75, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-02", "source": "https://www.rbnz.govt.nz/monetary-policy/about-monetary-policy/the-official-cash-rate"}, "meetings": [{"date": "2026-10-28", "tag": "金融政策レビュー"}, {"date": "2026-12-09", "tag": "金融政策声明"}, {"date": "2027-02-10", "tag": "金融政策レビュー"}, {"date": "2027-03-17", "tag": "金融政策声明"}, {"date": "2027-05-05", "tag": "金融政策レビュー"}, {"date": "2027-06-16", "tag": "金融政策声明"}, {"date": "2027-08-04", "tag": "金融政策レビュー"}, {"date": "2027-09-15", "tag": "金融政策声明"}, {"date": "2027-10-27", "tag": "金融政策レビュー"}, {"date": "2027-12-08", "tag": "金融政策声明"}]}, {"id": "boc", "short": "BOC", "name": "カナダ銀行（BOC）", "ccy": "CAD", "flag": "加", "bis": "CA", "meeting": "政策金利発表", "rateName": "翌日物金利の誘導目標", "tz": "America/Toronto", "time": "09:45", "timeLabel": "政策発表", "url": "https://www.bankofcanada.ca/2026/07/bank-canada-publishes-2027-schedule-policy-interest-rate-announcements-other-major-publications/", "current": {"display": "2.25%", "value": 2.25, "lastAction": "据え置き", "decided": "2026-09-02", "lastChange": "2025-10-29", "source": "https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/"}, "meetings": [{"date": "2026-10-28"}, {"date": "2026-12-09"}, {"date": "2027-01-27", "tag": "金融政策報告"}, {"date": "2027-03-03"}, {"date": "2027-04-28", "tag": "金融政策報告"}, {"date": "2027-06-02"}, {"date": "2027-07-21", "tag": "金融政策報告"}, {"date": "2027-09-08"}, {"date": "2027-10-27", "tag": "金融政策報告"}, {"date": "2027-12-08"}]}, {"id": "snb", "short": "SNB", "name": "スイス国立銀行（SNB）", "ccy": "CHF", "flag": "瑞", "bis": "CH", "meeting": "金融政策評価", "rateName": "SNB政策金利", "tz": "Europe/Zurich", "time": "09:30", "timeLabel": "政策発表（10:00から記者会見）", "url": "https://www.snb.ch/en/services-events/digital-services/event-schedule", "current": {"display": "0.00%", "value": 0, "lastAction": "据え置き", "decided": "2026-09-24", "source": "https://www.snb.ch/en/publications/communication/press-releases-restricted/pre_20260924"}, "meetings": [{"date": "2026-12-10"}, {"date": "2027-03-18"}, {"date": "2027-06-24"}, {"date": "2027-09-23"}, {"date": "2027-12-16"}]}]}, "manual/cftc_schedule.json": {"checked": "2026-10-03", "source": "https://www.cftc.gov/MarketReports/CommitmentsofTraders/ReleaseSchedule/index.htm", "note": "CFTCが公表する建玉明細の公表日（米東部15:30）。祝日の週は月曜などにずれます。翌年分が公表されたら追記してください。一覧の最後の日付より後は、毎週金曜として扱います。", "dates": ["2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-16", "2026-11-20", "2026-11-30", "2026-12-04", "2026-12-11", "2026-12-18", "2026-12-28"]}, "manual/holidays_jp_extra.json": {"checked": "2026-10-03", "source": "日本取引所グループ 休業日一覧 https://www.jpx.co.jp/corporate/about-jpx/calendar/index.html", "note": "国民の祝日以外で東京証券取引所が休業する日（年末年始）。", "days": [["2026-12-31", "年末年始の休業日（東京証券取引所）"], ["2027-01-02", "年末年始の休業日（東京証券取引所）"], ["2027-01-03", "年末年始の休業日（東京証券取引所）"], ["2027-12-31", "年末年始の休業日（東京証券取引所）"]]}};
+</script>
+<script>
+/*
+ * gate.js — Fincs「トークンアクセスリンク」の会員確認（ブラウザ側で検証）
+ * ------------------------------------------------------------
+ * 流れ:
+ *   1. Fincsのリンクから  https://（このサイト）/?token=<JWT>  で開かれる
+ *   2. JWTの署名（RS256）を、Fincsの公開鍵（JWKS）で検証する
+ *   3. 発行元(iss)・有効期限(exp)・宛先(aud)・プラン（設定時のみ）を確認する
+ *   4. 合格したらブラウザに「確認済み」の印を保存し、URLからtokenを消して本編を表示する
+ *
+ * 注意: GitHub Pagesは静的サイトのため、この確認は「画面の表示制御」です。
+ *       data/ 配下のファイルやページのソースは、URLを知っていれば誰でも取得できます。
+ *
+ * ブラウザでは window.PortalGate、Node（テスト）では module.exports として使えます。
+ */
+(function (root, factory) {
+  var api = factory(root);
+  if (typeof module === "object" && module.exports) module.exports = api;
+  else root.PortalGate = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function (root) {
+  "use strict";
+
+  var SESSION_KEY = "mp_portal_session_v1";
+  var CLOCK_SKEW = 60; // 秒
+  var te = new TextEncoder();
+
+  function GateError(code, detail) {
+    var e = new Error(code);
+    e.name = "GateError";
+    e.code = code;
+    e.detail = detail || "";
+    return e;
+  }
+
+  // ---------- base64url ----------
+  function b64uToBytes(s) {
+    if (typeof s !== "string" || !/^[A-Za-z0-9_-]*$/.test(s)) throw GateError("malformed", "base64url");
+    s = s.replace(/-/g, "+").replace(/_/g, "/");
+    var pad = s.length % 4 ? "====".slice(s.length % 4) : "";
+    var bin = root.atob(s + pad);
+    var out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  function b64uToJson(s) {
+    try {
+      return JSON.parse(new TextDecoder().decode(b64uToBytes(s)));
+    } catch (e) {
+      throw GateError("malformed", "json");
+    }
+  }
+  function stripSlash(s) {
+    return String(s).replace(/\/+$/, "");
+  }
+  function toList(v) {
+    if (v === undefined || v === null) return [];
+    return (Array.isArray(v) ? v : [v]).map(function (x) { return String(x); });
+  }
+
+  // ---------- 鍵の選択 ----------
+  function pickKey(keys, kid) {
+    var rsa = (keys || []).filter(function (k) {
+      return k && k.kty === "RSA" && (!k.use || k.use === "sig") && (!k.alg || k.alg === "RS256") && k.n && k.e;
+    });
+    if (kid) {
+      for (var i = 0; i < rsa.length; i++) if (rsa[i].kid === kid) return rsa[i];
+      return null;
+    }
+    return rsa.length === 1 ? rsa[0] : null;
+  }
+
+  // ---------- JWT検証（RS256） ----------
+  // opts: { keys, issuer, audiences:[], allowedPlanIds:[], planClaim, now(秒) }
+  async function verifyJwt(token, opts) {
+    opts = opts || {};
+    if (typeof token !== "string" || token.length > 8192) throw GateError("malformed", "length");
+    var parts = token.split(".");
+    if (parts.length !== 3) throw GateError("malformed", "parts");
+    var header = b64uToJson(parts[0]);
+    var payload = b64uToJson(parts[1]);
+    if (!header || header.alg !== "RS256") throw GateError("alg", String(header && header.alg));
+    var jwk = pickKey(opts.keys, header.kid);
+    if (!jwk) throw GateError("kid", String(header.kid || ""));
+
+    var subtle = root.crypto && root.crypto.subtle;
+    if (!subtle) throw GateError("crypto", "WebCrypto unavailable");
+    var key = await subtle.importKey(
+      "jwk",
+      { kty: "RSA", n: jwk.n, e: jwk.e, alg: "RS256", ext: true },
+      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+      false,
+      ["verify"]
+    );
+    var ok = await subtle.verify(
+      "RSASSA-PKCS1-v1_5",
+      key,
+      b64uToBytes(parts[2]),
+      te.encode(parts[0] + "." + parts[1])
+    );
+    if (!ok) throw GateError("signature");
+
+    var now = typeof opts.now === "number" ? opts.now : Math.floor(Date.now() / 1000);
+    if (opts.issuer && stripSlash(payload.iss || "") !== stripSlash(opts.issuer)) {
+      throw GateError("iss", String(payload.iss || ""));
+    }
+    if (typeof payload.exp !== "number") throw GateError("exp_missing");
+    if (now > payload.exp + CLOCK_SKEW) throw GateError("expired", String(payload.exp));
+    if (typeof payload.nbf === "number" && now + CLOCK_SKEW < payload.nbf) throw GateError("not_yet");
+    if (typeof payload.iat === "number" && payload.iat > now + CLOCK_SKEW) throw GateError("iat_future");
+
+    var auds = (opts.audiences || []).filter(Boolean).map(stripSlash);
+    if (auds.length) {
+      var got = toList(payload.aud).map(stripSlash);
+      var hit = got.some(function (a) { return auds.indexOf(a) >= 0; });
+      if (!hit) throw GateError("aud", got.join(", "));
+    }
+    var plans = toList(opts.allowedPlanIds).filter(Boolean);
+    if (plans.length) {
+      var have = toList(payload[opts.planClaim || "plan_id"]);
+      var okPlan = have.some(function (p) { return plans.indexOf(p) >= 0; });
+      if (!okPlan) throw GateError("plan", have.join(", "));
+    }
+    return { header: header, payload: payload };
+  }
+
+  // ---------- 公開鍵の取得 ----------
+  async function fetchKeys(url, fetchImpl) {
+    var f = fetchImpl || root.fetch;
+    var res = await f(url, { cache: "no-store", credentials: "omit" });
+    if (!res.ok) throw GateError("jwks", url + " " + res.status);
+    var json = await res.json();
+    if (!json || !Array.isArray(json.keys) || !json.keys.length) throw GateError("jwks", url + " empty");
+    return json.keys;
+  }
+
+  // 複数の鍵の置き場所を順に試す（ローカルのコピーが古く、kidが見つからない時は次へ）
+  async function verifyWithSources(token, urls, opts, fetchImpl) {
+    var lastErr = null;
+    for (var i = 0; i < urls.length; i++) {
+      var keys;
+      try {
+        keys = await fetchKeys(urls[i], fetchImpl);
+      } catch (e) {
+        lastErr = e.code ? e : GateError("jwks", String(e && e.message));
+        continue;
+      }
+      try {
+        return await verifyJwt(token, Object.assign({}, opts, { keys: keys }));
+      } catch (e) {
+        if (e.code === "kid") { lastErr = e; continue; }
+        throw e;
+      }
+    }
+    throw lastErr || GateError("jwks", "no source");
+  }
+
+  // ---------- 確認済みの印（ブラウザ保存） ----------
+  function store() {
+    try {
+      var s = root.localStorage;
+      s.setItem("__mp_t", "1");
+      s.removeItem("__mp_t");
+      return s;
+    } catch (e) {
+      try { return root.sessionStorage; } catch (e2) { return null; }
+    }
+  }
+  function readSession() {
+    try {
+      var s = store();
+      if (!s) return null;
+      var v = JSON.parse(s.getItem(SESSION_KEY) || "null");
+      if (!v || typeof v.exp !== "number") return null;
+      if (Date.now() / 1000 > v.exp) { s.removeItem(SESSION_KEY); return null; }
+      return v;
+    } catch (e) { return null; }
+  }
+  function writeSession(hours) {
+    try {
+      var s = store();
+      if (!s) return false;
+      var now = Math.floor(Date.now() / 1000);
+      s.setItem(SESSION_KEY, JSON.stringify({ v: 1, at: now, exp: now + Math.round((hours || 24) * 3600) }));
+      return true;
+    } catch (e) { return false; }
+  }
+  function clearSession() {
+    try { var s = store(); if (s) s.removeItem(SESSION_KEY); } catch (e) {}
+  }
+
+  function defaultAudiences(loc) {
+    var dir = loc.pathname.replace(/[^/]*$/, "");
+    return [loc.origin, loc.origin + dir, loc.origin + loc.pathname];
+  }
+
+  // URLから token を取り出し、すぐにアドレスバーから消す（共有・スクリーンショットでの流出防止）
+  function takeTokenFromUrl() {
+    try {
+      var u = new URL(root.location.href);
+      var t = u.searchParams.get("token");
+      if (t !== null) {
+        u.searchParams.delete("token");
+        root.history.replaceState(null, "", u.pathname + (u.search || "") + u.hash);
+      }
+      return t;
+    } catch (e) { return null; }
+  }
+
+  var MESSAGES = {
+    none: "このページはFincs会員専用です。Fincsのコミュニティ内にある「マーケットポータル」のリンクから開いてください。",
+    expired: "リンクの有効期限が切れています。Fincsからもう一度開いてください。",
+    jwks: "会員確認用の鍵を取得できませんでした。通信状況をご確認のうえ、しばらくしてからFincsのリンクを開き直してください。",
+    crypto: "お使いのブラウザでは会員確認ができません。最新のChrome・Safari・Edgeなどでお試しください。",
+    other: "会員確認ができませんでした。Fincsのリンクから開き直してください。解決しない場合は運営までお知らせください。"
+  };
+
+  // 本編を表示してよいか判定する
+  // 戻り値: { ok:true, via } または { ok:false, code, detail, claims }
+  async function start(cfg) {
+    cfg = cfg || {};
+    if (cfg.enabled === false) return { ok: true, via: "disabled" };
+    var token = takeTokenFromUrl();
+    if (token) {
+      var audiences = (cfg.audiences && cfg.audiences.length) ? cfg.audiences : defaultAudiences(root.location);
+      try {
+        await verifyWithSources(token, cfg.jwksUrls || [], {
+          issuer: cfg.issuer,
+          audiences: audiences,
+          allowedPlanIds: cfg.allowedPlanIds || [],
+          planClaim: cfg.planClaim || "plan_id"
+        });
+        writeSession(cfg.sessionHours);
+        return { ok: true, via: "token" };
+      } catch (e) {
+        var claims = null;
+        try { claims = b64uToJson(String(token).split(".")[1]); } catch (_) {}
+        // 既に有効な印があれば、古いリンクを開いただけなので通す
+        if (readSession()) return { ok: true, via: "session" };
+        return { ok: false, code: e.code || "other", detail: e.detail || String(e.message || ""), claims: claims, audiences: audiences };
+      }
+    }
+    if (readSession()) return { ok: true, via: "session" };
+    return { ok: false, code: "none" };
+  }
+
+  function messageFor(code) {
+    if (code === "expired" || code === "not_yet") return MESSAGES.expired;
+    if (code === "jwks") return MESSAGES.jwks;
+    if (code === "crypto") return MESSAGES.crypto;
+    if (code === "none") return MESSAGES.none;
+    return MESSAGES.other;
+  }
+
+  return {
+    SESSION_KEY: SESSION_KEY,
+    GateError: GateError,
+    b64uToBytes: b64uToBytes,
+    pickKey: pickKey,
+    verifyJwt: verifyJwt,
+    verifyWithSources: verifyWithSources,
+    readSession: readSession,
+    writeSession: writeSession,
+    clearSession: clearSession,
+    defaultAudiences: defaultAudiences,
+    start: start,
+    messageFor: messageFor
+  };
+});
+
+</script>
 <script>
   // 会員確認を先に始める（結果が出るまで本編は隠れたまま）
   window.PortalGateReady = window.PortalGate.start((window.PORTAL_CONFIG || {}).gate);
 </script>
-<script src="assets/charts.js" defer></script>
-<script src="assets/app.js" defer></script>
+
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -324,5 +1215,1625 @@
     <p><button id="logoutBtn" class="btn" type="button">このブラウザの会員確認を消す</button></p>
   </div>
 </dialog>
+<script>
+/*
+ * charts.js — 小さなSVGグラフ（外部ライブラリなし）
+ *   Charts.line(el, opts)  折れ線（時系列・カテゴリ）＋十字線ツールチップ＋表で見る
+ *   Charts.bars(el, opts)  横向きのプラス・マイナス棒グラフ（選択できる）
+ *   Charts.spark(el, data, opts)  タイル用の小さな線
+ * 色は CSS 変数（var(--series-1) など）で渡すので、明暗の切り替えに自動で追従する。
+ */
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var DAY = 86400000;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+  }
+  function niceStep(span, count) {
+    if (!(span > 0)) return 1;
+    var raw = span / Math.max(1, count);
+    var p = Math.pow(10, Math.floor(Math.log10(raw)));
+    var m = raw / p;
+    var nice = m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10;
+    return nice * p;
+  }
+  function yDomain(min, max, count) {
+    if (min === max) { var pad = Math.abs(min) * 0.1 || 1; min -= pad; max += pad; }
+    var step = niceStep(max - min, count);
+    var lo = Math.floor(min / step) * step;
+    var hi = Math.ceil(max / step) * step;
+    if (lo === hi) hi = lo + step;
+    var ticks = [];
+    for (var v = lo; v <= hi + step / 2; v += step) ticks.push(Math.round(v / step) * step);
+    return { lo: lo, hi: hi, ticks: ticks, step: step };
+  }
+  function decimalsOf(step) {
+    var s = String(step);
+    var i = s.indexOf(".");
+    return i < 0 ? 0 : Math.min(3, s.length - i - 1);
+  }
+  function ymdLabel(t) {
+    var d = new Date(t);
+    return d.getUTCFullYear() + "年" + (d.getUTCMonth() + 1) + "月" + d.getUTCDate() + "日";
+  }
+  function timeTicks(lo, hi, maxTicks) {
+    var span = hi - lo;
+    var opts = [1, 2, 3, 6, 12, 24, 36, 60];
+    var months = span / (30.44 * DAY);
+    var stepM = opts[opts.length - 1];
+    for (var i = 0; i < opts.length; i++) if (months / opts[i] <= maxTicks) { stepM = opts[i]; break; }
+    var d = new Date(lo);
+    var y = d.getUTCFullYear(), m = d.getUTCMonth();
+    m = Math.ceil((m + (d.getUTCDate() > 1 ? 1 : 0)) / stepM) * stepM;
+    var out = [];
+    for (var k = 0; k < 400; k++) {
+      var t = Date.UTC(y, m + k * stepM, 1);
+      if (t > hi) break;
+      if (t >= lo) out.push(t);
+    }
+    return { ticks: out, stepM: stepM };
+  }
+  function timeTickLabel(t, stepM, first) {
+    var d = new Date(t);
+    var y = d.getUTCFullYear(), m = d.getUTCMonth() + 1;
+    if (stepM >= 12) return y + "年";
+    if (m === 1 || first) return y + "年" + m + "月";
+    return m + "月";
+  }
+  function median(arr) {
+    if (!arr.length) return 0;
+    var a = arr.slice().sort(function (x, y) { return x - y; });
+    return a[Math.floor(a.length / 2)];
+  }
+  function nearestIndex(xs, x) {
+    var lo = 0, hi = xs.length - 1;
+    if (hi < 0) return -1;
+    while (hi - lo > 1) {
+      var mid = (lo + hi) >> 1;
+      if (xs[mid] < x) lo = mid; else hi = mid;
+    }
+    return Math.abs(xs[lo] - x) <= Math.abs(xs[hi] - x) ? lo : hi;
+  }
+  function textWidth(s, px) {
+    var w = 0;
+    s = String(s);
+    for (var i = 0; i < s.length; i++) w += s.charCodeAt(i) > 255 ? px : px * 0.58;
+    return w;
+  }
+
+  // 要素の幅が変わったら描き直す（非表示タブの中では幅0なので、表示されたときに描く）
+  function observe(el, draw) {
+    var last = -1, raf = 0;
+    function run() {
+      raf = 0;
+      var w = Math.floor(el.clientWidth);
+      if (w > 0 && w !== last) { last = w; draw(w); }
+    }
+    if (typeof ResizeObserver !== "undefined") {
+      if (el.__ro) el.__ro.disconnect();
+      el.__ro = new ResizeObserver(function () { if (!raf) raf = requestAnimationFrame(run); });
+      el.__ro.observe(el);
+    }
+    run();
+  }
+
+  function svgEl(tag, attrs) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) if (attrs[k] !== undefined && attrs[k] !== null) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  function tableHtml(opts, rowsHtml) {
+    return '<details><summary>数値を表で見る</summary><div class="table-wrap"><table class="tbl">' + rowsHtml + "</table></div></details>";
+  }
+
+  // ======================= 折れ線 =======================
+  function line(el, opts) {
+    opts = opts || {};
+    var series = (opts.series || []).filter(function (s) { return s.data && s.data.length; });
+    el.classList.add("chart");
+    el.innerHTML = "";
+    if (!series.length) { el.innerHTML = '<p class="empty">' + esc(opts.emptyText || "データがありません") + "</p>"; return; }
+    var isCat = opts.xType === "cat";
+    var height = opts.height || 220;
+    var yFmt = opts.yFmt || function (v) { return String(v); };
+    var xFmt = opts.xFmt || (isCat ? function (x) { return (opts.cats || [])[x]; } : ymdLabel);
+
+    // 凡例（2系列以上のときだけ）
+    if (series.length > 1 || opts.legend) {
+      var lg = document.createElement("div");
+      lg.className = "legend";
+      series.forEach(function (s) {
+        var sp = document.createElement("span");
+        var i = document.createElement("i");
+        i.style.borderTopColor = s.color;
+        if (s.dash) i.style.borderTopStyle = "dashed";
+        sp.appendChild(i);
+        sp.appendChild(document.createTextNode(s.name));
+        lg.appendChild(sp);
+      });
+      el.appendChild(lg);
+    }
+    var box = document.createElement("div");
+    box.style.position = "relative";
+    el.appendChild(box);
+    var tip = document.createElement("div");
+    tip.className = "tip";
+    tip.hidden = true;
+    box.appendChild(tip);
+
+    // 系列ごとの x・y 配列
+    var S = series.map(function (s) {
+      var xs = [], ys = [];
+      s.data.forEach(function (p) { if (p[1] !== null && p[1] !== undefined && isFinite(p[1])) { xs.push(p[0]); ys.push(p[1]); } });
+      var steps = [];
+      for (var i = 1; i < xs.length; i++) steps.push(xs[i] - xs[i - 1]);
+      return { s: s, xs: xs, ys: ys, tol: isCat ? 0.5 : Math.max(DAY * 1.5, median(steps) * 1.6) };
+    });
+    var allX = [];
+    S.forEach(function (o) { allX = allX.concat(o.xs); });
+    allX = Array.from(new Set(allX)).sort(function (a, b) { return a - b; });
+    var xMin = isCat ? -0.5 : allX[0], xMax = isCat ? (opts.cats.length - 0.5) : allX[allX.length - 1];
+    if (!isCat && xMin === xMax) { xMin -= DAY; xMax += DAY; }
+    var yMin = Infinity, yMax = -Infinity;
+    S.forEach(function (o) { o.ys.forEach(function (v) { if (v < yMin) yMin = v; if (v > yMax) yMax = v; }); });
+    if (opts.zero) { yMin = Math.min(yMin, 0); yMax = Math.max(yMax, 0); }
+    (opts.refs || []).forEach(function (r) { yMin = Math.min(yMin, r.y); yMax = Math.max(yMax, r.y); });
+    var dom = yDomain(yMin, yMax, height < 160 ? 3 : 4);
+    var dec = opts.yDecimals !== undefined ? opts.yDecimals : decimalsOf(dom.step);
+    var tickFmt = opts.tickFmt || function (v) { return v.toFixed(dec); };
+    var tickLabels = dom.ticks.map(tickFmt);
+    var ml = Math.ceil(Math.max.apply(null, tickLabels.map(function (t) { return textWidth(t, 11); }))) + 10;
+    var endLabels = opts.endLabels !== false;
+
+    var sel = { i: -1 };
+    function draw(W) {
+      var mr = endLabels ? 64 : 12, mt = 10, mb = 24;
+      var w = Math.max(60, W - ml - mr), h = height - mt - mb;
+      var X = function (x) { return ml + (x - xMin) / (xMax - xMin) * w; };
+      var Y = function (y) { return mt + (1 - (y - dom.lo) / (dom.hi - dom.lo)) * h; };
+      var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + height, height: height, role: "img", "aria-label": opts.aria || "グラフ", tabindex: "0" });
+      var parts = [];
+      // 横の目盛り線
+      dom.ticks.forEach(function (t, i) {
+        parts.push('<line class="gridline" x1="' + ml + '" x2="' + (ml + w) + '" y1="' + Y(t) + '" y2="' + Y(t) + '"/>');
+        parts.push('<text class="axis-t" x="' + (ml - 6) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + esc(tickLabels[i]) + "</text>");
+      });
+      if (opts.zero && dom.lo < 0 && dom.hi > 0) parts.push('<line class="zero" x1="' + ml + '" x2="' + (ml + w) + '" y1="' + Y(0) + '" y2="' + Y(0) + '"/>');
+      (opts.refs || []).forEach(function (r) {
+        parts.push('<line class="ref" x1="' + ml + '" x2="' + (ml + w) + '" y1="' + Y(r.y) + '" y2="' + Y(r.y) + '"/>');
+        if (r.label) parts.push('<text class="ref-label" x="' + (ml + 4) + '" y="' + (Y(r.y) - 5) + '">' + esc(r.label) + "</text>");
+      });
+      // 横軸
+      parts.push('<line class="axis-base" x1="' + ml + '" x2="' + (ml + w) + '" y1="' + (mt + h) + '" y2="' + (mt + h) + '"/>');
+      if (isCat) {
+        var every = Math.max(1, Math.ceil(opts.cats.length / Math.max(2, Math.floor(w / 46))));
+        opts.cats.forEach(function (c, i) {
+          if (i % every) return;
+          parts.push('<text class="axis-t" x="' + X(i) + '" y="' + (mt + h + 16) + '" text-anchor="middle">' + esc(c) + "</text>");
+        });
+      } else {
+        var tt = timeTicks(xMin, xMax, Math.max(2, Math.floor(w / 70)));
+        tt.ticks.forEach(function (t, i) {
+          var x = X(t);
+          parts.push('<line class="gridline" x1="' + x + '" x2="' + x + '" y1="' + (mt + h) + '" y2="' + (mt + h + 4) + '"/>');
+          parts.push('<text class="axis-t" x="' + x + '" y="' + (mt + h + 16) + '" text-anchor="middle">' + esc(timeTickLabel(t, tt.stepM, i === 0)) + "</text>");
+        });
+      }
+      // 面と線（比較用の過去の線を先に描き、主役の線を上に重ねる）
+      S.slice().sort(function (a, b) { return (b.s.past ? 1 : 0) - (a.s.past ? 1 : 0); }).forEach(function (o) {
+        var d = "", started = false, prevX = null;
+        for (var i = 0; i < o.xs.length; i++) {
+          var gap = prevX !== null && !isCat && o.xs[i] - prevX > o.tol * 6;
+          d += (started && !gap ? "L" : "M") + X(o.xs[i]).toFixed(1) + " " + Y(o.ys[i]).toFixed(1);
+          started = true; prevX = o.xs[i];
+        }
+        if (o.s.area && o.xs.length > 1) {
+          var base = Y(Math.max(dom.lo, Math.min(dom.hi, 0)));
+          var a = "M" + X(o.xs[0]).toFixed(1) + " " + base + d.replace(/^M/, "L").replace(/M/g, "L") + "L" + X(o.xs[o.xs.length - 1]).toFixed(1) + " " + base + "Z";
+          parts.push('<path d="' + a + '" style="fill:' + o.s.color + ';opacity:.1;stroke:none"/>');
+        }
+        parts.push('<path d="' + d + '" fill="none" style="stroke:' + o.s.color + '" stroke-width="' + (o.s.width || 2) + '" stroke-linejoin="round" stroke-linecap="round"' + (o.s.dash ? ' stroke-dasharray="5 4"' : "") + "/>");
+        if (isCat) {
+          for (var k = 0; k < o.xs.length; k++) {
+            parts.push('<circle cx="' + X(o.xs[k]) + '" cy="' + Y(o.ys[k]) + '" r="' + (o.s.past ? 2.5 : 3.5) + '" style="fill:' + o.s.color + ';stroke:var(--surface)" stroke-width="1.5"/>');
+          }
+        }
+      });
+      // 右端の値ラベル（重なるときは出さない）
+      if (endLabels) {
+        var labs = S.filter(function (o) { return !o.s.past && o.xs.length; }).map(function (o) {
+          var v = o.ys[o.ys.length - 1];
+          return { o: o, y: Y(v), y0: Y(v), text: yFmt(v), x: X(o.xs[o.xs.length - 1]) };
+        }).sort(function (a, b) { return a.y - b.y; });
+        for (var j = 1; j < labs.length; j++) if (labs[j].y - labs[j - 1].y < 14) labs[j].y = labs[j - 1].y + 14;
+        var ok = labs.every(function (l) { return Math.abs(l.y - l.y0) < 22; });
+        if (ok) labs.forEach(function (l) {
+          parts.push('<circle cx="' + l.x + '" cy="' + l.y0 + '" r="4" style="fill:' + l.o.s.color + ';stroke:var(--surface)" stroke-width="2"/>');
+          parts.push('<text class="end-label" x="' + (ml + w + 8) + '" y="' + (l.y + 4) + '">' + esc(l.text) + "</text>");
+        });
+      }
+      parts.push('<line class="crosshair" x1="0" x2="0" y1="' + mt + '" y2="' + (mt + h) + '" visibility="hidden"/>');
+      parts.push('<g class="hover-dots"></g>');
+      parts.push('<rect class="hit" x="' + ml + '" y="' + mt + '" width="' + w + '" height="' + h + '" fill="transparent"/>');
+      svg.innerHTML = "<g>" + parts.join("") + "</g>";
+      var old = box.querySelector("svg");
+      if (old) box.replaceChild(svg, old); else box.insertBefore(svg, tip);
+
+      var cross = svg.querySelector(".crosshair");
+      var dots = svg.querySelector(".hover-dots");
+      function show(idx, px) {
+        if (idx < 0 || idx >= allX.length) return hide();
+        sel.i = idx;
+        var x = allX[idx];
+        var cx = X(x);
+        cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible");
+        var html = '<div class="tip-x">' + esc(xFmt(x)) + "</div>";
+        var dh = "";
+        S.forEach(function (o) {
+          var k = nearestIndex(o.xs, x);
+          if (k < 0 || Math.abs(o.xs[k] - x) > o.tol) return;
+          html += '<div class="tip-row"><i style="border-top-color:' + o.s.color + '"></i><b>' + esc(yFmt(o.ys[k])) + "</b><span>" + esc(o.s.name) + "</span></div>";
+          dh += '<circle cx="' + X(o.xs[k]) + '" cy="' + Y(o.ys[k]) + '" r="4" style="fill:' + o.s.color + ';stroke:var(--surface)" stroke-width="2"/>';
+        });
+        dots.innerHTML = dh;
+        tip.innerHTML = html;
+        tip.hidden = false;
+        var tw = tip.offsetWidth, left = (px === undefined ? cx : px) + 14;
+        if (left + tw > W) left = Math.max(0, (px === undefined ? cx : px) - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, mt) + "px";
+      }
+      function hide() { cross.setAttribute("visibility", "hidden"); dots.innerHTML = ""; tip.hidden = true; }
+      function fromEvent(ev) {
+        var r = svg.getBoundingClientRect();
+        var px = (ev.clientX - r.left) * (W / r.width);
+        var xv = xMin + (px - ml) / w * (xMax - xMin);
+        return { idx: nearestIndex(allX, xv), px: px };
+      }
+      svg.addEventListener("pointermove", function (ev) { var f = fromEvent(ev); show(f.idx, f.px); });
+      svg.addEventListener("pointerleave", hide);
+      svg.addEventListener("blur", hide);
+      svg.addEventListener("keydown", function (ev) {
+        var k = ev.key, i = sel.i < 0 ? allX.length - 1 : sel.i;
+        if (k === "ArrowLeft") i = Math.max(0, i - 1);
+        else if (k === "ArrowRight") i = Math.min(allX.length - 1, i + 1);
+        else if (k === "Home") i = 0;
+        else if (k === "End") i = allX.length - 1;
+        else if (k === "Escape") return hide();
+        else return;
+        ev.preventDefault();
+        show(i);
+      });
+    }
+    observe(box, draw);
+
+    // 表で見る（新しい順）
+    if (opts.table !== false) {
+      var maxRows = opts.tableRows || 60;
+      var xsDesc = allX.slice().reverse().slice(0, maxRows);
+      var head = "<tr><th>" + esc(opts.xHeader || (isCat ? "年限" : "日付")) + "</th>" + S.map(function (o) { return '<th class="r">' + esc(o.s.name) + "</th>"; }).join("") + "</tr>";
+      var rows = xsDesc.map(function (x) {
+        return "<tr><td>" + esc(xFmt(x)) + "</td>" + S.map(function (o) {
+          var k = nearestIndex(o.xs, x);
+          var v = k >= 0 && o.xs[k] === x ? yFmt(o.ys[k]) : "—";
+          return '<td class="r">' + esc(v) + "</td>";
+        }).join("") + "</tr>";
+      }).join("");
+      if (isCat) rows = allX.map(function (x) {
+        return "<tr><td>" + esc(xFmt(x)) + "</td>" + S.map(function (o) {
+          var k = o.xs.indexOf(x);
+          return '<td class="r">' + esc(k >= 0 ? yFmt(o.ys[k]) : "—") + "</td>";
+        }).join("") + "</tr>";
+      }).join("");
+      var t = document.createElement("div");
+      t.innerHTML = tableHtml(opts, "<thead>" + head + "</thead><tbody>" + rows + "</tbody>");
+      el.appendChild(t.firstChild);
+    }
+  }
+
+  // ======================= 横棒（プラス・マイナス） =======================
+  function bars(el, opts) {
+    el.classList.add("chart");
+    el.innerHTML = "";
+    var rows = opts.rows || [];
+    if (!rows.length) { el.innerHTML = '<p class="empty">データがありません</p>'; return; }
+    var fmt = opts.fmt || function (v) { return String(v); };
+    var lg = document.createElement("div");
+    lg.className = "legend";
+    lg.innerHTML = '<span><i style="border-top:10px solid var(--pos);width:10px;border-radius:2px"></i>' + esc(opts.posLabel || "プラス") + '</span><span><i style="border-top:10px solid var(--neg);width:10px;border-radius:2px"></i>' + esc(opts.negLabel || "マイナス") + "</span>";
+    el.appendChild(lg);
+    var box = document.createElement("div");
+    el.appendChild(box);
+    var rowH = 32, nameW = opts.nameWidth || 96, pad = 6;
+    var maxAbs = Math.max.apply(null, rows.map(function (r) { return Math.abs(r.value); })) || 1;
+    function draw(W) {
+      var plotL = nameW, plotW = Math.max(80, W - nameW - 8);
+      var half = plotW / 2;
+      var zx = plotL + half;
+      var scale = (half - 52) / maxAbs;
+      var H = rows.length * rowH + pad * 2;
+      var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, height: H, role: "group", "aria-label": opts.aria || "棒グラフ" });
+      var g = [];
+      g.push('<line class="zero" x1="' + zx + '" x2="' + zx + '" y1="' + 2 + '" y2="' + (H - 2) + '"/>');
+      rows.forEach(function (r, i) {
+        var y = pad + i * rowH, cy = y + rowH / 2;
+        var len = Math.max(1, Math.abs(r.value) * scale);
+        var pos = r.value >= 0;
+        var x0 = pos ? zx : zx - len;
+        var rr = Math.min(4, len);
+        // 原点側は角なし・先端だけ丸い棒
+        var d = pos
+          ? "M" + zx + " " + (cy - 8) + "H" + (zx + len - rr) + "Q" + (zx + len) + " " + (cy - 8) + " " + (zx + len) + " " + (cy - 8 + rr) + "V" + (cy + 8 - rr) + "Q" + (zx + len) + " " + (cy + 8) + " " + (zx + len - rr) + " " + (cy + 8) + "H" + zx + "Z"
+          : "M" + zx + " " + (cy - 8) + "H" + (zx - len + rr) + "Q" + (zx - len) + " " + (cy - 8) + " " + (zx - len) + " " + (cy - 8 + rr) + "V" + (cy + 8 - rr) + "Q" + (zx - len) + " " + (cy + 8) + " " + (zx - len + rr) + " " + (cy + 8) + "H" + zx + "Z";
+        var label = fmt(r.value);
+        var lx = pos ? zx + len + 6 : x0 - 6;
+        var selected = opts.selected === r.key;
+        g.push('<g class="bar-row' + (selected ? " is-selected" : "") + '" data-key="' + esc(r.key) + '" tabindex="0" role="button" aria-pressed="' + selected + '" aria-label="' + esc(r.label + " " + (pos ? (opts.posLabel || "") : (opts.negLabel || "")) + " " + label) + '">');
+        g.push('<rect class="bar-hit" x="0" y="' + y + '" width="' + W + '" height="' + rowH + '" rx="6" fill="transparent"/>');
+        g.push('<text class="bar-name" x="8" y="' + (cy + 4) + '">' + esc(r.label) + "</text>");
+        g.push('<path d="' + d + '" style="fill:var(' + (pos ? "--pos" : "--neg") + ')"/>');
+        g.push('<text class="bar-label" x="' + lx + '" y="' + (cy + 4) + '" text-anchor="' + (pos ? "start" : "end") + '">' + esc(label) + "</text>");
+        g.push("</g>");
+      });
+      svg.innerHTML = g.join("");
+      box.innerHTML = "";
+      box.appendChild(svg);
+      if (opts.onSelect) {
+        svg.querySelectorAll(".bar-row").forEach(function (n) {
+          var pick = function () { opts.onSelect(n.getAttribute("data-key")); };
+          n.addEventListener("click", pick);
+          n.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); pick(); } });
+        });
+      }
+    }
+    observe(box, draw);
+    if (opts.table !== false) {
+      var t = document.createElement("div");
+      t.innerHTML = tableHtml(opts, "<thead><tr><th>" + esc(opts.nameHeader || "項目") + '</th><th class="r">' + esc(opts.valueHeader || "値") + "</th></tr></thead><tbody>" +
+        rows.map(function (r) { return "<tr><td>" + esc(r.label) + '</td><td class="r">' + esc(fmt(r.value)) + "</td></tr>"; }).join("") + "</tbody>");
+      el.appendChild(t.firstChild);
+    }
+  }
+
+  // ======================= スパークライン =======================
+  function spark(el, data, opts) {
+    opts = opts || {};
+    el.classList.add("spark");
+    var vals = data.filter(function (p) { return p[1] !== null && isFinite(p[1]); });
+    if (vals.length < 2) { el.innerHTML = ""; return; }
+    observe(el, function (W) {
+      var H = el.clientHeight || 36;
+      var min = Infinity, max = -Infinity;
+      vals.forEach(function (p) { min = Math.min(min, p[1]); max = Math.max(max, p[1]); });
+      if (opts.ref !== undefined) { min = Math.min(min, opts.ref); max = Math.max(max, opts.ref); }
+      if (min === max) { min -= 1; max += 1; }
+      var X = function (i) { return 3 + i / (vals.length - 1) * (W - 8); };
+      var Y = function (v) { return 3 + (1 - (v - min) / (max - min)) * (H - 6); };
+      var d = vals.map(function (p, i) { return (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(p[1]).toFixed(1); }).join("");
+      var color = opts.color || "var(--series-1)";
+      var last = vals[vals.length - 1];
+      var s = '<svg viewBox="0 0 ' + W + " " + H + '" aria-hidden="true">';
+      if (opts.ref !== undefined) s += '<line x1="0" x2="' + W + '" y1="' + Y(opts.ref) + '" y2="' + Y(opts.ref) + '" style="stroke:var(--axis)" stroke-width="1"/>';
+      s += '<path d="' + d + 'L' + X(vals.length - 1).toFixed(1) + " " + H + "L" + X(0) + " " + H + 'Z" style="fill:' + color + ';opacity:.1"/>';
+      s += '<path d="' + d + '" fill="none" style="stroke:' + color + '" stroke-width="1.6" stroke-linejoin="round"/>';
+      s += '<circle cx="' + X(vals.length - 1) + '" cy="' + Y(last[1]) + '" r="3" style="fill:' + color + ';stroke:var(--surface)" stroke-width="1.5"/></svg>';
+      el.innerHTML = s;
+    });
+  }
+
+  window.Charts = { line: line, bars: bars, spark: spark, ymdLabel: ymdLabel };
+})();
+
+</script>
+<script>
+/*
+ * app.js — もちぽよ マーケットポータル 本体
+ * 構成: 小道具 → 時刻計算 → データ読み込み → TradingView → タブ → 各タブの表示 → 起動
+ */
+(function () {
+  "use strict";
+  var CFG = window.PORTAL_CONFIG || {};
+  var DAY = 86400000, HOUR = 3600000, MIN = 60000;
+  var DOW = ["日", "月", "火", "水", "木", "金", "土"];
+
+  // ============================== 小道具 ==============================
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(s) {
+    return String(s === undefined || s === null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+  function safeUrl(u) { return /^https?:\/\//i.test(String(u || "")) ? String(u) : "#"; }
+  function fmtNum(v, d) { return Number(v).toLocaleString("ja-JP", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
+  function signed(v, d, unit) { return (v > 0 ? "+" : v < 0 ? "−" : "±") + fmtNum(Math.abs(v), d) + (unit || ""); }
+  function pct(v, d) { return Number(v).toFixed(d === undefined ? 2 : d) + "%"; }
+
+  // ============================== 時刻 ==============================
+  var fmtCache = {};
+  function partsIn(ms, tz) {
+    var f = fmtCache[tz];
+    if (!f) {
+      f = fmtCache[tz] = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+    var p = {};
+    f.formatToParts(new Date(ms)).forEach(function (x) { p[x.type] = x.value; });
+    return { y: +p.year, m: +p.month, d: +p.day, h: (+p.hour) % 24, mi: +p.minute, s: +p.second };
+  }
+  function tzOffsetMin(ms, tz) {
+    var p = partsIn(ms, tz);
+    return Math.round((Date.UTC(p.y, p.m - 1, p.d, p.h, p.mi, p.s) - Math.floor(ms / 1000) * 1000) / MIN);
+  }
+  function zonedToUtc(dateStr, timeStr, tz) {
+    var a = dateStr.split("-").map(Number), b = (timeStr || "00:00").split(":").map(Number);
+    var guess = Date.UTC(a[0], a[1] - 1, a[2], b[0], b[1]);
+    var o1 = tzOffsetMin(guess, tz);
+    var t = guess - o1 * MIN;
+    var o2 = tzOffsetMin(t, tz);
+    if (o2 !== o1) t = guess - o2 * MIN;
+    return t;
+  }
+  function localDate(ms, tz) { var p = partsIn(ms, tz); return p.y + "-" + pad2(p.m) + "-" + pad2(p.d); }
+  function jstDate(ms) { return new Date(ms + 9 * HOUR).toISOString().slice(0, 10); }
+  function jstTime(ms) { return new Date(ms + 9 * HOUR).toISOString().slice(11, 16); }
+  function dowOf(dateStr) { var a = dateStr.split("-").map(Number); return new Date(Date.UTC(a[0], a[1] - 1, a[2])).getUTCDay(); }
+  function addDays(dateStr, n) { var a = dateStr.split("-").map(Number); return new Date(Date.UTC(a[0], a[1] - 1, a[2]) + n * DAY).toISOString().slice(0, 10); }
+  function jaDate(dateStr) { var a = dateStr.split("-").map(Number); return a[1] + "月" + a[2] + "日（" + DOW[dowOf(dateStr)] + "）"; }
+  function jaMD(dateStr) { var a = dateStr.split("-").map(Number); return a[1] + "/" + a[2] + "（" + DOW[dowOf(dateStr)] + "）"; }
+  function toMs(dateStr) { return Date.parse(dateStr + "T00:00:00Z"); }
+  function jstMidnight(dateStr) { return toMs(dateStr) - 9 * HOUR; }
+  function fmtLeft(ms) {
+    if (ms < MIN) return "まもなく";
+    var m = Math.round(ms / MIN);
+    if (m < 60) return "あと" + m + "分";
+    var hh = Math.floor(m / 60), mm = m % 60;
+    if (hh < 48) return "あと" + hh + "時間" + (mm ? mm + "分" : "");
+    return "あと" + Math.floor(hh / 24) + "日";
+  }
+  function dayWord(dateStr, today) {
+    if (dateStr === today) return "きょう";
+    if (dateStr === addDays(today, 1)) return "あす";
+    if (dateStr === addDays(today, -1)) return "きのう";
+    return jaMD(dateStr);
+  }
+  function jstStamp(iso) {
+    if (!iso) return "";
+    var ms = Date.parse(iso);
+    if (!isFinite(ms)) return "";
+    var d = jstDate(ms).split("-").map(Number);
+    return d[1] + "/" + d[2] + " " + jstTime(ms);
+  }
+
+  // ============================== データ ==============================
+  var cache = {};
+  function loadJson(name, fresh) {
+    if (!fresh && cache[name]) return cache[name];
+    var bust = Math.floor(Date.now() / (10 * MIN));
+    var inline = (window.PORTAL_DATA || {})[name] || null;
+    var p = fetch("data/" + name + "?v=" + bust, { cache: "no-cache" }).then(function (r) {
+      if (!r.ok) throw new Error(name + " " + r.status);
+      return r.json();
+    }).catch(function () { return inline; });
+    cache[name] = p;
+    return p;
+  }
+  var D = {}; // 読み込み済みの共通データ
+
+  // 祝日の表
+  var CAL = { jp: {}, uk: {}, us: {}, ready: false };
+  function buildCalendar() {
+    CAL.jp = {}; CAL.uk = {}; CAL.us = {};
+    ((D.hjp && D.hjp.days) || []).forEach(function (r) { CAL.jp[r[0]] = r[1]; });
+    ((D.hjpx && D.hjpx.days) || []).forEach(function (r) { if (!CAL.jp[r[0]]) CAL.jp[r[0]] = r[1]; });
+    ((D.huk && D.huk.days) || []).forEach(function (r) { CAL.uk[r[0]] = r[1]; });
+    ((D.hus && D.hus.days) || []).forEach(function (r) { CAL.us[r[0]] = { type: r[1], name: r[2], note: r[3] }; });
+    CAL.ready = true;
+  }
+  function isWeekday(dateStr) { var w = dowOf(dateStr); return w !== 0 && w !== 6; }
+  function tokyoBiz(dateStr) { return isWeekday(dateStr) && !CAL.jp[dateStr]; }
+
+  // 五十日（ゴトー日）：5・10・15・20・25日と月末。土日祝なら前の営業日にずれる
+  function gotobi(dateStr) {
+    if (!tokyoBiz(dateStr)) return null;
+    var a = dateStr.split("-").map(Number);
+    var last = new Date(Date.UTC(a[0], a[1], 0)).getUTCDate();
+    var targets = [5, 10, 15, 20, 25, last];
+    for (var i = 0; i < targets.length; i++) {
+      var t = a[0] + "-" + pad2(a[1]) + "-" + pad2(targets[i]);
+      var guard = 0;
+      while (!tokyoBiz(t) && guard++ < 10) t = addDays(t, -1);
+      if (t === dateStr) return targets[i] === last ? "月末の五十日" : "五十日";
+    }
+    return null;
+  }
+
+  // ============================== TradingView ==============================
+  var tvList = [];
+  function theme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function tvMount(el, file, cfgFn, noCredit) {
+    var rec = tvList.filter(function (x) { return x.el === el; })[0];
+    if (!rec) { rec = { el: el }; tvList.push(rec); }
+    rec.file = file; rec.cfgFn = cfgFn; rec.noCredit = noCredit;
+    el.innerHTML = "";
+    if (window.PORTAL_NO_TV) {
+      // 外部スクリプトを読み込めないプレビュー環境では、枠と説明だけを表示する
+      var cfg = cfgFn(theme());
+      var label = TV_NAMES[file] || "ウィジェット";
+      var sym = el.getAttribute("aria-label") || cfg.symbol || "";
+      el.innerHTML = file === "ticker-tape"
+        ? '<div class="tv-placeholder"><span><b>レートのティッカー（公開したサイトで表示）</b></span></div>'
+        : '<div class="tv-placeholder"><span><b>' + esc(label + (sym ? "：" + sym : "")) + "</b>公開したサイトでは、ここにTradingViewのウィジェットが表示されます</span></div>";
+      return;
+    }
+    var wrap = document.createElement("div");
+    wrap.className = "tradingview-widget-container";
+    wrap.style.cssText = "width:100%;height:100%";
+    var inner = document.createElement("div");
+    inner.className = "tradingview-widget-container__widget";
+    inner.style.cssText = "width:100%;height:100%";
+    wrap.appendChild(inner);
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = "https://s3.tradingview.com/external-embedding/embed-widget-" + file + ".js";
+    s.innerHTML = JSON.stringify(cfgFn(theme()));
+    var failed = false;
+    function fail() {
+      if (failed || wrap.querySelector("iframe")) return;
+      failed = true;
+      var f = document.createElement("div");
+      f.className = "tv-fallback";
+      f.textContent = "TradingViewのウィジェットを読み込めませんでした。通信状況や、広告・トラッキングをブロックする機能の設定をご確認ください。";
+      el.appendChild(f);
+    }
+    s.onerror = fail;
+    wrap.appendChild(s);
+    el.appendChild(wrap);
+    setTimeout(fail, 15000);
+    if (!noCredit && (!el.nextElementSibling || !el.nextElementSibling.classList.contains("tv-credit"))) {
+      var c = document.createElement("div");
+      c.className = "tv-credit fine";
+      c.innerHTML = '提供：<a href="https://jp.tradingview.com/" target="_blank" rel="noopener nofollow">TradingView</a>';
+      el.insertAdjacentElement("afterend", c);
+    }
+  }
+  var TV_NAMES = { "ticker-tape": "レートのティッカー", "advanced-chart": "チャート", "mini-symbol-overview": "ミニチャート", "market-overview": "銘柄の一覧", "forex-heat-map": "通貨ヒートマップ", "forex-cross-rates": "クロスレート", events: "経済指標カレンダー", timeline: "為替ニュース" };
+  function tvRemountAll() { tvList.forEach(function (r) { if (r.el.isConnected) tvMount(r.el, r.file, r.cfgFn, r.noCredit); }); }
+  var lazyIO = "IntersectionObserver" in window ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      lazyIO.unobserve(en.target);
+      var fn = en.target.__lazy;
+      en.target.__lazy = null;
+      if (fn) fn();
+    });
+  }, { rootMargin: "300px" }) : null;
+  function whenVisible(el, fn) {
+    if (!lazyIO) return fn();
+    el.__lazy = fn;
+    lazyIO.observe(el);
+  }
+
+  var TV = {
+    overview: function (t) {
+      return { colorTheme: t, dateRange: "1D", showChart: true, locale: "ja", isTransparent: true, width: "100%", height: "100%", showSymbolLogo: false, showFloatingTooltip: true,
+        tabs: [
+          { title: "円クロス", symbols: [{ s: "FX:GBPJPY", d: "ポンド円" }, { s: "FX:USDJPY", d: "ドル円" }, { s: "FX:EURJPY", d: "ユーロ円" }, { s: "FX:AUDJPY", d: "豪ドル円" }] },
+          { title: "ドルストレート", symbols: [{ s: "FX:GBPUSD", d: "ポンドドル" }, { s: "FX:EURUSD", d: "ユーロドル" }, { s: "FX:AUDUSD", d: "豪ドル米ドル" }, { s: "FX:USDCHF", d: "ドルスイスフラン" }] },
+          { title: "金利・ドル指数", symbols: [{ s: "TVC:DXY", d: "ドル指数" }, { s: "TVC:US10Y", d: "米10年債利回り" }, { s: "TVC:JP10Y", d: "日本10年債利回り" }, { s: "OANDA:XAUUSD", d: "金" }] }
+        ] };
+    },
+    heatmap: function (t) { return { width: "100%", height: "100%", currencies: ["EUR", "USD", "JPY", "GBP", "CHF", "AUD", "CAD", "NZD"], isTransparent: true, colorTheme: t, locale: "ja" }; },
+    cross: function (t) { return { width: "100%", height: "100%", currencies: ["EUR", "USD", "JPY", "GBP", "CHF", "AUD", "CAD", "NZD"], isTransparent: true, colorTheme: t, locale: "ja" }; },
+    yields: function (t) {
+      return { colorTheme: t, dateRange: "12M", showChart: true, locale: "ja", isTransparent: true, width: "100%", height: "100%", showSymbolLogo: false,
+        tabs: [{ title: "10年債利回り", symbols: (CFG.yieldSymbols || []).map(function (x) { return { s: x[0], d: x[1] }; }) }] };
+    },
+    calendar: function (t) { return { colorTheme: t, isTransparent: true, width: "100%", height: "100%", locale: "ja", importanceFilter: "0,1", countryFilter: CFG.calendarCountries || "us,jp,gb,eu" }; },
+    news: function (t) { return { feedMode: "market", market: "forex", isTransparent: true, displayMode: "regular", width: "100%", height: "100%", colorTheme: t, locale: "ja" }; }
+  };
+  function mountTvBoxes(root) {
+    $$("[data-tv]", root).forEach(function (el) {
+      if (el.__tvInit) return;
+      el.__tvInit = true;
+      var key = el.getAttribute("data-tv");
+      whenVisible(el, function () { tvMount(el, key === "overview" || key === "yields" ? "market-overview" : key === "heatmap" ? "forex-heat-map" : key === "cross" ? "forex-cross-rates" : key === "calendar" ? "events" : "timeline", TV[key]); });
+    });
+  }
+
+  // ============================== タブ ==============================
+  var TABS = ["home", "chart", "strength", "rates", "macro", "news", "hours"];
+  var inited = {};
+  var INIT = {};
+  function showTab(id, focusPanel) {
+    if (TABS.indexOf(id) < 0) id = "home";
+    TABS.forEach(function (t) {
+      var on = t === id;
+      var b = $("#tab-" + t), p = $("#pane-" + t);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+      b.tabIndex = on ? 0 : -1;
+      p.hidden = !on;
+    });
+    store.set("mp_tab", id);
+    if (!inited[id]) { inited[id] = true; try { INIT[id](); } catch (e) { console.error(e); } }
+    mountTvBoxes($("#pane-" + id));
+    var b = $("#tab-" + id);
+    if (b.scrollIntoView) b.scrollIntoView({ block: "nearest", inline: "nearest" });
+    if (focusPanel) {
+      var el = $('[data-panel="' + focusPanel + '"]');
+      if (el) setTimeout(function () { el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+    } else {
+      var tabs = $(".tabs");
+      if (window.scrollY > tabs.offsetTop) window.scrollTo({ top: tabs.offsetTop });
+    }
+  }
+  function initTabs() {
+    $$('[role="tab"]').forEach(function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-tab");
+        if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+        showTab(id);
+      });
+    });
+    $(".tabs-inner").addEventListener("keydown", function (ev) {
+      var i = TABS.indexOf(store.get("mp_tab", "home"));
+      if (ev.key === "ArrowRight") i = (i + 1) % TABS.length;
+      else if (ev.key === "ArrowLeft") i = (i - 1 + TABS.length) % TABS.length;
+      else return;
+      ev.preventDefault();
+      history.replaceState(null, "", "#" + TABS[i]);
+      showTab(TABS[i]);
+      $("#tab-" + TABS[i]).focus();
+    });
+    var ti = $(".tabs-inner");
+    var edge = function () { ti.classList.toggle("more", ti.scrollWidth - ti.clientWidth - ti.scrollLeft > 8); };
+    ti.addEventListener("scroll", edge, { passive: true });
+    window.addEventListener("resize", edge);
+    setTimeout(edge, 0);
+    window.addEventListener("hashchange", function () {
+      var parts = location.hash.replace("#", "").split("/");
+      if (TABS.indexOf(parts[0]) >= 0) showTab(parts[0], parts[1]);
+    });
+    $$('a[href^="#"]').forEach(function (a) {
+      var id = a.getAttribute("href").slice(1).split("/")[0];
+      if (TABS.indexOf(id) >= 0) a.addEventListener("click", function (ev) { ev.preventDefault(); history.replaceState(null, "", "#" + id); showTab(id); });
+    });
+  }
+
+  // ============================== 相場時計 ==============================
+  var SESSIONS = [
+    { id: "syd", name: "シドニー", tz: "Australia/Sydney", open: "08:00", close: "17:00", cls: "band-syd", hol: null },
+    { id: "tky", name: "東京", tz: "Asia/Tokyo", open: "09:00", close: "15:00", cls: "band-tky", hol: "jp" },
+    { id: "ldn", name: "ロンドン", tz: "Europe/London", open: "08:00", close: "17:00", cls: "band-ldn", hol: "uk" },
+    { id: "ny", name: "NY", tz: "America/New_York", open: "08:00", close: "17:00", cls: "band-ny", hol: "us" }
+  ];
+  function isHoliday(kind, dateStr) {
+    if (kind === "jp") return CAL.jp[dateStr] || null;
+    if (kind === "uk") return CAL.uk[dateStr] || null;
+    if (kind === "us") { var u = CAL.us[dateStr]; return u && u.type !== "early" ? u.name : null; }
+    return null;
+  }
+  function sessionInstances(s, from, to) {
+    var out = [];
+    var d0 = addDays(localDate(from, s.tz), -1), d1 = addDays(localDate(to, s.tz), 1);
+    for (var d = d0; d <= d1; d = addDays(d, 1)) {
+      if (!isWeekday(d)) continue;
+      var a = zonedToUtc(d, s.open, s.tz), b = zonedToUtc(d, s.close, s.tz);
+      if (b <= from || a >= to) continue;
+      out.push({ start: a, end: b, date: d, holiday: isHoliday(s.hol, d) });
+    }
+    return out;
+  }
+  // 為替の週の区切り（一般的な目安：米東部 日曜17時〜金曜17時）
+  function weekClosed(ms) {
+    var p = partsIn(ms, "America/New_York");
+    var w = new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay();
+    var hm = p.h * 60 + p.mi;
+    return (w === 5 && hm >= 17 * 60) || w === 6 || (w === 0 && hm < 17 * 60);
+  }
+  function nextWeekOpen(ms) {
+    var d = localDate(ms, "America/New_York");
+    for (var i = 0; i < 8; i++) {
+      var dd = addDays(d, i);
+      if (dowOf(dd) === 0) { var t = zonedToUtc(dd, "17:00", "America/New_York"); if (t > ms) return t; }
+    }
+    return null;
+  }
+
+  // 指定期間のイベント一覧（定時・市場・中銀・休場・夏時間・CFTC）
+  function collectEvents(from, to) {
+    var ev = [];
+    function add(at, label, kind, sub, short) { if (at >= from && at < to) ev.push({ at: at, label: label, kind: kind, sub: sub || "", short: short || "" }); }
+    // 東京：取引開始・仲値
+    for (var d = addDays(jstDate(from), -1); d <= addDays(jstDate(to), 1); d = addDays(d, 1)) {
+      if (tokyoBiz(d)) {
+        add(zonedToUtc(d, "09:00", "Asia/Tokyo"), "東京市場の取引時間（目安）開始", "session");
+        var g = gotobi(d);
+        add(zonedToUtc(d, "09:55", "Asia/Tokyo"), "東京仲値の公示", "fix", g ? "きょうは" + g + "（仲値に向けたドルの売買が増えやすいと言われる日）" : "", "仲値");
+      }
+    }
+    // ロンドン・NY・シドニー
+    [["Europe/London", "ldn"], ["America/New_York", "ny"], ["Australia/Sydney", "syd"]].forEach(function (z) {
+      for (var d2 = addDays(localDate(from, z[0]), -1); d2 <= addDays(localDate(to, z[0]), 1); d2 = addDays(d2, 1)) {
+        if (!isWeekday(d2)) continue;
+        if (z[1] === "ldn") {
+          var hu = CAL.uk[d2];
+          add(zonedToUtc(d2, "08:00", z[0]), "ロンドン市場の取引時間（目安）開始", "session", hu ? "英国は祝日（" + hu + "）" : "");
+          add(zonedToUtc(d2, "16:00", z[0]), "ロンドン・フィックス（WM/ロイター）", "fix", "ロンドン16時の基準レート算出", "ロンドンFix");
+        } else if (z[1] === "ny") {
+          var huu = CAL.us[d2];
+          add(zonedToUtc(d2, "08:00", z[0]), "NY市場の取引時間（目安）開始", "session", huu ? "米国：" + huu.name + "（" + huu.note + "）" : "");
+          add(zonedToUtc(d2, "10:00", z[0]), "NYカット（通貨オプションの期限）", "fix", "NY時間10時", "NYカット");
+          if (dowOf(d2) === 5) add(zonedToUtc(d2, "17:00", z[0]), "週末クローズ（目安）", "week", "NY時間 金曜17時。取引終了時刻は取引会社によって異なります", "週末");
+          else add(zonedToUtc(d2, "17:00", z[0]), "NYクローズ（日付の変わり目）", "fix", "NY時間17時。スワップポイントが付く区切り", "NYクローズ");
+        } else if (dowOf(d2) === 1) {
+          add(zonedToUtc(d2, "08:00", z[0]), "シドニー市場の取引時間（目安）開始", "session");
+        }
+      }
+    });
+    // 週明け（日曜17時 NY）
+    for (var d3 = addDays(localDate(from, "America/New_York"), -1); d3 <= addDays(localDate(to, "America/New_York"), 1); d3 = addDays(d3, 1)) {
+      if (dowOf(d3) === 0) add(zonedToUtc(d3, "17:00", "America/New_York"), "週明けの取引開始（目安）", "week", "NY時間 日曜17時。開始時刻は取引会社によって異なります", "週明け");
+    }
+    // 中央銀行
+    ((D.cb && D.cb.banks) || []).forEach(function (b) {
+      b.meetings.forEach(function (m) {
+        var at = zonedToUtc(m.date, b.time || "12:00", b.tz);
+        add(at, b.short + "・" + b.meeting + "（" + (b.time ? b.timeLabel : "結果公表") + "）", "cb", (b.time ? "" : "公表時刻は事前に決まっていません。") + (m.tag || ""), b.short);
+      });
+    });
+    // CFTC（公表日の一覧があればそれを使い、なければ金曜）
+    var cftcDates = (D.cftc && D.cftc.dates) || [];
+    for (var d4 = addDays(localDate(from, "America/New_York"), -1); d4 <= addDays(localDate(to, "America/New_York"), 1); d4 = addDays(d4, 1)) {
+      var listed = cftcDates.indexOf(d4) >= 0;
+      var useDefault = !cftcDates.length || d4 > cftcDates[cftcDates.length - 1];
+      var usHol = CAL.us[d4] && CAL.us[d4].type !== "early";
+      if (listed) add(zonedToUtc(d4, "15:30", "America/New_York"), "CFTC 建玉明細（投機筋ポジション）の公表", "cftc", "火曜時点のポジション");
+      else if (useDefault && dowOf(d4) === 5 && !usHol) add(zonedToUtc(d4, "15:30", "America/New_York"), "CFTC 建玉明細の公表（通常は金曜）", "cftc", "公表日の一覧が未登録のため目安です。祝日の週はずれます");
+    }
+    // 夏時間の切り替え
+    dstChanges(from, to).forEach(function (c) { add(c.at, c.label, "dst", c.note); });
+    // 休場（その日の0時に置く）
+    for (var d5 = jstDate(from); d5 <= jstDate(to); d5 = addDays(d5, 1)) {
+      var at0 = jstMidnight(d5);
+      if (CAL.jp[d5]) ev.push({ at: Math.max(at0, from), allDay: true, date: d5, label: "日本：" + CAL.jp[d5], kind: "hol", sub: "東京市場は休み" });
+      if (CAL.uk[d5]) ev.push({ at: Math.max(at0, from), allDay: true, date: d5, label: "英国：" + CAL.uk[d5], kind: "hol", sub: "ロンドン市場は休み（英国の現地日付）" });
+      var u = CAL.us[d5];
+      if (u) ev.push({ at: Math.max(at0, from), allDay: true, date: d5, label: "米国：" + u.name, kind: "hol", sub: u.note + "（米国の現地日付）" });
+    }
+    ev.sort(function (a, b) { return a.at - b.at || (a.allDay ? -1 : 1); });
+    return ev;
+  }
+
+  var DST_ZONES = [
+    { tz: "America/New_York", name: "米国", effect: "NY市場と米国の経済指標の時刻" },
+    { tz: "Europe/London", name: "英国", effect: "ロンドン市場と英国の経済指標の時刻" },
+    { tz: "Europe/Berlin", name: "欧州（ユーロ圏）", effect: "欧州の市場とECBの発表の時刻" },
+    { tz: "Australia/Sydney", name: "豪州（シドニー）", effect: "シドニー市場とRBAの発表の時刻" },
+    { tz: "Pacific/Auckland", name: "ニュージーランド", effect: "NZの市場とRBNZの発表の時刻" }
+  ];
+  var dstMemo = {};
+  function dstChanges(from, to) {
+    var key = Math.floor(from / HOUR) + ":" + Math.floor(to / HOUR);
+    if (dstMemo[key]) return dstMemo[key];
+    var out = dstMemo[key] = [];
+    DST_ZONES.forEach(function (z) {
+      var t0 = Math.floor((from - DAY) / HOUR) * HOUR; // 切り替えは毎正時（UTC）に起きるので、時刻を正時にそろえて探す
+      var prev = tzOffsetMin(t0, z.tz);
+      for (var t = t0 + HOUR * 6; t <= to + DAY; t += HOUR * 6) {
+        var off = tzOffsetMin(t, z.tz);
+        if (off !== prev) {
+          // 切り替わった瞬間を1時間単位で探す
+          var lo = t - HOUR * 6, hi = t;
+          while (hi - lo > HOUR) { var mid = lo + Math.floor((hi - lo) / 2 / HOUR) * HOUR; if (mid === lo) mid = lo + HOUR; if (tzOffsetMin(mid, z.tz) === prev) lo = mid; else hi = mid; }
+          var on = off > prev;
+          if (hi >= from && hi < to) out.push({
+            at: hi, zone: z, on: on, date: localDate(hi, z.tz),
+            label: z.name + "が" + (on ? "夏時間に切り替え" : "冬時間（標準時間）に戻る"),
+            note: z.effect + "が、日本時間で1時間" + (on ? "早く" : "遅く") + "なります"
+          });
+          prev = off;
+        }
+      }
+    });
+    out.sort(function (a, b) { return a.at - b.at; });
+    return out;
+  }
+
+  function renderHero() {
+    if (!CAL.ready) return;
+    var now = Date.now();
+    var today = jstDate(now);
+    var closed = weekClosed(now);
+    // 週末は、週明けの月曜の時間割を表示する
+    var startDay = closed ? jstDate(nextWeekOpen(now)) : (jstTime(now) < "06:00" ? addDays(today, -1) : today);
+    var from = jstMidnight(startDay) + 6 * HOUR, to = from + DAY;
+    var P = function (t) { return Math.max(0, Math.min(100, (t - from) / DAY * 100)); };
+    var html = [];
+    // 時刻の目盛り
+    html.push('<div class="sb-row"><div></div><div class="sb-ticks">');
+    for (var k = 0; k <= 8; k++) {
+      var hr = (6 + k * 3) % 24;
+      var lab = hr === 0 ? "24" : String(hr);
+      html.push('<span class="sb-tick' + (k % 2 ? " minor" : "") + '" style="left:' + (k * 12.5) + '%">' + lab + "</span>");
+    }
+    html.push("</div></div>");
+    var openNow = [];
+    SESSIONS.forEach(function (s) {
+      var inst = sessionInstances(s, from, to);
+      var bands = inst.map(function (x) {
+        var l = P(x.start), r = P(x.end);
+        if (x.start <= now && now < x.end && !weekClosed(now)) openNow.push(s.name + (x.holiday ? "（祝日）" : ""));
+        var title = s.name + " " + jstTime(x.start) + "〜" + jstTime(x.end) + (x.holiday ? "（" + x.holiday + "）" : "");
+        return '<div class="sb-band ' + s.cls + (x.holiday ? " is-holiday" : "") + '" style="left:' + l + "%;width:" + Math.max(0.5, r - l) + '%" title="' + esc(title) + '">' + (x.holiday ? '<span class="sb-hol">休</span>' : "") + "</div>";
+      }).join("");
+      html.push('<div class="sb-row"><div class="sb-label"><b>' + s.name + "</b></div><div class=\"sb-track\">" + bands + "</div></div>");
+    });
+    // 予定のピン（定時の目印・中銀・週の区切り）
+    var pins = collectEvents(from, to).filter(function (e) { return e.short && !e.allDay; });
+    html.push('<div class="sb-row"><div class="sb-label">予定</div><div class="sb-events" id="sbEvents">');
+    var lastX = [-100, -100];
+    var boardW = ($("#sessionBoard").clientWidth || 600) - 74;
+    pins.forEach(function (e) {
+      var x = P(e.at), px = x / 100 * boardW;
+      var w = e.short.length * 12 + 34;
+      var row = px - lastX[0] >= w ? 0 : px - lastX[1] >= w ? 1 : -1;
+      if (row < 0) return;
+      lastX[row] = px;
+      var edge = px < w / 2 ? " at-start" : px > boardW - w / 2 ? " at-end" : "";
+      html.push('<div class="sb-ev' + (e.kind === "cb" ? " is-cb" : "") + (row ? " row2" : "") + edge + '" style="left:' + x + '%" title="' + esc(jstTime(e.at) + " " + e.label) + '"><span>' + esc(jstTime(e.at) + " " + e.short) + "</span></div>");
+    });
+    html.push("</div></div>");
+    // いまの線（ラベル列のぶんずらす）
+    if (now >= from && now < to) html.push('<div class="sb-now" style="left:calc(74px + (100% - 74px) * ' + (P(now) / 100).toFixed(4) + ')"></div>');
+    // 3時間ごとの縦線
+    for (var g = 1; g < 8; g++) html.push('<div class="sb-gridline" style="left:calc(74px + (100% - 74px) * ' + (g * 0.125) + ')"></div>');
+    var board = $("#sessionBoard");
+    board.innerHTML = html.join("");
+    if (window.matchMedia("(max-width: 640px)").matches) {
+      $$(".sb-now, .sb-gridline", board).forEach(function (n) { n.style.left = n.style.left.replace(/74px/g, "52px"); });
+    }
+
+    // 状況の文
+    var status;
+    if (closed) {
+      var wo = nextWeekOpen(now);
+      status = "週末のため為替市場はお休み中です。週明けの取引開始（目安）まで <b>" + fmtLeft(wo - now) + "</b>（" + jaMD(jstDate(wo)) + " " + jstTime(wo) + "）。下は週明けの時間割です";
+    } else {
+      var next = null;
+      SESSIONS.forEach(function (s) {
+        sessionInstances(s, now, now + DAY).forEach(function (x) { if (x.start > now && (!next || x.start < next.at)) next = { at: x.start, name: s.name }; });
+      });
+      status = "いま開いている市場：<b>" + esc(openNow.length ? openNow.join("・") : "主要市場の時間外（取引は可能）") + "</b>";
+      if (next) status += "　" + esc(next.name) + "の開始まで " + fmtLeft(next.at - now);
+    }
+    $("#heroStatus").innerHTML = status;
+    renderChips(now, today);
+  }
+
+  function renderChips(now, today) {
+    var chips = [];
+    var g = gotobi(today);
+    if (g) chips.push({ t: "きょうは" + g + "（ゴトー日）", key: true });
+    [today, addDays(today, 1)].forEach(function (d) {
+      var w = d === today ? "きょう" : "あす";
+      if (CAL.jp[d]) chips.push({ t: w + " 日本は祝日（" + CAL.jp[d] + "）" });
+      if (CAL.uk[d]) chips.push({ t: w + " 英国は祝日（" + CAL.uk[d] + "）" });
+      if (CAL.us[d]) chips.push({ t: w + " 米国：" + CAL.us[d].name + "（" + CAL.us[d].note + "）" });
+    });
+    ((D.cb && D.cb.banks) || []).forEach(function (b) {
+      b.meetings.forEach(function (m) {
+        var at = zonedToUtc(m.date, b.time || "12:00", b.tz);
+        var jd = jstDate(at);
+        if (jd === today || jd === addDays(today, 1)) chips.push({ t: (jd === today ? "きょう" : "あす") + " " + b.short + "の政策発表" + (b.time ? "（" + jstTime(at) + "）" : "（時刻未定）"), key: jd === today });
+      });
+    });
+    dstChanges(now, now + 10 * DAY).forEach(function (c) { chips.push({ t: jaMD(c.date) + " " + c.label }); });
+    var nyOff = tzOffsetMin(now, "America/New_York");
+    var t830 = zonedToUtc(localDate(now, "America/New_York"), "08:30", "America/New_York");
+    chips.push({ t: "米国は" + (nyOff === -240 ? "夏時間" : "冬時間") + "：米東部8:30発表の指標は日本時間" + jstTime(t830) });
+    $("#heroChips").innerHTML = chips.map(function (c) { return '<span class="chip' + (c.key ? " is-key" : "") + '">' + esc(c.t) + "</span>"; }).join("");
+  }
+
+  var KIND_TAG = { session: ["市場", ""], fix: ["定時", ""], cb: ["中銀", "cb"], hol: ["休場", "hol"], dst: ["時間変更", "hol"], cftc: ["CFTC", ""], week: ["週", ""] };
+  function renderUpcoming() {
+    if (!CAL.ready) return;
+    var now = Date.now(), today = jstDate(now);
+    var ev = collectEvents(now - 5 * MIN, now + 36 * HOUR).filter(function (e) { return e.allDay ? e.date >= today : true; });
+    var seen = {};
+    ev = ev.filter(function (e) { var k = e.label + e.at; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 14);
+    var list = $("#upcomingList");
+    if (!ev.length) { list.innerHTML = '<li><span></span><span class="empty">36時間以内の予定はありません</span><span></span></li>'; return; }
+    list.innerHTML = ev.map(function (e) {
+      var d = e.allDay ? e.date : jstDate(e.at);
+      var tag = KIND_TAG[e.kind] || ["", ""];
+      return "<li><span class=\"tl-time\">" + (e.allDay ? "終日" : jstTime(e.at)) + '<span class="tl-day">' + esc(dayWord(d, today)) + "</span></span>" +
+        '<span class="tl-label"><span class="tag ' + tag[1] + '">' + tag[0] + "</span>" + esc(e.label) + (e.sub ? "<small>" + esc(e.sub) + "</small>" : "") + "</span>" +
+        '<span class="tl-left">' + (e.allDay ? "" : esc(fmtLeft(Math.max(0, e.at - now)))) + "</span></li>";
+    }).join("");
+  }
+
+  // ============================== AIまとめ ==============================
+  function srcLinks(list) {
+    if (!list || !list.length) return "";
+    return '<div class="src">出典：' + list.map(function (s) { return '<a href="' + esc(safeUrl(s.url)) + '" target="_blank" rel="noopener nofollow">' + esc(s.title || s.url) + "</a>"; }).join("、") + "</div>";
+  }
+  function briefStamp(b) { return b && b.generated_at ? jstStamp(b.generated_at) + " 作成" : ""; }
+  function staleNote(b) {
+    if (!b || !b.date) return "";
+    var age = (toMs(jstDate(Date.now())) - toMs(b.date)) / DAY;
+    return age >= 2 ? '<p class="warn-note">' + esc(jaMD(b.date)) + "のまとめです（最新ではありません）</p>" : "";
+  }
+  function renderBriefHome(daily, weekly) {
+    var box = $("#briefHome");
+    var b = weekly && weekly.headline && (!daily || !daily.date || weekly.date > daily.date) ? weekly : daily;
+    $("#briefHomeTitle").textContent = b && b.mode === "weekly" ? "AI週末まとめ" : "AI朝のまとめ";
+    if (!b || !b.headline) {
+      box.innerHTML = '<p class="empty">まだ作成されていません。設定が済むと、平日の朝6時半ごろに自動で作成されます。</p>';
+      return;
+    }
+    if (b.mode === "weekly") b = Object.assign({}, b, { watch: b.next_week });
+    $("#briefHomeMeta").textContent = briefStamp(b);
+    var h = staleNote(b) + '<p class="brief-headline">' + esc(b.headline) + "</p>";
+    h += '<ul class="brief-points">' + (b.summary || []).map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul>";
+    if (b.watch && b.watch.length) {
+      h += '<div class="brief-box"><h3>' + (b.mode === "weekly" ? "来週の注目予定" : "きょうの注目予定") + '（AIが調べたもの・日本時間）</h3><ul class="watch-list">' + b.watch.slice(0, 4).map(function (w) {
+        return '<li><span class="watch-when">' + esc(w.when) + "</span><span>" + esc(w.label) + (w.note ? '<span class="watch-note">' + esc(w.note) + "</span>" : "") + "</span></li>";
+      }).join("") + "</ul></div>";
+    }
+    if (b.gbpjpy) h += '<div class="brief-box"><h3>ポンド円の材料</h3><p>' + esc(b.gbpjpy.text) + "</p>" + srcLinks(b.gbpjpy.sources) + "</div>";
+    h += '<p class="brief-more"><a href="#news">全文と出典を見る</a></p>';
+    h += '<p class="fine">AIが公開情報を検索して自動で作成したまとめです。誤りを含む可能性があります。</p>';
+    box.innerHTML = h;
+    $$('a[href="#news"]', box).forEach(function (a) { a.addEventListener("click", function (ev) { ev.preventDefault(); history.replaceState(null, "", "#news"); showTab("news"); }); });
+  }
+  function renderBriefFull(box, b) {
+    if (!b || !b.headline) { box.innerHTML = '<p class="empty">まだ作成されていません。</p>'; return; }
+    var h = '<p class="meta">' + esc(jaDate(b.date)) + "　" + esc(briefStamp(b)) + (b.searches ? "　Web検索 " + b.searches + "回" : "") + "</p>";
+    h += staleNote(b) + '<p class="brief-headline">' + esc(b.headline) + "</p>";
+    h += '<ul class="brief-points">' + (b.summary || []).map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul>";
+    if (b.gbpjpy) h += '<div class="brief-box"><h3>ポンド円の材料</h3><p>' + esc(b.gbpjpy.text) + "</p>" + srcLinks(b.gbpjpy.sources) + "</div>";
+    var watch = b.mode === "weekly" ? b.next_week : b.watch;
+    if (watch && watch.length) {
+      h += '<div class="brief-box"><h3>' + (b.mode === "weekly" ? "来週の注目予定" : "きょうの注目予定") + "（AIが調べたもの・日本時間。発表元でもご確認ください）</h3><ul class=\"watch-list\">" + watch.map(function (w) {
+        return '<li><span class="watch-when">' + esc(w.when) + "</span><span>" + esc(w.label) + (w.note ? '<span class="watch-note">' + esc(w.note) + "</span>" : "") + srcLinks(w.sources) + "</span></li>";
+      }).join("") + "</ul></div>";
+    }
+    var sections = b.mode === "weekly" ? [{ title: "先週の主な出来事", items: b.review || [] }] : (b.sections || []);
+    sections.forEach(function (s) {
+      if (!s.items || !s.items.length) return;
+      h += '<section class="brief-section"><h3>' + esc(s.title) + "</h3>" + s.items.map(function (it) {
+        return '<div class="brief-item"><h4>' + esc(it.title) + "</h4><p>" + esc(it.body) + "</p>" + srcLinks(it.sources) + "</div>";
+      }).join("") + "</section>";
+    });
+    if (b.caution) h += '<p class="warn-note">' + esc(b.caution) + "</p>";
+    h += '<p class="notice-ai">' + esc(b.notice || "AIが自動で作成したまとめです。誤りを含む可能性があります。") + "</p>";
+    box.innerHTML = h;
+  }
+
+  // ============================== 政策金利 ==============================
+  function decisionAt(b, m) { return zonedToUtc(m.date, b.time || "12:00", b.tz); }
+  function resolvePolicy(now) {
+    var cb = D.cb, bis = D.bis, us = D.usRates;
+    if (!cb) return [];
+    return cb.banks.map(function (b) {
+      var cur = b.current;
+      var r = { b: b, display: cur.display, value: cur.value, action: cur.lastAction, actionDate: cur.decided, actionKind: "決定", src: "公式発表", srcUrl: cur.source, pending: null, heldAt: null };
+      var changes = null, autoDate = null, srcName = "", srcUrl = "";
+      if (b.id === "fed" && us && us.fed && us.fed.upperHistory) {
+        changes = us.fed.upperHistory.map(function (c, i) { var l = us.fed.lowerHistory[Math.min(i, us.fed.lowerHistory.length - 1)]; return [c[0], c[1], l ? l[1] : c[1] - 0.25]; });
+        autoDate = us.fed.date; srcName = "FRED（FRB）"; srcUrl = "https://fred.stlouisfed.org/series/DFEDTARU";
+      } else if (bis && bis.areas && bis.areas[b.bis]) {
+        changes = bis.areas[b.bis].changes; autoDate = bis.areas[b.bis].last[0]; srcName = "BIS"; srcUrl = "https://data.bis.org/topics/CBPOL";
+      }
+      if (changes && changes.length >= 2) {
+        var lc = changes[changes.length - 1], prevC = changes[changes.length - 2];
+        var autoVal = b.id === "fed" ? (lc[1] + lc[2]) / 2 : lc[1];
+        if (lc[0] > (cur.effective || cur.decided) && Math.abs(autoVal - cur.value) > 1e-9) {
+          r.value = autoVal;
+          r.display = b.id === "fed" ? lc[2].toFixed(2) + "〜" + lc[1].toFixed(2) + "%" : lc[1].toFixed(2) + "%";
+          r.action = lc[1] > prevC[1] ? "利上げ" : "利下げ";
+          r.actionDate = lc[0]; r.actionKind = "実施"; r.src = srcName; r.srcUrl = srcUrl;
+        }
+      }
+      var lag = b.id === "fed" ? 1 : 7;
+      var passed = b.meetings.filter(function (m) { return m.date > cur.decided && decisionAt(b, m) <= now; });
+      var lastM = passed[passed.length - 1];
+      if (lastM) {
+        var covered = autoDate && autoDate >= addDays(lastM.date, lag);
+        if (r.actionDate >= lastM.date) { /* 自動データで変更を確認済み */ }
+        else if (covered) r.heldAt = lastM.date;
+        else r.pending = lastM;
+      }
+      r.next = b.meetings.filter(function (m) { return decisionAt(b, m) > now - 2 * HOUR; })[0] || null;
+      if (r.next) r.nextAt = decisionAt(b, r.next);
+      return r;
+    });
+  }
+  // 次回の発表を「日時」と「あと何日」に分けて返す（HTML）
+  function nextHtml(r, now) {
+    if (!r.next) return "未定（公式サイトでご確認ください）";
+    var d = jstDate(r.nextAt), today = jstDate(now);
+    var t = (r.b.time ? jstTime(r.nextAt) : "時刻未定");
+    var left = r.nextAt > now ? fmtLeft(r.nextAt - now) : "発表済みの可能性";
+    return '<span class="nw">' + esc(dayWord(d, today) + " " + t) + '</span> <span class="nw left">' + esc(left) + "</span>";
+  }
+  function renderPolicyMini() {
+    var now = Date.now();
+    var rows = resolvePolicy(now);
+    if (!rows.length) { $("#policyMini").innerHTML = '<p class="empty">データを読み込めませんでした。</p>'; return; }
+    rows.sort(function (a, b) { return (a.nextAt || 9e15) - (b.nextAt || 9e15); });
+    $("#policyMini").innerHTML = '<ul class="policy-mini">' + rows.map(function (r) {
+      return '<li><span class="pm-bank">' + esc(r.b.short) + '</span><span class="pm-rate">' + esc(r.display) + '</span><span class="pm-next">' + nextHtml(r, now) + (r.pending ? '<br><span class="warn-note">' + esc(jaMD(r.pending.date)) + "の結果は未反映</span>" : "") + "</span></li>";
+    }).join("") + "</ul>";
+  }
+  function renderPolicyTable() {
+    var now = Date.now();
+    var rows = resolvePolicy(now);
+    if (!rows.length) { $("#policyTable").innerHTML = '<p class="empty">データを読み込めませんでした。</p>'; return; }
+    $("#policyMeta").textContent = "会合日程・公式発表の確認日 " + (D.cb.checked || "");
+    var h = '<table class="tbl tbl-stack"><thead><tr><th>中央銀行</th><th>政策金利</th><th>直近の動き</th><th>次回の発表（日本時間）</th></tr></thead><tbody>';
+    rows.forEach(function (r) {
+      var act = r.heldAt
+        ? jaMD(r.heldAt) + "の会合後も変更なし（" + r.src + "で確認）"
+        : jaMD(r.actionDate) + " " + r.action + (r.actionKind === "実施" ? "（実施日）" : "");
+      h += "<tr><td><b>" + esc(r.b.short) + '</b><span class="note">' + esc(r.b.name) + "</span></td>" +
+        '<td><span class="big">' + esc(r.display) + '</span><span class="note">' + esc(r.b.rateName) + "</span></td>" +
+        '<td data-label="直近の動き">' + esc(act) + '<span class="note">出典：<a href="' + esc(safeUrl(r.srcUrl)) + '" target="_blank" rel="noopener">' + esc(r.src) + "</a></span>" +
+        (r.pending ? '<span class="warn-note">' + esc(jaMD(r.pending.date)) + 'の会合結果はまだ反映されていません。<a href="' + esc(safeUrl(r.b.url)) + '" target="_blank" rel="noopener">公式サイト</a>でご確認ください</span>' : "") + "</td>" +
+        '<td data-label="次回の発表（日本時間）">' + nextHtml(r, now) + (r.next && r.next.tag ? '<span class="note">' + esc(r.next.tag) + "</span>" : "") + "</td></tr>";
+    });
+    h += "</tbody></table>";
+    $("#policyTable").innerHTML = h;
+    $("#policyNote").innerHTML = "政策金利は各中央銀行の公式発表で確認した値です。会合後の変更は、FRB分はFREDから翌営業日ごろ、その他はBISの統計（週1回更新）から自動で反映されます。会合の直後は反映まで1〜2週間かかることがあります。";
+  }
+  function renderCbCalendar() {
+    var cb = D.cb;
+    if (!cb) return;
+    var now = Date.now(), today = jstDate(now);
+    var start = today.slice(0, 8) + "01";
+    var months = [0, 1, 2].map(function (i) { var a = start.split("-").map(Number); var d = new Date(Date.UTC(a[0], a[1] - 1 + i, 1)); return d.toISOString().slice(0, 7); });
+    var items = [];
+    cb.banks.forEach(function (b) { b.meetings.forEach(function (m) { var at = decisionAt(b, m); items.push({ at: at, b: b, m: m, jd: jstDate(at) }); }); });
+    items.sort(function (x, y) { return x.at - y.at; });
+    $("#cbCalendar").innerHTML = months.map(function (ym) {
+      var list = items.filter(function (x) { return x.jd.slice(0, 7) === ym; });
+      var a = ym.split("-").map(Number);
+      return '<div class="cb-month"><h3>' + a[0] + "年" + a[1] + "月</h3><ul>" + (list.length ? list.map(function (x) {
+        return '<li class="' + (x.at < now ? "is-past" : "") + '"><span class="when">' + esc(jaMD(x.jd)) + '<span class="cb-time">' + (x.b.time ? jstTime(x.at) : "時刻未定") + "</span></span><span><b>" + esc(x.b.short) + "</b> " + esc(x.b.meeting) + (x.m.tag ? '<span class="note">' + esc(x.m.tag) + "</span>" : "") + "</span></li>";
+      }).join("") : '<li><span></span><span class="empty">予定はありません</span></li>') + "</ul></div>";
+    }).join("");
+  }
+
+  // ============================== 金利差・利回り曲線 ==============================
+  function lastN(arr, days) {
+    if (!arr || !arr.length) return [];
+    var cut = addDays(arr[arr.length - 1][0], -days);
+    return arr.filter(function (p) { return p[0] >= cut; });
+  }
+  function jgbSeries(tenor) {
+    var j = D.jgb;
+    if (!j) return [];
+    var i = j.tenors.indexOf(tenor);
+    return j.rows.map(function (r) { return [r[0], r[1][i]]; }).filter(function (p) { return p[1] !== null; });
+  }
+  function toPts(arr) { return arr.map(function (p) { return [toMs(p[0]), p[1]]; }); }
+  function renderSpread(tenor) {
+    var us = D.usRates, j = D.jgb, fx = D.fx;
+    var id = tenor === "2Y" ? "DGS2" : "DGS10";
+    var label = tenor === "2Y" ? "2年" : "10年";
+    $("#spreadT1").textContent = "米国と日本の国債利回り（" + label + "）";
+    $("#spreadT2").textContent = "金利差（米国 − 日本、" + label + "）";
+    if (!us || !j) {
+      $("#chartYields").innerHTML = '<p class="empty">データの初回取得前です。GitHub Actionsでデータを取得すると表示されます。</p>';
+      $("#chartSpread").innerHTML = ""; $("#chartUsdJpy").innerHTML = "";
+      return;
+    }
+    var usS = lastN(us.series[id], 730), jpS = lastN(jgbSeries(tenor), 730);
+    var jpMap = {}; jpS.forEach(function (p) { jpMap[p[0]] = p[1]; });
+    var spread = usS.filter(function (p) { return jpMap[p[0]] !== undefined; }).map(function (p) { return [p[0], Math.round((p[1] - jpMap[p[0]]) * 1000) / 1000]; });
+    var pf = function (v) { return v.toFixed(2) + "%"; };
+    $("#spreadMeta").textContent = "米国 " + (usS.length ? usS[usS.length - 1][0] : "—") + "／日本 " + (jpS.length ? jpS[jpS.length - 1][0] : "—") + " 時点";
+    Charts.line($("#chartYields"), { series: [{ name: "米国" + label, color: "var(--series-1)", data: toPts(usS) }, { name: "日本" + label, color: "var(--series-2)", data: toPts(jpS) }], yFmt: pf, height: 230, aria: "米国と日本の" + label + "国債利回りの推移" });
+    Charts.line($("#chartSpread"), { series: [{ name: "金利差", color: "var(--series-1)", data: toPts(spread), area: true }], yFmt: function (v) { return v.toFixed(2) + "%pt"; }, height: 170, zero: true, aria: "日米の金利差の推移" });
+    if (fx && fx.usdjpy) {
+      var first = usS.length ? usS[0][0] : "0000";
+      var fxS = fx.usdjpy.filter(function (p) { return p[0] >= first; });
+      Charts.line($("#chartUsdJpy"), { series: [{ name: "ドル円", color: "var(--series-1)", data: toPts(fxS) }], yFmt: function (v) { return v.toFixed(2) + "円"; }, height: 170, aria: "ドル円の推移（NY正午の参考レート）" });
+    } else $("#chartUsdJpy").innerHTML = '<p class="empty">データがありません</p>';
+  }
+  // 基準日と同じ年なら「10/2」、違う年なら「2025/10/2」
+  function shortDate(d, base) {
+    var a = d.split("-").map(Number);
+    return (d.slice(0, 4) === base.slice(0, 4) ? "" : a[0] + "/") + a[1] + "/" + a[2];
+  }
+  function valueAt(arr, dateStr) {
+    for (var i = arr.length - 1; i >= 0; i--) if (arr[i][0] <= dateStr && arr[i][1] !== null) return arr[i];
+    return null;
+  }
+  function renderCurves() {
+    var us = D.usRates, j = D.jgb;
+    var pf = function (v) { return v.toFixed(2) + "%"; };
+    if (us) {
+      var ten = us.tenors;
+      var latest = us.series.DGS10[us.series.DGS10.length - 1][0];
+      var snaps = [["最新", latest, "var(--series-1)", false], ["1カ月前", addDays(latest, -30), "var(--series-past)", true], ["1年前", addDays(latest, -365), "var(--series-past-2)", true]];
+      var series = snaps.map(function (s) {
+        var data = ten.map(function (t, i) { var v = valueAt(us.series[t.id], s[1]); return [i, v ? v[1] : null]; });
+        var found = valueAt(us.series.DGS10, s[1]);
+        return { name: s[0] + "（" + (found ? shortDate(found[0], latest) : "—") + "）", color: s[2], data: data, past: s[3], width: s[3] ? 1.6 : 2.4 };
+      });
+      $("#curveUsMeta").textContent = latest + " 時点";
+      Charts.line($("#curveUs"), { series: series, xType: "cat", cats: ten.map(function (t) { return t.label; }), yFmt: pf, height: 230, endLabels: false, aria: "米国債の利回り曲線" });
+    } else $("#curveUs").innerHTML = '<p class="empty">データの初回取得前です。</p>';
+    if (j) {
+      var pick = ["1Y", "2Y", "3Y", "5Y", "7Y", "10Y", "15Y", "20Y", "30Y", "40Y"];
+      var idx = pick.map(function (t) { return j.tenors.indexOf(t); });
+      var lastD = j.rows[j.rows.length - 1][0];
+      var rowAt = function (d) { for (var i = j.rows.length - 1; i >= 0; i--) if (j.rows[i][0] <= d) return j.rows[i]; return null; };
+      var snaps2 = [["最新", lastD, "var(--series-1)", false], ["1カ月前", addDays(lastD, -30), "var(--series-past)", true], ["1年前", addDays(lastD, -365), "var(--series-past-2)", true]];
+      var series2 = snaps2.map(function (s) {
+        var row = rowAt(s[1]);
+        return { name: s[0] + "（" + (row ? shortDate(row[0], lastD) : "—") + "）", color: s[2], past: s[3], width: s[3] ? 1.6 : 2.4, data: idx.map(function (k, i) { return [i, row ? row[1][k] : null]; }) };
+      });
+      $("#curveJpMeta").textContent = lastD + " 時点";
+      Charts.line($("#curveJp"), { series: series2, xType: "cat", cats: pick.map(function (t) { return t.replace("Y", "年"); }), yFmt: pf, height: 230, endLabels: false, aria: "日本国債の利回り曲線" });
+    } else $("#curveJp").innerHTML = '<p class="empty">データの初回取得前です。</p>';
+  }
+
+  // ============================== CFTC ==============================
+  var COT_JA = { JPY: "円", GBP: "ポンド", EUR: "ユーロ", AUD: "豪ドル", NZD: "NZドル", CAD: "カナダドル", CHF: "スイスフラン", MXN: "メキシコペソ" };
+  function renderCot(sel) {
+    var c = D.cot;
+    if (!c || !c.currencies) { $("#cotBars").innerHTML = '<p class="empty">データの初回取得前です。</p>'; return; }
+    sel = sel || store.get("mp_cot", "JPY");
+    $("#cotMeta").textContent = (c.latest ? c.latest + "（火曜）時点" : "");
+    var rows = c.currencies.filter(function (x) { return x.rows.length; }).map(function (x) {
+      var r = x.rows[x.rows.length - 1];
+      return { key: x.ccy, label: COT_JA[x.ccy] || x.ccy, value: Math.round((r[2] - r[3]) / r[1] * 1000) / 10 };
+    }).sort(function (a, b) { return b.value - a.value; });
+    Charts.bars($("#cotBars"), {
+      rows: rows, selected: sel, posLabel: "買い越し", negLabel: "売り越し", nameHeader: "通貨", valueHeader: "建玉に対する割合",
+      fmt: function (v) { return (v > 0 ? "+" : "") + v.toFixed(1) + "%"; },
+      aria: "通貨別の投機筋ポジション。行を選ぶと推移を表示します",
+      onSelect: function (k) { store.set("mp_cot", k); renderCot(k); }
+    });
+    var cur = c.currencies.filter(function (x) { return x.ccy === sel; })[0] || c.currencies[0];
+    var net = cur.rows.map(function (r) { return [r[0], r[2] - r[3]]; });
+    var last = net[net.length - 1], prev = net[net.length - 2];
+    var vals = net.map(function (p) { return p[1]; });
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+    var idx = hi > lo ? Math.round((last[1] - lo) / (hi - lo) * 100) : 50;
+    var name = COT_JA[cur.ccy] || cur.ccy;
+    $("#cotHistTitle").textContent = name + "（対ドル）の買い越し・売り越しの推移（枚）";
+    $("#cotStats").innerHTML =
+      '<div class="stat"><span class="stat-label">最新</span><span class="stat-value">' + (last[1] >= 0 ? "買い越し " : "売り越し ") + fmtNum(Math.abs(last[1])) + "枚</span></div>" +
+      (prev ? '<div class="stat"><span class="stat-label">前週から</span><span class="stat-value">' + esc(signed(last[1] - prev[1], 0, "枚")) + "</span></div>" : "") +
+      '<div class="stat"><span class="stat-label">過去2年の中での位置（0＝最も売り越し、100＝最も買い越し）</span><span class="stat-value">' + idx + "</span></div>";
+    Charts.line($("#cotHist"), {
+      series: [{ name: name + "の買い越し・売り越し", color: "var(--series-1)", data: net.map(function (p) { return [toMs(p[0]), p[1]]; }), area: true }],
+      yFmt: function (v) { return (v >= 0 ? "買い越し " : "売り越し ") + fmtNum(Math.abs(v)) + "枚"; },
+      tickFmt: function (v) { return (v / 1000).toFixed(0) + "千"; },
+      height: 230, zero: true, endLabels: false, aria: name + "の投機筋ポジションの推移"
+    });
+  }
+
+  // ============================== 経済指標 ==============================
+  function fmtInd(ind, v) {
+    if (v === null || v === undefined) return "—";
+    if (ind.unit === "%") return v.toFixed(1) + "%";
+    if (ind.unit === "千人") return (v >= 0 ? "+" : "−") + fmtNum(Math.abs(v) / 10, 1) + "万人";
+    if (ind.unit === "件") return fmtNum(v / 10000, 1) + "万件";
+    return v.toFixed(2);
+  }
+  function indDate(ind, d) {
+    var a = d.split("-").map(Number);
+    return ind.freq === "W" ? a[1] + "/" + a[2] + "までの週" : a[0] + "年" + a[1] + "月分";
+  }
+  var FRED_SRC = { BLS: "米労働統計局（BLS）", BEA: "米経済分析局（BEA）", "米労働省": "米労働省", "Claudia Sahm": "Claudia Sahm" };
+  function renderMacro(sel) {
+    var m = D.macro;
+    if (!m || !m.indicators) { $("#macroTiles").innerHTML = '<p class="empty">データの初回取得前です。GitHub Actionsでデータを取得すると表示されます。</p>'; return; }
+    $("#macroMeta").textContent = "FRED経由・" + jstStamp(m.updated) + " 取得";
+    var tiles = $("#macroTiles");
+    tiles.innerHTML = m.indicators.map(function (ind) {
+      if (!ind.latest) return "";
+      var flag = ind.threshold !== undefined && ind.latest.value >= ind.threshold ? '<span class="flag">' + ind.threshold.toFixed(2) + "以上</span>" : "";
+      return '<button class="tile" type="button" data-id="' + esc(ind.id) + '" aria-pressed="' + (sel === ind.id) + '">' +
+        '<span class="tile-label">' + esc(ind.name) + " <small>" + esc(ind.measure) + "</small></span>" +
+        '<span class="tile-value">' + esc(fmtInd(ind, ind.latest.value)) + "</span>" +
+        '<span class="tile-meta">' + esc(indDate(ind, ind.latest.date)) + (ind.prev ? "・前回 " + esc(fmtInd(ind, ind.prev.value)) : "") + "</span>" + flag +
+        '<span class="spark" data-spark="' + esc(ind.id) + '"></span></button>';
+    }).join("");
+    m.indicators.forEach(function (ind) {
+      var el = $('[data-spark="' + ind.id + '"]', tiles);
+      if (el) Charts.spark(el, ind.series.slice(ind.freq === "W" ? -52 : -24), { ref: ind.threshold !== undefined ? ind.threshold : ind.id === "nfp" ? 0 : undefined });
+    });
+    $$(".tile", tiles).forEach(function (t) {
+      t.addEventListener("click", function () {
+        var id = t.getAttribute("data-id");
+        var next = sel === id ? null : id;
+        store.set("mp_macro", next || "");
+        renderMacro(next);
+      });
+    });
+    var det = $("#macroDetail");
+    var ind = m.indicators.filter(function (x) { return x.id === sel; })[0];
+    if (!ind) { det.innerHTML = ""; return; }
+    det.innerHTML = '<div class="panel-head"><h3>' + esc(ind.name + "（" + ind.measure + "）") + '</h3><span class="meta">' + esc(ind.hint || "") + '</span></div><div id="macroChart"></div><p class="fine">出典：' + esc(FRED_SRC[ind.src] || ind.src) + "（FRED経由）　系列：" +
+      ind.fred.map(function (f) { return '<a href="https://fred.stlouisfed.org/series/' + esc(f) + '" target="_blank" rel="noopener">' + esc(f) + "</a>"; }).join("、") + "</p>";
+    var refs = [];
+    if (ind.threshold !== undefined) refs.push({ y: ind.threshold, label: "目安 " + ind.threshold.toFixed(2) });
+    if (ind.id === "pce" || ind.id === "core_pce") refs.push({ y: 2, label: "FRBの物価目標 2%" });
+    Charts.line($("#macroChart"), {
+      series: [{ name: ind.name, color: "var(--series-1)", data: ind.series.map(function (p) { return [toMs(p[0]), p[1]]; }), area: ind.id === "nfp" }],
+      yFmt: function (v) { return fmtInd(ind, v); }, height: 240, refs: refs, zero: ind.id === "nfp",
+      xFmt: function (x) { return indDate(ind, new Date(x).toISOString().slice(0, 10)); },
+      tickFmt: ind.unit === "件" ? function (v) { return (v / 10000).toFixed(0) + "万"; } : ind.unit === "千人" ? function (v) { return (v / 10).toFixed(0) + "万"; } : undefined,
+      aria: ind.name + "の推移"
+    });
+  }
+
+  // ============================== ニュース ==============================
+  function initNews() {
+    loadJson("briefs/index.json").then(function (idx) {
+      var sel = $("#briefSelect");
+      var items = (idx && idx.items || []).filter(function (x) { return x.mode === "daily"; });
+      if (!items.length) { sel.parentElement.hidden = true; }
+      sel.innerHTML = items.map(function (x) { return '<option value="' + esc(x.file) + '">' + esc(jaMD(x.date)) + "　" + esc(x.headline || "") + "</option>"; }).join("");
+      sel.addEventListener("change", function () {
+        loadJson("briefs/" + sel.value).then(function (b) { renderBriefFull($("#briefFull"), b); });
+      });
+    });
+    renderBriefFull($("#briefFull"), D.brief);
+    Promise.resolve(D.weekly).then(function (w) {
+      $("#weeklyMeta").textContent = "毎週土曜の朝に更新";
+      if (!w || !w.headline) { $("#weeklyBrief").innerHTML = '<p class="empty">まだ作成されていません。設定が済むと、毎週土曜の朝に自動で作成されます。</p>'; return; }
+      renderBriefFull($("#weeklyBrief"), w);
+    });
+  }
+
+  // ============================== 休場・時間 ==============================
+  function renderHolidays() {
+    var today = jstDate(Date.now()), end = addDays(today, 90);
+    var rows = [];
+    Object.keys(CAL.jp).forEach(function (d) { if (d >= today && d <= end) rows.push([d, "東京", CAL.jp[d], ""]); });
+    Object.keys(CAL.uk).forEach(function (d) { if (d >= today && d <= end) rows.push([d, "ロンドン", CAL.uk[d], ""]); });
+    Object.keys(CAL.us).forEach(function (d) { if (d >= today && d <= end) rows.push([d, "ニューヨーク", CAL.us[d].name, CAL.us[d].note]); });
+    rows.sort(function (a, b) { return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+    $("#holidayList").innerHTML = rows.length ? '<table class="tbl"><thead><tr><th>日付（現地）</th><th>市場</th><th>内容</th></tr></thead><tbody>' + rows.map(function (r) {
+      return "<tr><td>" + esc(jaMD(r[0])) + "</td><td>" + esc(r[1]) + "</td><td>" + esc(r[2]) + (r[3] ? '<span class="note">' + esc(r[3]) + "</span>" : "") + "</td></tr>";
+    }).join("") + "</tbody></table>" : '<p class="empty">90日以内の休場予定はありません。</p>';
+  }
+  function renderDst() {
+    var now = Date.now();
+    var list = dstChanges(now, now + 366 * DAY);
+    $("#dstList").innerHTML = list.length ? list.map(function (c) {
+      return '<li><span class="when">' + esc(jaDate(c.date).replace(/^/, c.date.slice(0, 4) + "年")) + "</span>" + esc(c.label) + "<small>" + esc(c.note) + "</small></li>";
+    }).join("") : '<li class="empty">1年以内の切り替えはありません。</li>';
+  }
+  function sessionRange(s, dateStr) {
+    var a = zonedToUtc(dateStr, s.open, s.tz), b = zonedToUtc(dateStr, s.close, s.tz);
+    return jstTime(a) + "〜" + (jstDate(b) !== jstDate(a) ? "翌" : "") + jstTime(b);
+  }
+  function nextChangeDate(tz, now) {
+    var c = dstChanges(now, now + 366 * DAY).filter(function (x) { return x.zone.tz === tz; })[0];
+    return c ? c.date : null;
+  }
+  function renderSessionTable() {
+    var now = Date.now();
+    var h = '<table class="tbl tbl-stack"><thead><tr><th>市場</th><th>現地時間</th><th>いま（日本時間）</th><th>次の切り替え後</th></tr></thead><tbody>';
+    SESSIONS.forEach(function (s) {
+      var today = localDate(now, s.tz);
+      var nc = nextChangeDate(s.tz, now);
+      h += "<tr><td><b>" + esc(s.name === "NY" ? "ニューヨーク" : s.name) + '</b></td><td data-label="現地時間">' + s.open + "〜" + s.close + '</td><td data-label="いま（日本時間）">' + sessionRange(s, today) + '</td><td data-label="次の切り替え後">' +
+        (nc ? sessionRange(s, addDays(nc, 1)) + '<span class="note">' + esc(nc.slice(0, 4) + "年" + jaMD(nc)) + "から</span>" : "変更なし") + "</td></tr>";
+    });
+    h += "</tbody></table>";
+    $("#sessionTable").innerHTML = h;
+  }
+  function renderFixedTimes() {
+    var now = Date.now();
+    var items = [
+      ["東京仲値", "Asia/Tokyo", "09:55", "銀行が顧客向けの基準レートを決める時刻"],
+      ["ロンドン・フィックス", "Europe/London", "16:00", "WM/ロイターの基準レート算出"],
+      ["NYカット", "America/New_York", "10:00", "通貨オプションの権利行使の期限"],
+      ["NYクローズ", "America/New_York", "17:00", "1日の区切り（スワップポイントが付く）"],
+      ["米国の主要指標", "America/New_York", "08:30", "雇用統計・CPIなどの発表時刻（米東部8:30）"],
+      ["CFTC建玉の公表", "America/New_York", "15:30", "金曜（祝日の週は遅れることがあります）"],
+      ["週明けの取引開始（目安）", "America/New_York", "17:00", "米東部の日曜17時。取引会社により異なります"]
+    ];
+    var h = '<table class="tbl tbl-stack"><thead><tr><th>イベント</th><th>現地時刻</th><th>いま（日本時間）</th><th>次の切り替え後</th></tr></thead><tbody>';
+    items.forEach(function (it) {
+      var d = localDate(now, it[1]);
+      var t = zonedToUtc(d, it[2], it[1]);
+      var nc = it[1] === "Asia/Tokyo" ? null : nextChangeDate(it[1], now);
+      var t2 = nc ? zonedToUtc(addDays(nc, 1), it[2], it[1]) : null;
+      var label = function (ms, base) { var jd = jstDate(ms); return (jd !== base ? "翌" : "") + jstTime(ms); };
+      h += "<tr><td><b>" + esc(it[0]) + '</b><span class="note">' + esc(it[3]) + '</span></td><td data-label="現地時刻">' + it[2] + '</td><td data-label="いま（日本時間）">' + label(t, d) + '</td><td data-label="次の切り替え後">' + (t2 ? label(t2, addDays(nc, 1)) : "—") + "</td></tr>";
+    });
+    h += "</tbody></table>";
+    $("#fixedTimes").innerHTML = h;
+  }
+
+  // ============================== お知らせ・チェックリスト ==============================
+  function renderNotices(n) {
+    var items = (n && n.items) || [];
+    if (!items.length) { $("#noticePanel").hidden = true; return; }
+    $("#noticePanel").hidden = false;
+    $("#notices").innerHTML = items.slice(0, 5).map(function (x) {
+      return "<li>" + (x.date ? "<time>" + esc(jaDate(x.date)) + "</time>" : "") + "<h3>" + esc(x.title) + "</h3><p>" + esc(x.body || "") + "</p>" +
+        (x.link ? '<p><a href="' + esc(safeUrl(x.link)) + '" target="_blank" rel="noopener">' + esc(x.linkText || "くわしく") + "</a></p>" : "") + "</li>";
+    }).join("");
+  }
+  function initChecklist() {
+    var items = CFG.checklist || [];
+    var key = "mp_check_" + jstDate(Date.now());
+    var state = {};
+    try { state = JSON.parse(store.get(key, "{}")) || {}; } catch (e) {}
+    var ul = $("#checklist");
+    ul.innerHTML = items.map(function (t, i) { return '<li><label><input type="checkbox" data-i="' + i + '"' + (state[i] ? " checked" : "") + "><span>" + esc(t) + "</span></label></li>"; }).join("");
+    ul.addEventListener("change", function (ev) {
+      var i = ev.target.getAttribute("data-i");
+      state[i] = ev.target.checked;
+      store.set(key, JSON.stringify(state));
+    });
+    $("#checkReset").addEventListener("click", function () { state = {}; store.set(key, "{}"); $$("input", ul).forEach(function (c) { c.checked = false; }); });
+  }
+
+  // ============================== チャートタブ ==============================
+  var TF = [["5", "5分"], ["15", "15分"], ["60", "1時間"], ["240", "4時間"], ["D", "日足"], ["W", "週足"]];
+  var chartState = { sym: null, tf: null };
+  function chartCfg(sym, tf, compact) {
+    return function (t) {
+      var c = { autosize: true, symbol: sym, interval: tf, timezone: "Asia/Tokyo", theme: t, style: "1", locale: "ja", allow_symbol_change: !compact, calendar: false, hide_volume: true, support_host: "https://www.tradingview.com" };
+      if (compact) { c.hide_top_toolbar = true; c.hide_side_toolbar = true; c.save_image = false; }
+      return c;
+    };
+  }
+  function initChart() {
+    var syms = CFG.chartSymbols || [];
+    chartState.sym = store.get("mp_chart_sym", CFG.defaultChartSymbol || (syms[0] && syms[0].s) || "FX:GBPJPY");
+    if (!syms.some(function (s) { return s.s === chartState.sym; })) chartState.sym = CFG.defaultChartSymbol || syms[0].s;
+    chartState.tf = store.get("mp_chart_tf", "60");
+    function pills() {
+      $("#symPills").innerHTML = syms.map(function (s) { return '<button type="button" class="pill" data-s="' + esc(s.s) + '" aria-pressed="' + (s.s === chartState.sym) + '">' + esc(s.t) + "</button>"; }).join("");
+      $("#tfPills").innerHTML = TF.map(function (t) { return '<button type="button" class="pill" data-tf="' + t[0] + '" aria-pressed="' + (t[0] === chartState.tf) + '">' + t[1] + "</button>"; }).join("");
+    }
+    pills();
+    function mountMain() { tvMount($("#mainChart"), "advanced-chart", chartCfg(chartState.sym, chartState.tf, false)); }
+    function mountMtf() {
+      var name = (syms.filter(function (s) { return s.s === chartState.sym; })[0] || {}).t || chartState.sym;
+      $("#mtfMeta").textContent = name;
+      var grid = $("#mtfGrid");
+      grid.innerHTML = [["D", "日足"], ["240", "4時間足"], ["60", "1時間足"], ["15", "15分足"]].map(function (x) {
+        return '<div class="mtf-cell"><h3>' + esc(name) + "　" + x[1] + '</h3><div class="tv-box" data-mtf="' + x[0] + '"></div></div>';
+      }).join("");
+      $$("[data-mtf]", grid).forEach(function (el) {
+        whenVisible(el, function () { tvMount(el, "advanced-chart", chartCfg(chartState.sym, el.getAttribute("data-mtf"), true), true); });
+      });
+      grid.insertAdjacentHTML("beforeend", '<p class="tv-credit fine" style="grid-column:1/-1">提供：<a href="https://jp.tradingview.com/" target="_blank" rel="noopener nofollow">TradingView</a></p>');
+    }
+    whenVisible($("#mainChart"), mountMain);
+    mountMtf();
+    $("#symPills").addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-s]");
+      if (!b) return;
+      chartState.sym = b.getAttribute("data-s");
+      store.set("mp_chart_sym", chartState.sym);
+      pills(); mountMain(); mountMtf();
+    });
+    $("#tfPills").addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-tf]");
+      if (!b) return;
+      chartState.tf = b.getAttribute("data-tf");
+      store.set("mp_chart_tf", chartState.tf);
+      pills(); mountMain();
+    });
+    // マーケット一覧
+    var ml = $("#marketList");
+    ml.innerHTML = (CFG.marketGroups || []).map(function (g) {
+      return '<div class="mkt-group"><h3>' + esc(g.title) + '</h3><div class="mkt-grid">' + g.symbols.map(function (s) {
+        return '<div class="mkt-cell"><div class="tv-box" data-mini="' + esc(s[0]) + '" aria-label="' + esc(s[1]) + '"></div></div>';
+      }).join("") + "</div></div>";
+    }).join("");
+    $$("[data-mini]", ml).forEach(function (el) {
+      var sym = el.getAttribute("data-mini");
+      whenVisible(el, function () {
+        tvMount(el, "mini-symbol-overview", function (t) { return { symbol: sym, width: "100%", height: "100%", locale: "ja", dateRange: "1M", colorTheme: t, isTransparent: true, autosize: true, largeChartUrl: "" }; }, true);
+      });
+    });
+    ml.insertAdjacentHTML("beforeend", '<p class="tv-credit fine">提供：<a href="https://jp.tradingview.com/" target="_blank" rel="noopener nofollow">TradingView</a></p>');
+  }
+
+  // ============================== 検索 ==============================
+  var TAB_JA = { home: "きょう", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
+  function initSearch() {
+    var dlg = $("#searchDlg"), input = $("#searchInput"), list = $("#searchList");
+    var index = $$("[data-panel]").map(function (el) {
+      var pane = el.closest(".pane");
+      return { id: el.getAttribute("data-panel"), title: el.getAttribute("data-title") || "", tab: pane ? pane.id.replace("pane-", "") : "home" };
+    });
+    var cur = 0, hits = [];
+    function draw() {
+      var q = input.value.trim().toLowerCase();
+      hits = index.filter(function (x) { return !q || (x.title + TAB_JA[x.tab]).toLowerCase().indexOf(q) >= 0; });
+      cur = Math.min(cur, Math.max(0, hits.length - 1));
+      list.innerHTML = hits.length ? hits.map(function (x, i) { return '<li role="option" data-i="' + i + '" aria-selected="' + (i === cur) + '"><span>' + esc(x.title) + "</span><small>" + esc(TAB_JA[x.tab]) + "</small></li>"; }).join("") : '<li class="empty">見つかりません</li>';
+    }
+    function go(i) {
+      var x = hits[i];
+      if (!x) return;
+      dlg.close();
+      history.replaceState(null, "", "#" + x.tab);
+      showTab(x.tab, x.id);
+    }
+    function open() { input.value = ""; cur = 0; draw(); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); input.focus(); }
+    $("#searchBtn").addEventListener("click", open);
+    input.addEventListener("input", function () { cur = 0; draw(); });
+    input.addEventListener("keydown", function (ev) {
+      if (ev.key === "ArrowDown") { cur = Math.min(hits.length - 1, cur + 1); draw(); ev.preventDefault(); }
+      else if (ev.key === "ArrowUp") { cur = Math.max(0, cur - 1); draw(); ev.preventDefault(); }
+      else if (ev.key === "Enter") { ev.preventDefault(); go(cur); }
+    });
+    list.addEventListener("click", function (ev) { var li = ev.target.closest("[data-i]"); if (li) go(+li.getAttribute("data-i")); });
+    dlg.addEventListener("click", function (ev) { if (ev.target === dlg) dlg.close(); });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "/" && !/input|textarea|select/i.test((ev.target.tagName || "")) && !dlg.open) { ev.preventDefault(); open(); }
+    });
+  }
+
+  // ============================== フッター・ダイアログ ==============================
+  var SRC_JA = { fred: "米国の金利・経済指標（FRED）", jgb: "日本国債の利回り（財務省）", cot: "投機筋ポジション（CFTC）", policy: "政策金利（BIS）", holidays: "祝日（内閣府・GOV.UK）", jwks: "会員確認の鍵（Fincs）", brief_daily: "AI朝のまとめ", brief_weekly: "AI週末まとめ" };
+  function renderStatus(meta) {
+    var src = (meta && meta.sources) || {};
+    var keys = Object.keys(SRC_JA);
+    $("#sourceStatus").innerHTML = keys.map(function (k) {
+      var s = src[k];
+      if (!s) return '<li><span class="st st-skip">–</span><span>' + esc(SRC_JA[k]) + "：まだ取得していません</span></li>";
+      var icon = s.status === "ok" ? '<span class="st st-ok" aria-label="正常">✓</span>' : s.status === "skipped" ? '<span class="st st-skip" aria-label="未設定">–</span>' : '<span class="st st-err" aria-label="要確認">!</span>';
+      var txt = s.status === "skipped" ? "未設定" : (s.lastSuccess ? jstStamp(s.lastSuccess) + " 更新" : "未取得") + (s.status === "error" ? "（直近の取得に失敗）" : "");
+      return "<li>" + icon + "<span>" + esc(SRC_JA[k]) + "：" + esc(txt) + "</span></li>";
+    }).join("");
+  }
+  function initDialogs() {
+    var about = $("#aboutDlg");
+    function openAbout() { if (about.showModal) about.showModal(); else about.setAttribute("open", ""); }
+    $("#aboutBtn").addEventListener("click", openAbout);
+    $("#aboutBtn2").addEventListener("click", openAbout);
+    $$("[data-close]", about).forEach(function (b) { b.addEventListener("click", function () { about.close(); }); });
+    about.addEventListener("click", function (ev) { if (ev.target === about) about.close(); });
+    $("#logoutBtn").addEventListener("click", function () {
+      window.PortalGate.clearSession();
+      about.close();
+      location.reload();
+    });
+    if (CFG.feedbackUrl) $("#feedbackSlot").innerHTML = '　<a href="' + esc(safeUrl(CFG.feedbackUrl)) + '" target="_blank" rel="noopener">ご意見・ご要望</a>';
+  }
+  function initTheme() {
+    $("#themeBtn").addEventListener("click", function () {
+      var next = theme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      store.set("mp_theme", next);
+      tvRemountAll();
+    });
+  }
+  function tickClock() {
+    var now = Date.now(), d = jstDate(now);
+    $("#clockDate").textContent = jaDate(d);
+    $("#clockTime").textContent = new Date(now + 9 * HOUR).toISOString().slice(11, 19);
+  }
+
+  // ============================== タブごとの初期化 ==============================
+  INIT.home = function () {
+    renderHero(); renderUpcoming(); renderPolicyMini(); renderBriefHome(D.brief, D.weekly); initChecklist();
+    loadJson("manual/notices.json").then(renderNotices);
+  };
+  INIT.chart = initChart;
+  INIT.strength = function () { renderCot(); };
+  INIT.rates = function () {
+    renderPolicyTable(); renderCbCalendar();
+    var cur = store.get("mp_spread", "10Y");
+    var pills = $("#spreadPills");
+    function draw() {
+      pills.innerHTML = [["10Y", "10年"], ["2Y", "2年"]].map(function (x) { return '<button type="button" class="pill" data-t="' + x[0] + '" aria-pressed="' + (x[0] === cur) + '">' + x[1] + "</button>"; }).join("");
+      renderSpread(cur);
+    }
+    pills.addEventListener("click", function (ev) { var b = ev.target.closest("[data-t]"); if (!b) return; cur = b.getAttribute("data-t"); store.set("mp_spread", cur); draw(); });
+    draw();
+    renderCurves();
+  };
+  INIT.macro = function () { renderMacro(store.get("mp_macro", "") || null); };
+  INIT.news = initNews;
+  INIT.hours = function () { renderHolidays(); renderDst(); renderSessionTable(); renderFixedTimes(); };
+
+  // ============================== 起動 ==============================
+  function applyNames() {
+    if (CFG.siteName) { document.title = CFG.siteName; $$("[data-site-name]").forEach(function (e) { e.textContent = CFG.siteName; }); }
+    if (CFG.tagline) $$("[data-tagline]").forEach(function (e) { e.textContent = CFG.tagline; });
+  }
+  function showGate(res) {
+    var g = $("#gate");
+    g.hidden = false;
+    $("#gateMsg").textContent = window.PortalGate.messageFor(res.code);
+    var link = $("#gateLink");
+    var url = (CFG.gate && CFG.gate.fincsUrl) || "";
+    if (url) { link.href = safeUrl(url); link.hidden = false; }
+    if (/[?&]gate=debug\b/.test(location.search)) {
+      var c = res.claims || {};
+      $("#gateDebug").hidden = false;
+      $("#gateDebug").textContent = "code: " + res.code + "\ndetail: " + (res.detail || "") +
+        "\niss: " + (c.iss || "") + "\naud: " + JSON.stringify(c.aud) + "\nexp: " + (c.exp ? new Date(c.exp * 1000).toISOString() : "") +
+        "\nplan(" + ((CFG.gate && CFG.gate.planClaim) || "plan_id") + "): " + JSON.stringify(c[(CFG.gate && CFG.gate.planClaim) || "plan_id"]) +
+        "\n許可しているaud: " + JSON.stringify(res.audiences || []);
+    }
+  }
+  function boot() {
+    $("#app").hidden = false;
+    if (window.PORTAL_PREVIEW) { var pb = $("#previewBar"); pb.hidden = false; pb.textContent = window.PORTAL_PREVIEW; }
+    tickClock();
+    setInterval(tickClock, 1000);
+    initTabs(); initTheme(); initDialogs(); initSearch();
+    // ティッカー
+    tvMount($("#tape"), "ticker-tape", function (t) {
+      return { symbols: (CFG.ticker || []).map(function (x) { return { proName: x.s, title: x.t }; }), showSymbolLogo: false, isTransparent: true, displayMode: "adaptive", colorTheme: t, locale: "ja" };
+    });
+    // 共通データを読み込んでから表示
+    Promise.all([
+      loadJson("manual/central_banks.json"), loadJson("holidays_jp.json"), loadJson("manual/holidays_jp_extra.json"), loadJson("holidays_uk.json"),
+      loadJson("manual/holidays_us.json"), loadJson("manual/cftc_schedule.json"), loadJson("policy_bis.json"), loadJson("us_rates.json"),
+      loadJson("brief.json"), loadJson("meta.json"), loadJson("brief_weekly.json")
+    ]).then(function (r) {
+      D.cb = r[0]; D.hjp = r[1]; D.hjpx = r[2]; D.huk = r[3]; D.hus = r[4]; D.cftc = r[5]; D.bis = r[6]; D.usRates = r[7]; D.brief = r[8]; D.weekly = r[10];
+      buildCalendar();
+      renderStatus(r[9]);
+      return Promise.all([loadJson("jgb.json"), loadJson("fx_ref.json"), loadJson("cot.json"), loadJson("us_macro.json")]).then(function (r2) {
+        D.jgb = r2[0]; D.fx = r2[1]; D.cot = r2[2]; D.macro = r2[3];
+      }).then(function () {
+        var parts = location.hash.replace("#", "").split("/");
+        var first = TABS.indexOf(parts[0]) >= 0 ? parts[0] : "home";
+        showTab(first, parts[1]);
+      });
+    });
+    // 相場時計は30秒ごと、データは30分ごとに更新
+    setInterval(function () { if (inited.home && !document.hidden) { renderHero(); renderUpcoming(); } }, 30000);
+    setInterval(function () {
+      if (document.hidden) return;
+      Promise.all([loadJson("brief.json", true), loadJson("meta.json", true), loadJson("brief_weekly.json", true)]).then(function (r) {
+        if (r[0]) D.brief = r[0];
+        if (r[2]) D.weekly = r[2];
+        if (inited.home) renderBriefHome(D.brief, D.weekly);
+        renderStatus(r[1]);
+      });
+    }, 30 * MIN);
+    var lastW = window.innerWidth;
+    window.addEventListener("resize", function () { if (Math.abs(window.innerWidth - lastW) > 40 && inited.home) { lastW = window.innerWidth; renderHero(); } });
+  }
+
+  function start() {
+    applyNames();
+    (window.PortalGateReady || Promise.resolve({ ok: true })).then(function (res) {
+      if (res && res.ok) boot(); else showGate(res || { code: "other" });
+    }, function () { showGate({ code: "other" }); });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+  // テスト用に一部の関数を公開
+  window.__portal = { zonedToUtc: zonedToUtc, gotobi: gotobi, collectEvents: collectEvents, dstChanges: dstChanges, resolvePolicy: resolvePolicy, weekClosed: weekClosed, D: D, CAL: CAL, buildCalendar: buildCalendar };
+})();
+
+</script>
 </body>
 </html>
