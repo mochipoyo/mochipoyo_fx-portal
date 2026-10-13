@@ -1,0 +1,632 @@
+{
+  "checked": "2026-10-13",
+  "note": "各国の統計作成機関が公表している発表予定です。予定は変更されることがあります。ISM景況指数・日銀短観などは公式の予定表を確認できなかったため載せていません。importance：3=特に注目、2=注目。新しい予定が公表されたら追記してください。",
+  "items": [
+    {
+      "country": "英",
+      "name": "GDP（月次）",
+      "period": "2026年8月分",
+      "date": "2026-10-15",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 2,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "米",
+      "name": "小売売上高",
+      "period": "2026年9月分",
+      "date": "2026-10-15",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.census.gov/economic-indicators/calendar-listview-2026.html"
+    },
+    {
+      "country": "英",
+      "name": "雇用統計",
+      "period": "2026年10月公表分",
+      "date": "2026-10-20",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "英",
+      "name": "消費者物価指数（CPI）",
+      "period": "2026年9月分",
+      "date": "2026-10-21",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "英",
+      "name": "小売売上高",
+      "period": "2026年9月分",
+      "date": "2026-10-23",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 2,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "日",
+      "name": "全国消費者物価指数（CPI）",
+      "period": "2026年9月分",
+      "date": "2026-10-23",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "米",
+      "name": "GDP速報値",
+      "period": "2026年7-9月期",
+      "date": "2026-10-29",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bea.gov/news/schedule",
+      "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"
+    },
+    {
+      "country": "米",
+      "name": "個人所得・個人消費支出（PCE）",
+      "period": "2026年9月分",
+      "date": "2026-10-29",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bea.gov/news/schedule",
+      "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"
+    },
+    {
+      "country": "日",
+      "name": "東京都区部消費者物価指数（中旬速報）",
+      "period": "2026年10月分",
+      "date": "2026-10-30",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "米",
+      "name": "JOLTS求人件数",
+      "period": "2026年9月分",
+      "date": "2026-11-03",
+      "time": "10:00",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bls.gov/schedule/news_release/jolts.htm"
+    },
+    {
+      "country": "米",
+      "name": "雇用統計",
+      "period": "2026年10月分",
+      "date": "2026-11-06",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/empsit.htm"
+    },
+    {
+      "country": "米",
+      "name": "消費者物価指数（CPI）",
+      "period": "2026年10月分",
+      "date": "2026-11-10",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/cpi.htm"
+    },
+    {
+      "country": "英",
+      "name": "GDP（月次）",
+      "period": "2026年9月分",
+      "date": "2026-11-12",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 2,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "米",
+      "name": "生産者物価指数（PPI）",
+      "period": "2026年10月分",
+      "date": "2026-11-13",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bls.gov/schedule/news_release/ppi.htm"
+    },
+    {
+      "country": "日",
+      "name": "GDP速報（1次）",
+      "period": "2026年7-9月期",
+      "date": "2026-11-16",
+      "time": "08:50",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.esri.cao.go.jp/jp/sna/kouhyou/kouhyou_top.html"
+    },
+    {
+      "country": "英",
+      "name": "雇用統計",
+      "period": "2026年11月公表分",
+      "date": "2026-11-17",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "米",
+      "name": "小売売上高",
+      "period": "2026年10月分",
+      "date": "2026-11-17",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.census.gov/economic-indicators/calendar-listview-2026.html"
+    },
+    {
+      "country": "英",
+      "name": "消費者物価指数（CPI）",
+      "period": "2026年10月分",
+      "date": "2026-11-18",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "英",
+      "name": "小売売上高",
+      "period": "2026年10月分",
+      "date": "2026-11-20",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 2,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "日",
+      "name": "全国消費者物価指数（CPI）",
+      "period": "2026年10月分",
+      "date": "2026-11-20",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "米",
+      "name": "GDP改定値",
+      "period": "2026年7-9月期",
+      "date": "2026-11-25",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bea.gov/news/schedule",
+      "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"
+    },
+    {
+      "country": "米",
+      "name": "個人所得・個人消費支出（PCE）",
+      "period": "2026年10月分",
+      "date": "2026-11-25",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bea.gov/news/schedule",
+      "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"
+    },
+    {
+      "country": "日",
+      "name": "東京都区部消費者物価指数（中旬速報）",
+      "period": "2026年11月分",
+      "date": "2026-11-27",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "米",
+      "name": "JOLTS求人件数",
+      "period": "2026年10月分",
+      "date": "2026-12-01",
+      "time": "10:00",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bls.gov/schedule/news_release/jolts.htm"
+    },
+    {
+      "country": "米",
+      "name": "雇用統計",
+      "period": "2026年11月分",
+      "date": "2026-12-04",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/empsit.htm"
+    },
+    {
+      "country": "日",
+      "name": "GDP速報（2次）",
+      "period": "2026年7-9月期",
+      "date": "2026-12-08",
+      "time": "08:50",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.esri.cao.go.jp/jp/sna/kouhyou/kouhyou_top.html"
+    },
+    {
+      "country": "米",
+      "name": "消費者物価指数（CPI）",
+      "period": "2026年11月分",
+      "date": "2026-12-10",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/cpi.htm"
+    },
+    {
+      "country": "英",
+      "name": "GDP（月次）",
+      "period": "2026年10月分",
+      "date": "2026-12-11",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 2,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "英",
+      "name": "雇用統計",
+      "period": "2026年12月公表分",
+      "date": "2026-12-15",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "米",
+      "name": "生産者物価指数（PPI）",
+      "period": "2026年11月分",
+      "date": "2026-12-15",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bls.gov/schedule/news_release/ppi.htm"
+    },
+    {
+      "country": "英",
+      "name": "消費者物価指数（CPI）",
+      "period": "2026年11月分",
+      "date": "2026-12-16",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "米",
+      "name": "小売売上高",
+      "period": "2026年11月分",
+      "date": "2026-12-16",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.census.gov/economic-indicators/calendar-listview-2026.html"
+    },
+    {
+      "country": "英",
+      "name": "小売売上高",
+      "period": "2026年11月分",
+      "date": "2026-12-18",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 2,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "日",
+      "name": "全国消費者物価指数（CPI）",
+      "period": "2026年11月分",
+      "date": "2026-12-18",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "米",
+      "name": "GDP確定値",
+      "period": "2026年7-9月期",
+      "date": "2026-12-23",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bea.gov/news/schedule",
+      "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"
+    },
+    {
+      "country": "米",
+      "name": "個人所得・個人消費支出（PCE）",
+      "period": "2026年11月分",
+      "date": "2026-12-23",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bea.gov/news/schedule",
+      "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"
+    },
+    {
+      "country": "日",
+      "name": "東京都区部消費者物価指数（中旬速報）",
+      "period": "2026年12月分",
+      "date": "2026-12-25",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "米",
+      "name": "雇用統計",
+      "period": "2026年12月分",
+      "date": "2027-01-08",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/empsit.htm"
+    },
+    {
+      "country": "米",
+      "name": "消費者物価指数（CPI）",
+      "period": "2026年12月分",
+      "date": "2027-01-13",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/cpi.htm"
+    },
+    {
+      "country": "米",
+      "name": "生産者物価指数（PPI）",
+      "period": "2026年12月分",
+      "date": "2027-01-14",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bls.gov/schedule/news_release/ppi.htm"
+    },
+    {
+      "country": "英",
+      "name": "GDP（月次）",
+      "period": "2026年11月分",
+      "date": "2027-01-15",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 2,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "米",
+      "name": "小売売上高",
+      "period": "2026年12月分",
+      "date": "2027-01-15",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.census.gov/economic-indicators/calendar-listview.html"
+    },
+    {
+      "country": "英",
+      "name": "雇用統計",
+      "period": "2027年1月公表分",
+      "date": "2027-01-19",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "英",
+      "name": "消費者物価指数（CPI）",
+      "period": "2026年12月分",
+      "date": "2027-01-20",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "英",
+      "name": "小売売上高",
+      "period": "2026年12月分",
+      "date": "2027-01-22",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 2,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "日",
+      "name": "全国消費者物価指数（CPI）",
+      "period": "2026年12月分",
+      "date": "2027-01-22",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "日",
+      "name": "東京都区部消費者物価指数（中旬速報）",
+      "period": "2027年1月分",
+      "date": "2027-01-29",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "米",
+      "name": "雇用統計",
+      "period": "2027年1月分",
+      "date": "2027-02-05",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/empsit.htm"
+    },
+    {
+      "country": "米",
+      "name": "消費者物価指数（CPI）",
+      "period": "2027年1月分",
+      "date": "2027-02-11",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/cpi.htm"
+    },
+    {
+      "country": "米",
+      "name": "生産者物価指数（PPI）",
+      "period": "2027年1月分",
+      "date": "2027-02-12",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bls.gov/schedule/news_release/ppi.htm"
+    },
+    {
+      "country": "日",
+      "name": "GDP速報（1次）",
+      "period": "2026年10-12月期",
+      "date": "2027-02-15",
+      "time": "08:50",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.esri.cao.go.jp/jp/sna/kouhyou/kouhyou_top.html"
+    },
+    {
+      "country": "英",
+      "name": "消費者物価指数（CPI）",
+      "period": "2027年1月分",
+      "date": "2027-02-17",
+      "time": "07:00",
+      "tz": "Europe/London",
+      "importance": 3,
+      "source": "https://www.ons.gov.uk/releasecalendar"
+    },
+    {
+      "country": "米",
+      "name": "小売売上高",
+      "period": "2027年1月分",
+      "date": "2027-02-17",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.census.gov/economic-indicators/calendar-listview.html"
+    },
+    {
+      "country": "日",
+      "name": "全国消費者物価指数（CPI）",
+      "period": "2027年1月分",
+      "date": "2027-02-19",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "日",
+      "name": "東京都区部消費者物価指数（中旬速報）",
+      "period": "2027年2月分",
+      "date": "2027-02-26",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "米",
+      "name": "雇用統計",
+      "period": "2027年2月分",
+      "date": "2027-03-05",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/empsit.htm"
+    },
+    {
+      "country": "日",
+      "name": "GDP速報（2次）",
+      "period": "2026年10-12月期",
+      "date": "2027-03-09",
+      "time": "08:50",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.esri.cao.go.jp/jp/sna/kouhyou/kouhyou_top.html"
+    },
+    {
+      "country": "米",
+      "name": "消費者物価指数（CPI）",
+      "period": "2027年2月分",
+      "date": "2027-03-10",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 3,
+      "source": "https://www.bls.gov/schedule/news_release/cpi.htm"
+    },
+    {
+      "country": "米",
+      "name": "生産者物価指数（PPI）",
+      "period": "2027年2月分",
+      "date": "2027-03-12",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.bls.gov/schedule/news_release/ppi.htm"
+    },
+    {
+      "country": "米",
+      "name": "小売売上高",
+      "period": "2027年2月分",
+      "date": "2027-03-16",
+      "time": "08:30",
+      "tz": "America/New_York",
+      "importance": 2,
+      "source": "https://www.census.gov/economic-indicators/calendar-listview.html"
+    },
+    {
+      "country": "日",
+      "name": "全国消費者物価指数（CPI）",
+      "period": "2027年2月分",
+      "date": "2027-03-19",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    },
+    {
+      "country": "日",
+      "name": "東京都区部消費者物価指数（中旬速報）",
+      "period": "2027年3月分",
+      "date": "2027-03-26",
+      "time": "08:30",
+      "tz": "Asia/Tokyo",
+      "importance": 2,
+      "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"
+    }
+  ]
+}
