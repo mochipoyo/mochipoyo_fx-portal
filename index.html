@@ -35,6 +35,8 @@
   --warn-bg: #fff4d6;
   --warn-ink: #6b4a00;
   --focus: #22389a;
+  --wx-cloud: #e4e8f3;
+  --wx-cloud-edge: #b9c1d6;
 
   /* 相場時計（夜の藍色の帯） */
   --hero-bg: #172447;
@@ -90,6 +92,8 @@
     --warn-bg: #3b3016;
     --warn-ink: #f6dc9a;
     --focus: #94a8ff;
+    --wx-cloud: #c9d0e4;
+    --wx-cloud-edge: #8f9ab2;
     --hero-bg: #121b36;
     --series-1: #3987e5;
     --series-2: #d95926;
@@ -121,6 +125,8 @@
   --warn-bg: #3b3016;
   --warn-ink: #f6dc9a;
   --focus: #94a8ff;
+  --wx-cloud: #c9d0e4;
+  --wx-cloud-edge: #8f9ab2;
   --hero-bg: #121b36;
   --series-1: #3987e5;
   --series-2: #d95926;
@@ -260,6 +266,27 @@ button { font: inherit; color: inherit; }
 .mkt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
 .mkt-cell { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .mkt-cell .tv-box { height: 200px; }
+
+/* ---------- きょうの市況 ---------- */
+.mood { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px 16px; }
+.mood-date { margin: 0 0 6px; font-size: var(--fs-sm); color: var(--ink-3); }
+.mood-main { display: flex; align-items: center; gap: 16px; }
+.mood-text { min-width: 0; }
+.mood-label { margin: 0; font-size: var(--fs-sm); font-weight: 700; color: var(--ink-2); }
+.mood-headline .nw { display: inline-block; }
+.mood-headline { margin: 2px 0 0; font-family: var(--font-head); font-weight: 700; font-size: clamp(19px, 2.6vw, 26px); line-height: 1.45; text-wrap: balance; word-break: auto-phrase; }
+.mood-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+@media (max-width: 760px) { .mood-cards { grid-template-columns: minmax(0, 1fr); } .mood { padding: 14px; } }
+.mcard { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px 10px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; align-items: center; background: var(--sunken); }
+.mcard .wx { grid-row: span 2; }
+.mcard-name { font-weight: 700; font-size: var(--fs-md); }
+.mcard-name small { font-weight: 400; color: var(--ink-3); margin-left: 6px; font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.mcard-state { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-lg); }
+.mcard-line { grid-column: 1 / -1; font-size: var(--fs-xs); color: var(--ink-2); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.mcard .spark { grid-column: 1 / -1; height: 34px; margin-top: 4px; }
+.wx { display: inline-block; width: 44px; height: 44px; flex: none; }
+.wx-lg { width: 72px; height: 72px; }
+.wx svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
 /* ---------- 相場時計 ---------- */
 .clock-hero { background: var(--hero-bg); color: var(--hero-ink); border-radius: 16px; padding: 18px 20px 16px; }
@@ -972,6 +999,19 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
     <!-- ===================== きょう ===================== -->
     <section class="pane" id="pane-home" role="tabpanel" aria-labelledby="tab-home" hidden>
+      <section class="mood" data-panel="mood" data-title="きょうの市況（ポンド円・ポンドドル・ドル円）">
+        <p class="mood-date" id="moodDate">きょうの市況</p>
+        <div class="mood-main">
+          <span id="moodIcon" class="wx wx-lg" aria-hidden="true"></span>
+          <div class="mood-text">
+            <p id="moodLabel" class="mood-label"></p>
+            <p id="moodHeadline" class="mood-headline">データの取得後に表示されます。</p>
+          </div>
+        </div>
+        <div id="moodCards" class="mood-cards"></div>
+        <p class="fine" id="moodNote"></p>
+      </section>
+
       <section class="clock-hero" data-panel="hero" data-title="相場時計（いま開いている市場・きょうの予定）">
         <div class="hero-head">
           <h2 class="hero-title">相場時計</h2>
@@ -2147,6 +2187,82 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     }).join("");
   }
 
+
+  // ============================== きょうの市況（ECB参考レートから自動判定） ==============================
+  // 判定は「これまでの値動き」の要約で、先行きの予想ではありません
+  var MOOD_PAIRS = [["gbpjpy", "ポンド円", 3, "円"], ["gbpusd", "ポンドドル", 5, ""], ["usdjpy", "ドル円", 3, "円"]];
+  var MOOD = {
+    sun: { label: "上昇の流れ", word: "上昇の流れ" },
+    partly: { label: "やや上向き", word: "やや上向き" },
+    cloud: { label: "もみ合い", word: "もみ合い" },
+    drizzle: { label: "やや下向き", word: "やや下向き" },
+    rain: { label: "下落の流れ", word: "下落の流れ" },
+    stormUp: { label: "大きく上昇", word: "大きく上昇" },
+    stormDown: { label: "大きく下落", word: "大きく下落" }
+  };
+  function moodAssess(series) {
+    var v = series.map(function (p) { return p[1]; }).filter(function (x) { return x > 0; });
+    if (v.length < 22) return null;
+    var n = v.length, last = v[n - 1];
+    var rets = [];
+    for (var i = n - 20; i < n; i++) rets.push(Math.log(v[i] / v[i - 1]));
+    var mean = rets.reduce(function (a, b) { return a + b; }, 0) / rets.length;
+    var sd = Math.sqrt(rets.reduce(function (a, b) { return a + (b - mean) * (b - mean); }, 0) / (rets.length - 1)) || 1e-6;
+    var d1 = rets[rets.length - 1];
+    var r5 = Math.log(last / v[n - 6]);
+    var ma20 = v.slice(n - 20).reduce(function (a, b) { return a + b; }, 0) / 20;
+    var sc = r5 / (sd * Math.sqrt(5));
+    var kind;
+    if (Math.abs(d1) >= 2.2 * sd && Math.abs(d1) >= 0.005) kind = d1 > 0 ? "stormUp" : "stormDown";
+    else if (sc >= 1 && last > ma20) kind = "sun";
+    else if (sc <= -1 && last < ma20) kind = "rain";
+    else if (sc >= 0.5) kind = "partly";
+    else if (sc <= -0.5) kind = "drizzle";
+    else kind = "cloud";
+    return { kind: kind, last: last, d1: (Math.exp(d1) - 1) * 100, r5: (Math.exp(r5) - 1) * 100, aboveMa: last > ma20 };
+  }
+  function wxSvg(kind) {
+    var sun = '<circle cx="22" cy="22" r="9" fill="#F2B42A"/><g stroke="#F2B42A" stroke-width="2.6" stroke-linecap="round"><path d="M22 5v4M22 35v4M5 22h4M35 22h4M10 10l2.8 2.8M31.2 31.2l2.8 2.8M10 34l2.8-2.8M31.2 12.8l2.8-2.8"/></g>';
+    var cloud = function (x, y, s) { return '<path transform="translate(' + x + " " + y + ") scale(" + s + ')" d="M12 30h22a8 8 0 0 0 0-16 11 11 0 0 0-21-2A9 9 0 0 0 12 30z" fill="var(--wx-cloud)" stroke="var(--wx-cloud-edge)" stroke-width="1.4"/>'; };
+    var drops = function (n) { var o = ""; for (var i = 0; i < n; i++) o += '<path d="M' + (16 + i * 8) + ' 38l-2 5" stroke="#3987e5" stroke-width="2.6" stroke-linecap="round"/>'; return o; };
+    var b = { sun: sun,
+      partly: '<g transform="translate(-4 -6) scale(.85)">' + sun + "</g>" + cloud(4, 6, 0.95),
+      cloud: cloud(0, 2, 1.05),
+      drizzle: cloud(0, -2, 1.05) + drops(2),
+      rain: cloud(0, -2, 1.05) + drops(3),
+      stormUp: cloud(0, -2, 1.05) + '<path d="M24 33l-5 8h5l-3 7 9-10h-5l3-5z" fill="#F2B42A"/>',
+      stormDown: cloud(0, -2, 1.05) + '<path d="M24 33l-5 8h5l-3 7 9-10h-5l3-5z" fill="#F2B42A"/>' };
+    return '<svg viewBox="0 0 48 48" aria-hidden="true">' + (b[kind] || b.cloud) + "</svg>";
+  }
+  function pctTxt(x) { return (x > 0 ? "+" : x < 0 ? "−" : "±") + Math.abs(x).toFixed(2) + "%"; }
+  function renderMood() {
+    var e = D.ecb;
+    if (!e || !e.pairs) {
+      $("#moodHeadline").textContent = "毎朝のデータ更新のあとに表示されます。";
+      $("#moodIcon").innerHTML = wxSvg("cloud");
+      $("#moodNote").textContent = "ECB（欧州中央銀行）の参考レートをもとに、値動きの流れを自動で判定します。";
+      return;
+    }
+    var res = MOOD_PAIRS.map(function (p) { return { p: p, a: moodAssess(e.pairs[p[0]] || []), s: e.pairs[p[0]] || [] }; }).filter(function (x) { return x.a; });
+    if (!res.length) return;
+    var stale = (toMs(jstDate(Date.now())) - toMs(e.latest)) / DAY >= 5;
+    $("#moodDate").textContent = "きょうの市況　" + jaMD(e.latest) + " の参考レート（中欧16時ごろ）時点" + (stale ? "　※データが古くなっています" : "");
+    var main = res[0];
+    $("#moodIcon").innerHTML = wxSvg(main.a.kind);
+    $("#moodLabel").textContent = main.p[1] + "：" + MOOD[main.a.kind].label;
+    $("#moodHeadline").innerHTML = res.map(function (x, i) { return '<span class="nw">' + esc(x.p[1] + "は" + MOOD[x.a.kind].word + (i < res.length - 1 ? "、" : "")) + "</span>"; }).join("");
+    var box = $("#moodCards");
+    box.innerHTML = res.map(function (x, i) {
+      var a = x.a;
+      return '<div class="mcard"><span class="wx" aria-hidden="true">' + wxSvg(a.kind) + '</span><span class="mcard-name">' + esc(x.p[1]) + "<small>" + esc(a.last.toFixed(x.p[2])) + "</small></span>" +
+        '<span class="mcard-state">' + esc(MOOD[a.kind].label) + "</span>" +
+        '<span class="mcard-line"><span class="nw">前日比 ' + pctTxt(a.d1) + '</span>・<span class="nw">5営業日で ' + pctTxt(a.r5) + '</span>・<span class="nw">20日平均より' + (a.aboveMa ? "上" : "下") + "</span></span>" +
+        '<span class="spark" data-mood="' + i + '"></span></div>';
+    }).join("");
+    res.forEach(function (x, i) { Charts.spark($('[data-mood="' + i + '"]', box), x.s.slice(-30)); });
+    $("#moodNote").textContent = "ECB（欧州中央銀行）のユーロ参考レート（ECBのウェブサイトで無料公開）から当サイトで各ペアを計算し、直近の値動きの大きさ・向きを機械的に判定しています。リアルタイムの値ではなく、先行きの予想や売買の推奨でもありません。最新の値動きはチャートでご確認ください。";
+  }
+
   // ============================== AIまとめ ==============================
   function srcLinks(list) {
     if (!list || !list.length) return "";
@@ -2678,7 +2794,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== フッター・ダイアログ ==============================
-  var SRC_JA = { fred: "米国の金利・経済指標（FRED）", jgb: "日本国債の利回り（財務省）", cot: "投機筋ポジション（CFTC）", policy: "政策金利（BIS）", holidays: "祝日（内閣府・GOV.UK）", jwks: "会員確認の鍵（Fincs）" };
+  var SRC_JA = { ecb: "為替の参考レート（ECB）", fred: "米国の金利・経済指標（FRED）", jgb: "日本国債の利回り（財務省）", cot: "投機筋ポジション（CFTC）", policy: "政策金利（BIS）", holidays: "祝日（内閣府・GOV.UK）", jwks: "会員確認の鍵（Fincs）" };
   function renderStatus(meta) {
     var src = (meta && meta.sources) || {};
     var keys = Object.keys(SRC_JA);
@@ -2720,7 +2836,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
   // ============================== タブごとの初期化 ==============================
   INIT.home = function () {
-    renderHero(); renderUpcoming(); renderPolicyMini(); initChecklist();
+    renderMood(); renderHero(); renderUpcoming(); renderPolicyMini(); initChecklist();
     loadJson("manual/notices.json").then(renderNotices);
   };
   INIT.chart = initChart;
@@ -2781,8 +2897,8 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       D.cb = r[0]; D.hjp = r[1]; D.hjpx = r[2]; D.huk = r[3]; D.hus = r[4]; D.cftc = r[5]; D.bis = r[6]; D.usRates = r[7]; D.brief = r[8]; D.weekly = r[10];
       buildCalendar();
       renderStatus(r[9]);
-      return Promise.all([loadJson("jgb.json"), loadJson("fx_ref.json"), loadJson("cot.json"), loadJson("us_macro.json")]).then(function (r2) {
-        D.jgb = r2[0]; D.fx = r2[1]; D.cot = r2[2]; D.macro = r2[3];
+      return Promise.all([loadJson("jgb.json"), loadJson("fx_ref.json"), loadJson("cot.json"), loadJson("us_macro.json"), loadJson("fx_ecb.json")]).then(function (r2) {
+        D.jgb = r2[0]; D.fx = r2[1]; D.cot = r2[2]; D.macro = r2[3]; D.ecb = r2[4];
       }).then(function () {
         var parts = location.hash.replace("#", "").split("/");
         var first = TABS.indexOf(parts[0]) >= 0 ? parts[0] : "home";
@@ -2810,7 +2926,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 
   // テスト用に一部の関数を公開
-  window.__portal = { zonedToUtc: zonedToUtc, gotobi: gotobi, collectEvents: collectEvents, dstChanges: dstChanges, resolvePolicy: resolvePolicy, weekClosed: weekClosed, D: D, CAL: CAL, buildCalendar: buildCalendar };
+  window.__portal = { moodAssess: moodAssess, zonedToUtc: zonedToUtc, gotobi: gotobi, collectEvents: collectEvents, dstChanges: dstChanges, resolvePolicy: resolvePolicy, weekClosed: weekClosed, D: D, CAL: CAL, buildCalendar: buildCalendar };
 })();
 
 </script>
