@@ -210,16 +210,27 @@ button { font: inherit; color: inherit; }
 
 /* ---------- タブ ---------- */
 .tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-.tabs-inner { max-width: 1240px; margin: 0 auto; padding: 0 10px; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabs-inner { max-width: 1240px; margin: 0 auto; padding: 10px 12px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
 .tabs-inner::-webkit-scrollbar { display: none; }
 .tabs-inner.more { -webkit-mask-image: linear-gradient(to right, #000 82%, transparent); mask-image: linear-gradient(to right, #000 82%, transparent); }
+/* メインメニュー：押せるボタンだとわかる形（枠・背景・影つき） */
 .tabs [role="tab"] {
-  flex: none; position: relative; border: 0; background: none; cursor: pointer;
-  padding: 13px 14px 12px; font-family: var(--font-head); font-weight: 700; font-size: var(--fs-md); color: var(--ink-3);
+  flex: none; position: relative; cursor: pointer;
+  padding: 9px 16px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: var(--surface);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  font-family: var(--font-head); font-weight: 700; font-size: var(--fs-md); color: var(--ink-2);
+  transition: background-color .15s, border-color .15s, color .15s, transform .1s;
 }
-.tabs [role="tab"]:hover { color: var(--ink); }
-.tabs [role="tab"][aria-selected="true"] { color: var(--ink); }
-.tabs [role="tab"][aria-selected="true"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--brand); }
+.tabs [role="tab"]:hover { color: var(--ink); border-color: var(--brand); background: var(--brand-soft); }
+.tabs [role="tab"]:active { transform: translateY(1px); }
+.tabs [role="tab"][aria-selected="true"] { color: var(--brand-ink); background: var(--brand); border-color: var(--brand); box-shadow: 0 2px 10px color-mix(in srgb, var(--brand) 35%, transparent); }
+.tabs [role="tab"]:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (max-width: 640px) { .tabs-inner { gap: 6px; padding: 8px 10px; } .tabs [role="tab"] { padding: 8px 13px; font-size: var(--fs-sm); } }
+
+/* TradingViewの埋め込み：暗い表示のページの中だと、ブラウザが埋め込み側に白い下地を敷いてしまうため、
+   埋め込み枠だけ明るい配色扱いにして下地を透明にする（ウィジェット自体の配色は colorTheme で暗い表示になる） */
+.tradingview-widget-container iframe { color-scheme: light; }
 
 /* ---------- レイアウト ---------- */
 .main { max-width: 1240px; margin: 0 auto; padding: 18px 16px 40px; outline: none; }
