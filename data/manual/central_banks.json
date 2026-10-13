@@ -1,0 +1,500 @@
+{
+  "checked": "2026-10-03",
+  "note": "各中央銀行の公式サイトで確認した会合日程と政策金利です。会合のたびに current を更新してください（BIS・FREDのデータの方が新しい場合は、そちらが自動で表示されます）。",
+  "banks": [
+    {
+      "id": "fed",
+      "short": "FRB",
+      "name": "米連邦準備制度（FRB）",
+      "ccy": "USD",
+      "flag": "米",
+      "bis": "US",
+      "meeting": "FOMC",
+      "rateName": "FF金利の誘導目標",
+      "tz": "America/New_York",
+      "time": "14:00",
+      "timeLabel": "声明発表",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+      "scheduleNote": "日程は直前の会合で確定します（公式発表の注記による）",
+      "current": {
+        "display": "3.75〜4.00%",
+        "value": 3.875,
+        "lastAction": "利上げ",
+        "delta": 0.25,
+        "decided": "2026-09-16",
+        "effective": "2026-09-17",
+        "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm"
+      },
+      "meetings": [
+        {
+          "date": "2026-10-28",
+          "start": "2026-10-27"
+        },
+        {
+          "date": "2026-12-09",
+          "start": "2026-12-08",
+          "tag": "経済見通しあり"
+        },
+        {
+          "date": "2027-01-27",
+          "start": "2027-01-26"
+        },
+        {
+          "date": "2027-03-17",
+          "start": "2027-03-16",
+          "tag": "経済見通しあり"
+        },
+        {
+          "date": "2027-04-28",
+          "start": "2027-04-27"
+        },
+        {
+          "date": "2027-06-09",
+          "start": "2027-06-08",
+          "tag": "経済見通しあり"
+        },
+        {
+          "date": "2027-07-28",
+          "start": "2027-07-27"
+        },
+        {
+          "date": "2027-09-15",
+          "start": "2027-09-14",
+          "tag": "経済見通しあり"
+        },
+        {
+          "date": "2027-10-27",
+          "start": "2027-10-26"
+        },
+        {
+          "date": "2027-12-08",
+          "start": "2027-12-07",
+          "tag": "経済見通しあり"
+        }
+      ]
+    },
+    {
+      "id": "boj",
+      "short": "日銀",
+      "name": "日本銀行",
+      "ccy": "JPY",
+      "flag": "日",
+      "bis": "JP",
+      "meeting": "金融政策決定会合",
+      "rateName": "無担保コールレート（オーバーナイト物）の誘導目標",
+      "tz": "Asia/Tokyo",
+      "time": null,
+      "timeLabel": "公表（時刻は事前に決まっていません）",
+      "url": "https://www.boj.or.jp/mopo/mpmsche_minu/index.htm",
+      "current": {
+        "display": "1.25%程度",
+        "value": 1.25,
+        "lastAction": "利上げ",
+        "decided": "2026-09-18",
+        "effective": "2026-09-24",
+        "source": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k260918a.pdf"
+      },
+      "meetings": [
+        {
+          "date": "2026-10-30",
+          "start": "2026-10-29",
+          "tag": "展望レポート"
+        },
+        {
+          "date": "2026-12-18",
+          "start": "2026-12-17"
+        },
+        {
+          "date": "2027-01-22",
+          "start": "2027-01-21",
+          "tag": "展望レポート"
+        },
+        {
+          "date": "2027-03-18",
+          "start": "2027-03-17"
+        },
+        {
+          "date": "2027-04-28",
+          "start": "2027-04-27",
+          "tag": "展望レポート"
+        },
+        {
+          "date": "2027-06-11",
+          "start": "2027-06-10"
+        },
+        {
+          "date": "2027-07-22",
+          "start": "2027-07-21",
+          "tag": "展望レポート"
+        },
+        {
+          "date": "2027-09-22",
+          "start": "2027-09-21"
+        },
+        {
+          "date": "2027-10-29",
+          "start": "2027-10-28",
+          "tag": "展望レポート"
+        },
+        {
+          "date": "2027-12-17",
+          "start": "2027-12-16"
+        }
+      ]
+    },
+    {
+      "id": "ecb",
+      "short": "ECB",
+      "name": "欧州中央銀行（ECB）",
+      "ccy": "EUR",
+      "flag": "欧",
+      "bis": "XM",
+      "meeting": "理事会（金融政策）",
+      "rateName": "預金ファシリティ金利",
+      "tz": "Europe/Berlin",
+      "time": "14:15",
+      "timeLabel": "政策決定（14:45から記者会見）",
+      "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+      "current": {
+        "display": "2.50%",
+        "value": 2.5,
+        "lastAction": "利上げ",
+        "delta": 0.25,
+        "decided": "2026-09-10",
+        "effective": "2026-09-16",
+        "source": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html"
+      },
+      "meetings": [
+        {
+          "date": "2026-10-29",
+          "start": "2026-10-28"
+        },
+        {
+          "date": "2026-12-17",
+          "start": "2026-12-16"
+        },
+        {
+          "date": "2027-02-04",
+          "start": "2027-02-03"
+        },
+        {
+          "date": "2027-03-18",
+          "start": "2027-03-17"
+        },
+        {
+          "date": "2027-04-29",
+          "start": "2027-04-28"
+        },
+        {
+          "date": "2027-06-10",
+          "start": "2027-06-09"
+        },
+        {
+          "date": "2027-07-22",
+          "start": "2027-07-21"
+        },
+        {
+          "date": "2027-09-09",
+          "start": "2027-09-08"
+        },
+        {
+          "date": "2027-10-28",
+          "start": "2027-10-27"
+        },
+        {
+          "date": "2027-12-16",
+          "start": "2027-12-15"
+        }
+      ]
+    },
+    {
+      "id": "boe",
+      "short": "BOE",
+      "name": "イングランド銀行（BOE）",
+      "ccy": "GBP",
+      "flag": "英",
+      "bis": "GB",
+      "meeting": "金融政策委員会（MPC）",
+      "rateName": "バンクレート",
+      "tz": "Europe/London",
+      "time": "12:00",
+      "timeLabel": "政策発表",
+      "url": "https://www.bankofengland.co.uk/monetary-policy/upcoming-mpc-dates",
+      "current": {
+        "display": "3.75%",
+        "value": 3.75,
+        "lastAction": "据え置き",
+        "decided": "2026-09-17",
+        "lastChange": "2025-12-18",
+        "source": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/september-2026"
+      },
+      "meetings": [
+        {
+          "date": "2026-11-05",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2026-12-17"
+        },
+        {
+          "date": "2027-02-04",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-03-18"
+        },
+        {
+          "date": "2027-04-29",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-06-17"
+        },
+        {
+          "date": "2027-07-29",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-09-16"
+        },
+        {
+          "date": "2027-11-04",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-12-16"
+        }
+      ]
+    },
+    {
+      "id": "rba",
+      "short": "RBA",
+      "name": "豪州準備銀行（RBA）",
+      "ccy": "AUD",
+      "flag": "豪",
+      "bis": "AU",
+      "meeting": "金融政策理事会",
+      "rateName": "キャッシュレート誘導目標",
+      "tz": "Australia/Sydney",
+      "time": "14:30",
+      "timeLabel": "政策発表",
+      "url": "https://www.rba.gov.au/schedules-events/board-meeting-schedules.html",
+      "current": {
+        "display": "4.60%",
+        "value": 4.6,
+        "lastAction": "利上げ",
+        "delta": 0.25,
+        "decided": "2026-09-29",
+        "effective": "2026-09-30",
+        "source": "https://www.rba.gov.au/cash-rate-target-overview.html"
+      },
+      "meetings": [
+        {
+          "date": "2026-11-03",
+          "start": "2026-11-02",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2026-12-08",
+          "start": "2026-12-07"
+        },
+        {
+          "date": "2027-02-09",
+          "start": "2027-02-08",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-03-23",
+          "start": "2027-03-22"
+        },
+        {
+          "date": "2027-05-04",
+          "start": "2027-05-03",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-06-22",
+          "start": "2027-06-21"
+        },
+        {
+          "date": "2027-08-10",
+          "start": "2027-08-09",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-09-28",
+          "start": "2027-09-27"
+        },
+        {
+          "date": "2027-11-02",
+          "start": "2027-11-01",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-12-14",
+          "start": "2027-12-13"
+        }
+      ]
+    },
+    {
+      "id": "rbnz",
+      "short": "RBNZ",
+      "name": "NZ準備銀行（RBNZ）",
+      "ccy": "NZD",
+      "flag": "NZ",
+      "bis": "NZ",
+      "meeting": "政策金利（OCR）発表",
+      "rateName": "オフィシャル・キャッシュレート（OCR）",
+      "tz": "Pacific/Auckland",
+      "time": "14:00",
+      "timeLabel": "政策発表",
+      "url": "https://www.rbnz.govt.nz/news-and-events/how-we-release-information/ocr-decision-dates-and-financial-stability-report-dates-to-feb-2028",
+      "current": {
+        "display": "2.75%",
+        "value": 2.75,
+        "lastAction": "利上げ",
+        "delta": 0.25,
+        "decided": "2026-09-02",
+        "source": "https://www.rbnz.govt.nz/monetary-policy/about-monetary-policy/the-official-cash-rate"
+      },
+      "meetings": [
+        {
+          "date": "2026-10-28",
+          "tag": "金融政策レビュー"
+        },
+        {
+          "date": "2026-12-09",
+          "tag": "金融政策声明"
+        },
+        {
+          "date": "2027-02-10",
+          "tag": "金融政策レビュー"
+        },
+        {
+          "date": "2027-03-17",
+          "tag": "金融政策声明"
+        },
+        {
+          "date": "2027-05-05",
+          "tag": "金融政策レビュー"
+        },
+        {
+          "date": "2027-06-16",
+          "tag": "金融政策声明"
+        },
+        {
+          "date": "2027-08-04",
+          "tag": "金融政策レビュー"
+        },
+        {
+          "date": "2027-09-15",
+          "tag": "金融政策声明"
+        },
+        {
+          "date": "2027-10-27",
+          "tag": "金融政策レビュー"
+        },
+        {
+          "date": "2027-12-08",
+          "tag": "金融政策声明"
+        }
+      ]
+    },
+    {
+      "id": "boc",
+      "short": "BOC",
+      "name": "カナダ銀行（BOC）",
+      "ccy": "CAD",
+      "flag": "加",
+      "bis": "CA",
+      "meeting": "政策金利発表",
+      "rateName": "翌日物金利の誘導目標",
+      "tz": "America/Toronto",
+      "time": "09:45",
+      "timeLabel": "政策発表",
+      "url": "https://www.bankofcanada.ca/2026/07/bank-canada-publishes-2027-schedule-policy-interest-rate-announcements-other-major-publications/",
+      "current": {
+        "display": "2.25%",
+        "value": 2.25,
+        "lastAction": "据え置き",
+        "decided": "2026-09-02",
+        "lastChange": "2025-10-29",
+        "source": "https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/"
+      },
+      "meetings": [
+        {
+          "date": "2026-10-28"
+        },
+        {
+          "date": "2026-12-09"
+        },
+        {
+          "date": "2027-01-27",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-03-03"
+        },
+        {
+          "date": "2027-04-28",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-06-02"
+        },
+        {
+          "date": "2027-07-21",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-09-08"
+        },
+        {
+          "date": "2027-10-27",
+          "tag": "金融政策報告"
+        },
+        {
+          "date": "2027-12-08"
+        }
+      ]
+    },
+    {
+      "id": "snb",
+      "short": "SNB",
+      "name": "スイス国立銀行（SNB）",
+      "ccy": "CHF",
+      "flag": "瑞",
+      "bis": "CH",
+      "meeting": "金融政策評価",
+      "rateName": "SNB政策金利",
+      "tz": "Europe/Zurich",
+      "time": "09:30",
+      "timeLabel": "政策発表（10:00から記者会見）",
+      "url": "https://www.snb.ch/en/services-events/digital-services/event-schedule",
+      "current": {
+        "display": "0.00%",
+        "value": 0,
+        "lastAction": "据え置き",
+        "decided": "2026-09-24",
+        "source": "https://www.snb.ch/en/publications/communication/press-releases-restricted/pre_20260924"
+      },
+      "meetings": [
+        {
+          "date": "2026-12-10"
+        },
+        {
+          "date": "2027-03-18"
+        },
+        {
+          "date": "2027-06-24"
+        },
+        {
+          "date": "2027-09-23"
+        },
+        {
+          "date": "2027-12-16"
+        }
+      ]
+    }
+  ]
+}
