@@ -7,8 +7,8 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>もちぽよ マーケットポータル</title>
 <meta name="description" content="Fincs会員向けのFXマーケット情報ポータル（相場時計・チャート・通貨の強弱・金利と中央銀行・経済指標・ニュース）">
-<meta name="theme-color" content="#16203A">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%231B2A5C'/><polyline points='7,27 14,15 19,22 26,10 33,24' fill='none' stroke='%23F2B42A' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<meta name="theme-color" content="#0c1222">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%231B2A5C'/><polyline points='7,27 14,15 19,22 26,10 33,24' fill='none' stroke='%23F2B42A' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/></svg>" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@600;800&family=Zen+Maru+Gothic:wght@500;700&display=swap">
@@ -359,6 +359,60 @@ button { font: inherit; color: inherit; }
   .paper { border: 0; padding: 0; max-width: none; }
 }
 
+/* ---------- 経済指標（日本語） ---------- */
+.tag.ind { background: color-mix(in srgb, var(--wave) 22%, transparent); border-color: transparent; color: var(--ink); font-weight: 700; }
+.ind-list { max-height: 560px; overflow: auto; padding-right: 4px; }
+.ind-day { font-size: var(--fs-sm); font-family: var(--font-body); color: var(--ink-2); margin: 12px 0 2px; padding: 4px 8px; background: var(--sunken); border-radius: 6px; position: sticky; top: 0; }
+.ind-day.is-today { color: var(--ink); box-shadow: inset 3px 0 0 var(--wave); }
+.ind-row { display: grid; grid-template-columns: 48px 26px minmax(0, 1fr) auto auto; gap: 10px; align-items: baseline; padding: 7px 8px; border-bottom: 1px solid var(--line); font-size: var(--fs-sm); }
+.ind-row.is-past { opacity: .55; }
+.ind-time { font-weight: 700; font-variant-numeric: tabular-nums; }
+.ind-flag { font-size: 11px; font-weight: 700; text-align: center; border-radius: 4px; padding: 0 4px; color: #fff; }
+.ind-flag.f-us { background: #3b5bdb; } .ind-flag.f-uk { background: #7048c8; } .ind-flag.f-jp { background: #c2414d; }
+.ind-name small { display: block; color: var(--ink-3); font-size: var(--fs-xs); }
+.ind-imp { color: var(--wave); font-size: 12px; letter-spacing: 1px; }
+.ind-left { font-size: var(--fs-xs); color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .ind-row { grid-template-columns: 44px 24px minmax(0, 1fr) auto; } .ind-left { grid-column: 3 / -1; } }
+
+/* ---------- 日本語ニュース ---------- */
+.news-list, .link-list { list-style: none; margin: 0; padding: 0; }
+.news-list li { padding: 8px 0; border-bottom: 1px solid var(--line); font-size: var(--fs-sm); }
+.news-list li.is-key a { font-weight: 700; }
+.news-list li.is-key::before { content: "為替"; font-size: 11px; font-weight: 700; padding: 0 5px; margin-right: 6px; border-radius: 4px; background: color-mix(in srgb, var(--wave) 22%, transparent); }
+.news-list time { display: block; font-size: var(--fs-xs); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.news-list a, .link-list a { color: var(--ink); text-decoration-color: var(--line-strong); }
+.news-list a:hover, .link-list a:hover { color: var(--brand); }
+.link-list li { padding: 9px 0; border-bottom: 1px solid var(--line); }
+.link-list li small { display: block; font-size: var(--fs-xs); color: var(--ink-3); }
+.link-list a::after { content: " ↗"; font-size: 11px; color: var(--ink-3); }
+
+/* ---------- ポンドフロー ---------- */
+.flow-hero { background: var(--hero-bg); color: var(--hero-ink); border-radius: 16px; padding: 18px 20px 14px; }
+.flow-head { display: flex; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; }
+.flow-head h2 { font-size: var(--fs-xl); }
+.flow-basis { margin: 0; color: var(--hero-muted); font-size: var(--fs-sm); }
+.flow-hero .fine { color: var(--hero-muted); }
+.flow-hero .empty { color: var(--hero-muted); }
+.flow-gauges { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+@media (max-width: 760px) { .flow-gauges { grid-template-columns: minmax(0, 1fr); } }
+.gauge { background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .1); border-radius: 12px; padding: 14px 16px 12px; }
+.gauge-top { display: flex; justify-content: space-between; align-items: baseline; }
+.gauge-name { font-weight: 700; font-size: var(--fs-lg); }
+.gauge-val { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.gauge-label { margin: 2px 0 10px; font-family: var(--font-head); font-weight: 700; font-size: var(--fs-lg); }
+.gauge-label.up2, .gauge-label.up1 { color: #6fb4ff; } .gauge-label.down2, .gauge-label.down1 { color: #ff8a93; } .gauge-label.flat { color: var(--hero-ink); }
+.gauge-bar { position: relative; height: 12px; border-radius: 6px; background: linear-gradient(90deg, #e34948 0%, #5b6680 50%, #3987e5 100%); opacity: .9; }
+.gb-mid { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; background: var(--hero-ink); opacity: .6; }
+.gb-mark { position: absolute; top: 50%; width: 18px; height: 18px; margin-left: -9px; margin-top: -9px; border-radius: 50%; background: #fff; border: 3px solid var(--hero-bg); box-shadow: 0 0 0 2px #fff; }
+.gauge-scale { display: flex; justify-content: space-between; font-size: 11px; color: var(--hero-muted); margin-top: 6px; }
+.gauge-prev { margin: 6px 0 0; font-size: var(--fs-xs); color: var(--hero-muted); font-variant-numeric: tabular-nums; }
+.flow-tbl .eff { font-weight: 700; }
+.flow-tbl .eff.up, .flow-tbl .up { color: var(--up); } .flow-tbl .eff.down, .flow-tbl .down { color: var(--down); }
+.flow-live { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1100px) { .flow-live { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .flow-live { grid-template-columns: minmax(0, 1fr); } }
+.flow-live .mtf-cell .tv-box { height: 300px; }
+
 /* ---------- 相場時計 ---------- */
 .clock-hero { background: var(--hero-bg); color: var(--hero-ink); border-radius: 16px; padding: 18px 20px 16px; }
 .hero-head { display: flex; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -625,7 +679,7 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
   (function () {
     try {
       var t = localStorage.getItem("mp_theme");
-      if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark"); // 既定は暗い表示
     } catch (e) {}
   })();
 </script>
@@ -742,7 +796,7 @@ window.PORTAL_CONFIG = {
 
 </script>
 <script>
-window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z", "source": "内閣府「国民の祝日について」（https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html）を加工して作成", "license": "公共データ利用規約（第1.0版）", "seed": true, "days": [["2026-10-12", "スポーツの日"], ["2026-11-03", "文化の日"], ["2026-11-23", "勤労感謝の日"], ["2027-01-01", "元日"], ["2027-01-11", "成人の日"], ["2027-02-11", "建国記念の日"], ["2027-02-23", "天皇誕生日"], ["2027-03-21", "春分の日"], ["2027-03-22", "休日"], ["2027-04-29", "昭和の日"], ["2027-05-03", "憲法記念日"], ["2027-05-04", "みどりの日"], ["2027-05-05", "こどもの日"], ["2027-07-19", "海の日"], ["2027-08-11", "山の日"], ["2027-09-20", "敬老の日"], ["2027-09-23", "秋分の日"], ["2027-10-11", "スポーツの日"], ["2027-11-03", "文化の日"], ["2027-11-23", "勤労感謝の日"]]}, "holidays_uk.json": {"updated": "2026-10-03T00:00:00.000Z", "source": "GOV.UK Bank holidays（England and Wales）", "license": "Contains public sector information licensed under the Open Government Licence v3.0.", "seed": true, "days": [["2026-12-25", "クリスマス", "Christmas Day"], ["2026-12-28", "ボクシングデー（振替）", "Boxing Day"], ["2027-01-01", "元日", "New Year's Day"], ["2027-03-26", "聖金曜日（グッドフライデー）", "Good Friday"], ["2027-03-29", "イースターマンデー", "Easter Monday"], ["2027-05-03", "アーリー・メイ・バンクホリデー", "Early May bank holiday"], ["2027-05-31", "スプリング・バンクホリデー", "Spring bank holiday"], ["2027-08-30", "サマー・バンクホリデー", "Summer bank holiday"], ["2027-12-27", "クリスマス（振替）", "Christmas Day"], ["2027-12-28", "ボクシングデー（振替）", "Boxing Day"]]}, "manual/notices.json": {"items": []}, "manual/holidays_us.json": {"checked": "2026-10-03", "sources": ["NYSE: ICE（NYSEの親会社）2025年12月23日発表 2026〜2028年の休場・短縮取引日 https://ir.theice.com/press/news-details/2025/NYSE-Group-Announces-2026-2027-and-2028-Holiday-and-Early-Closings-Calendar/default.aspx", "連邦祝日: 米人事管理局（OPM）https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/"], "note": "type … both: NYSE休場かつ連邦祝日 / nyse: NYSEのみ休場 / fed: 連邦祝日（NYSEは通常取引）/ early: NYSE短縮取引。2028年分はNYSE・OPMの公表内容を確認して追記してください。", "days": [["2026-10-12", "fed", "コロンブス・デー", "連邦祝日（NYSEは通常取引）"], ["2026-11-11", "fed", "ベテランズ・デー", "連邦祝日（NYSEは通常取引）"], ["2026-11-26", "both", "サンクスギビング（感謝祭）", "NYSE休場"], ["2026-11-27", "early", "感謝祭の翌日", "NYSEは米東部13:00で取引終了"], ["2026-12-24", "early", "クリスマス・イブ", "NYSEは米東部13:00で取引終了"], ["2026-12-25", "both", "クリスマス", "NYSE休場"], ["2027-01-01", "both", "元日", "NYSE休場"], ["2027-01-18", "both", "キング牧師記念日", "NYSE休場"], ["2027-02-15", "both", "ワシントン誕生日", "NYSE休場"], ["2027-03-26", "nyse", "聖金曜日（グッドフライデー）", "NYSE休場（連邦祝日ではありません）"], ["2027-05-31", "both", "メモリアル・デー", "NYSE休場"], ["2027-06-18", "both", "ジューンティーンス（振替）", "NYSE休場"], ["2027-07-05", "both", "独立記念日（振替）", "NYSE休場"], ["2027-09-06", "both", "レイバー・デー", "NYSE休場"], ["2027-10-11", "fed", "コロンブス・デー", "連邦祝日（NYSEは通常取引）"], ["2027-11-11", "fed", "ベテランズ・デー", "連邦祝日（NYSEは通常取引）"], ["2027-11-25", "both", "サンクスギビング（感謝祭）", "NYSE休場"], ["2027-11-26", "early", "感謝祭の翌日", "NYSEは米東部13:00で取引終了"], ["2027-12-24", "both", "クリスマス（振替）", "NYSE休場"], ["2027-12-31", "fed", "元日（2028年）の振替", "連邦祝日（NYSEは通常取引）"]]}, "manual/central_banks.json": {"checked": "2026-10-03", "note": "各中央銀行の公式サイトで確認した会合日程と政策金利です。会合のたびに current を更新してください（BIS・FREDのデータの方が新しい場合は、そちらが自動で表示されます）。", "banks": [{"id": "fed", "short": "FRB", "name": "米連邦準備制度（FRB）", "ccy": "USD", "flag": "米", "bis": "US", "meeting": "FOMC", "rateName": "FF金利の誘導目標", "tz": "America/New_York", "time": "14:00", "timeLabel": "声明発表", "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm", "scheduleNote": "日程は直前の会合で確定します（公式発表の注記による）", "current": {"display": "3.75〜4.00%", "value": 3.875, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-16", "effective": "2026-09-17", "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm"}, "meetings": [{"date": "2026-10-28", "start": "2026-10-27"}, {"date": "2026-12-09", "start": "2026-12-08", "tag": "経済見通しあり"}, {"date": "2027-01-27", "start": "2027-01-26"}, {"date": "2027-03-17", "start": "2027-03-16", "tag": "経済見通しあり"}, {"date": "2027-04-28", "start": "2027-04-27"}, {"date": "2027-06-09", "start": "2027-06-08", "tag": "経済見通しあり"}, {"date": "2027-07-28", "start": "2027-07-27"}, {"date": "2027-09-15", "start": "2027-09-14", "tag": "経済見通しあり"}, {"date": "2027-10-27", "start": "2027-10-26"}, {"date": "2027-12-08", "start": "2027-12-07", "tag": "経済見通しあり"}]}, {"id": "boj", "short": "日銀", "name": "日本銀行", "ccy": "JPY", "flag": "日", "bis": "JP", "meeting": "金融政策決定会合", "rateName": "無担保コールレート（オーバーナイト物）の誘導目標", "tz": "Asia/Tokyo", "time": null, "timeLabel": "公表（時刻は事前に決まっていません）", "url": "https://www.boj.or.jp/mopo/mpmsche_minu/index.htm", "current": {"display": "1.25%程度", "value": 1.25, "lastAction": "利上げ", "decided": "2026-09-18", "effective": "2026-09-24", "source": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k260918a.pdf"}, "meetings": [{"date": "2026-10-30", "start": "2026-10-29", "tag": "展望レポート"}, {"date": "2026-12-18", "start": "2026-12-17"}, {"date": "2027-01-22", "start": "2027-01-21", "tag": "展望レポート"}, {"date": "2027-03-18", "start": "2027-03-17"}, {"date": "2027-04-28", "start": "2027-04-27", "tag": "展望レポート"}, {"date": "2027-06-11", "start": "2027-06-10"}, {"date": "2027-07-22", "start": "2027-07-21", "tag": "展望レポート"}, {"date": "2027-09-22", "start": "2027-09-21"}, {"date": "2027-10-29", "start": "2027-10-28", "tag": "展望レポート"}, {"date": "2027-12-17", "start": "2027-12-16"}]}, {"id": "ecb", "short": "ECB", "name": "欧州中央銀行（ECB）", "ccy": "EUR", "flag": "欧", "bis": "XM", "meeting": "理事会（金融政策）", "rateName": "預金ファシリティ金利", "tz": "Europe/Berlin", "time": "14:15", "timeLabel": "政策決定（14:45から記者会見）", "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html", "current": {"display": "2.50%", "value": 2.5, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-10", "effective": "2026-09-16", "source": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html"}, "meetings": [{"date": "2026-10-29", "start": "2026-10-28"}, {"date": "2026-12-17", "start": "2026-12-16"}, {"date": "2027-02-04", "start": "2027-02-03"}, {"date": "2027-03-18", "start": "2027-03-17"}, {"date": "2027-04-29", "start": "2027-04-28"}, {"date": "2027-06-10", "start": "2027-06-09"}, {"date": "2027-07-22", "start": "2027-07-21"}, {"date": "2027-09-09", "start": "2027-09-08"}, {"date": "2027-10-28", "start": "2027-10-27"}, {"date": "2027-12-16", "start": "2027-12-15"}]}, {"id": "boe", "short": "BOE", "name": "イングランド銀行（BOE）", "ccy": "GBP", "flag": "英", "bis": "GB", "meeting": "金融政策委員会（MPC）", "rateName": "バンクレート", "tz": "Europe/London", "time": "12:00", "timeLabel": "政策発表", "url": "https://www.bankofengland.co.uk/monetary-policy/upcoming-mpc-dates", "current": {"display": "3.75%", "value": 3.75, "lastAction": "据え置き", "decided": "2026-09-17", "lastChange": "2025-12-18", "source": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/september-2026"}, "meetings": [{"date": "2026-11-05", "tag": "金融政策報告"}, {"date": "2026-12-17"}, {"date": "2027-02-04", "tag": "金融政策報告"}, {"date": "2027-03-18"}, {"date": "2027-04-29", "tag": "金融政策報告"}, {"date": "2027-06-17"}, {"date": "2027-07-29", "tag": "金融政策報告"}, {"date": "2027-09-16"}, {"date": "2027-11-04", "tag": "金融政策報告"}, {"date": "2027-12-16"}]}, {"id": "rba", "short": "RBA", "name": "豪州準備銀行（RBA）", "ccy": "AUD", "flag": "豪", "bis": "AU", "meeting": "金融政策理事会", "rateName": "キャッシュレート誘導目標", "tz": "Australia/Sydney", "time": "14:30", "timeLabel": "政策発表", "url": "https://www.rba.gov.au/schedules-events/board-meeting-schedules.html", "current": {"display": "4.60%", "value": 4.6, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-29", "effective": "2026-09-30", "source": "https://www.rba.gov.au/cash-rate-target-overview.html"}, "meetings": [{"date": "2026-11-03", "start": "2026-11-02", "tag": "金融政策報告"}, {"date": "2026-12-08", "start": "2026-12-07"}, {"date": "2027-02-09", "start": "2027-02-08", "tag": "金融政策報告"}, {"date": "2027-03-23", "start": "2027-03-22"}, {"date": "2027-05-04", "start": "2027-05-03", "tag": "金融政策報告"}, {"date": "2027-06-22", "start": "2027-06-21"}, {"date": "2027-08-10", "start": "2027-08-09", "tag": "金融政策報告"}, {"date": "2027-09-28", "start": "2027-09-27"}, {"date": "2027-11-02", "start": "2027-11-01", "tag": "金融政策報告"}, {"date": "2027-12-14", "start": "2027-12-13"}]}, {"id": "rbnz", "short": "RBNZ", "name": "NZ準備銀行（RBNZ）", "ccy": "NZD", "flag": "NZ", "bis": "NZ", "meeting": "政策金利（OCR）発表", "rateName": "オフィシャル・キャッシュレート（OCR）", "tz": "Pacific/Auckland", "time": "14:00", "timeLabel": "政策発表", "url": "https://www.rbnz.govt.nz/news-and-events/how-we-release-information/ocr-decision-dates-and-financial-stability-report-dates-to-feb-2028", "current": {"display": "2.75%", "value": 2.75, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-02", "source": "https://www.rbnz.govt.nz/monetary-policy/about-monetary-policy/the-official-cash-rate"}, "meetings": [{"date": "2026-10-28", "tag": "金融政策レビュー"}, {"date": "2026-12-09", "tag": "金融政策声明"}, {"date": "2027-02-10", "tag": "金融政策レビュー"}, {"date": "2027-03-17", "tag": "金融政策声明"}, {"date": "2027-05-05", "tag": "金融政策レビュー"}, {"date": "2027-06-16", "tag": "金融政策声明"}, {"date": "2027-08-04", "tag": "金融政策レビュー"}, {"date": "2027-09-15", "tag": "金融政策声明"}, {"date": "2027-10-27", "tag": "金融政策レビュー"}, {"date": "2027-12-08", "tag": "金融政策声明"}]}, {"id": "boc", "short": "BOC", "name": "カナダ銀行（BOC）", "ccy": "CAD", "flag": "加", "bis": "CA", "meeting": "政策金利発表", "rateName": "翌日物金利の誘導目標", "tz": "America/Toronto", "time": "09:45", "timeLabel": "政策発表", "url": "https://www.bankofcanada.ca/2026/07/bank-canada-publishes-2027-schedule-policy-interest-rate-announcements-other-major-publications/", "current": {"display": "2.25%", "value": 2.25, "lastAction": "据え置き", "decided": "2026-09-02", "lastChange": "2025-10-29", "source": "https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/"}, "meetings": [{"date": "2026-10-28"}, {"date": "2026-12-09"}, {"date": "2027-01-27", "tag": "金融政策報告"}, {"date": "2027-03-03"}, {"date": "2027-04-28", "tag": "金融政策報告"}, {"date": "2027-06-02"}, {"date": "2027-07-21", "tag": "金融政策報告"}, {"date": "2027-09-08"}, {"date": "2027-10-27", "tag": "金融政策報告"}, {"date": "2027-12-08"}]}, {"id": "snb", "short": "SNB", "name": "スイス国立銀行（SNB）", "ccy": "CHF", "flag": "瑞", "bis": "CH", "meeting": "金融政策評価", "rateName": "SNB政策金利", "tz": "Europe/Zurich", "time": "09:30", "timeLabel": "政策発表（10:00から記者会見）", "url": "https://www.snb.ch/en/services-events/digital-services/event-schedule", "current": {"display": "0.00%", "value": 0, "lastAction": "据え置き", "decided": "2026-09-24", "source": "https://www.snb.ch/en/publications/communication/press-releases-restricted/pre_20260924"}, "meetings": [{"date": "2026-12-10"}, {"date": "2027-03-18"}, {"date": "2027-06-24"}, {"date": "2027-09-23"}, {"date": "2027-12-16"}]}]}, "manual/cftc_schedule.json": {"checked": "2026-10-03", "source": "https://www.cftc.gov/MarketReports/CommitmentsofTraders/ReleaseSchedule/index.htm", "note": "CFTCが公表する建玉明細の公表日（米東部15:30）。祝日の週は月曜などにずれます。翌年分が公表されたら追記してください。一覧の最後の日付より後は、毎週金曜として扱います。", "dates": ["2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-16", "2026-11-20", "2026-11-30", "2026-12-04", "2026-12-11", "2026-12-18", "2026-12-28"]}, "manual/holidays_jp_extra.json": {"checked": "2026-10-03", "source": "日本取引所グループ 休業日一覧 https://www.jpx.co.jp/corporate/about-jpx/calendar/index.html", "note": "国民の祝日以外で東京証券取引所が休業する日（年末年始）。", "days": [["2026-12-31", "年末年始の休業日（東京証券取引所）"], ["2027-01-02", "年末年始の休業日（東京証券取引所）"], ["2027-01-03", "年末年始の休業日（東京証券取引所）"], ["2027-12-31", "年末年始の休業日（東京証券取引所）"]]}};
+window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z", "source": "内閣府「国民の祝日について」（https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html）を加工して作成", "license": "公共データ利用規約（第1.0版）", "seed": true, "days": [["2026-10-12", "スポーツの日"], ["2026-11-03", "文化の日"], ["2026-11-23", "勤労感謝の日"], ["2027-01-01", "元日"], ["2027-01-11", "成人の日"], ["2027-02-11", "建国記念の日"], ["2027-02-23", "天皇誕生日"], ["2027-03-21", "春分の日"], ["2027-03-22", "休日"], ["2027-04-29", "昭和の日"], ["2027-05-03", "憲法記念日"], ["2027-05-04", "みどりの日"], ["2027-05-05", "こどもの日"], ["2027-07-19", "海の日"], ["2027-08-11", "山の日"], ["2027-09-20", "敬老の日"], ["2027-09-23", "秋分の日"], ["2027-10-11", "スポーツの日"], ["2027-11-03", "文化の日"], ["2027-11-23", "勤労感謝の日"]]}, "holidays_uk.json": {"updated": "2026-10-03T00:00:00.000Z", "source": "GOV.UK Bank holidays（England and Wales）", "license": "Contains public sector information licensed under the Open Government Licence v3.0.", "seed": true, "days": [["2026-12-25", "クリスマス", "Christmas Day"], ["2026-12-28", "ボクシングデー（振替）", "Boxing Day"], ["2027-01-01", "元日", "New Year's Day"], ["2027-03-26", "聖金曜日（グッドフライデー）", "Good Friday"], ["2027-03-29", "イースターマンデー", "Easter Monday"], ["2027-05-03", "アーリー・メイ・バンクホリデー", "Early May bank holiday"], ["2027-05-31", "スプリング・バンクホリデー", "Spring bank holiday"], ["2027-08-30", "サマー・バンクホリデー", "Summer bank holiday"], ["2027-12-27", "クリスマス（振替）", "Christmas Day"], ["2027-12-28", "ボクシングデー（振替）", "Boxing Day"]]}, "manual/central_banks.json": {"checked": "2026-10-03", "note": "各中央銀行の公式サイトで確認した会合日程と政策金利です。会合のたびに current を更新してください（BIS・FREDのデータの方が新しい場合は、そちらが自動で表示されます）。", "banks": [{"id": "fed", "short": "FRB", "name": "米連邦準備制度（FRB）", "ccy": "USD", "flag": "米", "bis": "US", "meeting": "FOMC", "rateName": "FF金利の誘導目標", "tz": "America/New_York", "time": "14:00", "timeLabel": "声明発表", "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm", "scheduleNote": "日程は直前の会合で確定します（公式発表の注記による）", "current": {"display": "3.75〜4.00%", "value": 3.875, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-16", "effective": "2026-09-17", "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm"}, "meetings": [{"date": "2026-10-28", "start": "2026-10-27"}, {"date": "2026-12-09", "start": "2026-12-08", "tag": "経済見通しあり"}, {"date": "2027-01-27", "start": "2027-01-26"}, {"date": "2027-03-17", "start": "2027-03-16", "tag": "経済見通しあり"}, {"date": "2027-04-28", "start": "2027-04-27"}, {"date": "2027-06-09", "start": "2027-06-08", "tag": "経済見通しあり"}, {"date": "2027-07-28", "start": "2027-07-27"}, {"date": "2027-09-15", "start": "2027-09-14", "tag": "経済見通しあり"}, {"date": "2027-10-27", "start": "2027-10-26"}, {"date": "2027-12-08", "start": "2027-12-07", "tag": "経済見通しあり"}]}, {"id": "boj", "short": "日銀", "name": "日本銀行", "ccy": "JPY", "flag": "日", "bis": "JP", "meeting": "金融政策決定会合", "rateName": "無担保コールレート（オーバーナイト物）の誘導目標", "tz": "Asia/Tokyo", "time": null, "timeLabel": "公表（時刻は事前に決まっていません）", "url": "https://www.boj.or.jp/mopo/mpmsche_minu/index.htm", "current": {"display": "1.25%程度", "value": 1.25, "lastAction": "利上げ", "decided": "2026-09-18", "effective": "2026-09-24", "source": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k260918a.pdf"}, "meetings": [{"date": "2026-10-30", "start": "2026-10-29", "tag": "展望レポート"}, {"date": "2026-12-18", "start": "2026-12-17"}, {"date": "2027-01-22", "start": "2027-01-21", "tag": "展望レポート"}, {"date": "2027-03-18", "start": "2027-03-17"}, {"date": "2027-04-28", "start": "2027-04-27", "tag": "展望レポート"}, {"date": "2027-06-11", "start": "2027-06-10"}, {"date": "2027-07-22", "start": "2027-07-21", "tag": "展望レポート"}, {"date": "2027-09-22", "start": "2027-09-21"}, {"date": "2027-10-29", "start": "2027-10-28", "tag": "展望レポート"}, {"date": "2027-12-17", "start": "2027-12-16"}]}, {"id": "ecb", "short": "ECB", "name": "欧州中央銀行（ECB）", "ccy": "EUR", "flag": "欧", "bis": "XM", "meeting": "理事会（金融政策）", "rateName": "預金ファシリティ金利", "tz": "Europe/Berlin", "time": "14:15", "timeLabel": "政策決定（14:45から記者会見）", "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html", "current": {"display": "2.50%", "value": 2.5, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-10", "effective": "2026-09-16", "source": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html"}, "meetings": [{"date": "2026-10-29", "start": "2026-10-28"}, {"date": "2026-12-17", "start": "2026-12-16"}, {"date": "2027-02-04", "start": "2027-02-03"}, {"date": "2027-03-18", "start": "2027-03-17"}, {"date": "2027-04-29", "start": "2027-04-28"}, {"date": "2027-06-10", "start": "2027-06-09"}, {"date": "2027-07-22", "start": "2027-07-21"}, {"date": "2027-09-09", "start": "2027-09-08"}, {"date": "2027-10-28", "start": "2027-10-27"}, {"date": "2027-12-16", "start": "2027-12-15"}]}, {"id": "boe", "short": "BOE", "name": "イングランド銀行（BOE）", "ccy": "GBP", "flag": "英", "bis": "GB", "meeting": "金融政策委員会（MPC）", "rateName": "バンクレート", "tz": "Europe/London", "time": "12:00", "timeLabel": "政策発表", "url": "https://www.bankofengland.co.uk/monetary-policy/upcoming-mpc-dates", "current": {"display": "3.75%", "value": 3.75, "lastAction": "据え置き", "decided": "2026-09-17", "lastChange": "2025-12-18", "source": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/september-2026"}, "meetings": [{"date": "2026-11-05", "tag": "金融政策報告"}, {"date": "2026-12-17"}, {"date": "2027-02-04", "tag": "金融政策報告"}, {"date": "2027-03-18"}, {"date": "2027-04-29", "tag": "金融政策報告"}, {"date": "2027-06-17"}, {"date": "2027-07-29", "tag": "金融政策報告"}, {"date": "2027-09-16"}, {"date": "2027-11-04", "tag": "金融政策報告"}, {"date": "2027-12-16"}]}, {"id": "rba", "short": "RBA", "name": "豪州準備銀行（RBA）", "ccy": "AUD", "flag": "豪", "bis": "AU", "meeting": "金融政策理事会", "rateName": "キャッシュレート誘導目標", "tz": "Australia/Sydney", "time": "14:30", "timeLabel": "政策発表", "url": "https://www.rba.gov.au/schedules-events/board-meeting-schedules.html", "current": {"display": "4.60%", "value": 4.6, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-29", "effective": "2026-09-30", "source": "https://www.rba.gov.au/cash-rate-target-overview.html"}, "meetings": [{"date": "2026-11-03", "start": "2026-11-02", "tag": "金融政策報告"}, {"date": "2026-12-08", "start": "2026-12-07"}, {"date": "2027-02-09", "start": "2027-02-08", "tag": "金融政策報告"}, {"date": "2027-03-23", "start": "2027-03-22"}, {"date": "2027-05-04", "start": "2027-05-03", "tag": "金融政策報告"}, {"date": "2027-06-22", "start": "2027-06-21"}, {"date": "2027-08-10", "start": "2027-08-09", "tag": "金融政策報告"}, {"date": "2027-09-28", "start": "2027-09-27"}, {"date": "2027-11-02", "start": "2027-11-01", "tag": "金融政策報告"}, {"date": "2027-12-14", "start": "2027-12-13"}]}, {"id": "rbnz", "short": "RBNZ", "name": "NZ準備銀行（RBNZ）", "ccy": "NZD", "flag": "NZ", "bis": "NZ", "meeting": "政策金利（OCR）発表", "rateName": "オフィシャル・キャッシュレート（OCR）", "tz": "Pacific/Auckland", "time": "14:00", "timeLabel": "政策発表", "url": "https://www.rbnz.govt.nz/news-and-events/how-we-release-information/ocr-decision-dates-and-financial-stability-report-dates-to-feb-2028", "current": {"display": "2.75%", "value": 2.75, "lastAction": "利上げ", "delta": 0.25, "decided": "2026-09-02", "source": "https://www.rbnz.govt.nz/monetary-policy/about-monetary-policy/the-official-cash-rate"}, "meetings": [{"date": "2026-10-28", "tag": "金融政策レビュー"}, {"date": "2026-12-09", "tag": "金融政策声明"}, {"date": "2027-02-10", "tag": "金融政策レビュー"}, {"date": "2027-03-17", "tag": "金融政策声明"}, {"date": "2027-05-05", "tag": "金融政策レビュー"}, {"date": "2027-06-16", "tag": "金融政策声明"}, {"date": "2027-08-04", "tag": "金融政策レビュー"}, {"date": "2027-09-15", "tag": "金融政策声明"}, {"date": "2027-10-27", "tag": "金融政策レビュー"}, {"date": "2027-12-08", "tag": "金融政策声明"}]}, {"id": "boc", "short": "BOC", "name": "カナダ銀行（BOC）", "ccy": "CAD", "flag": "加", "bis": "CA", "meeting": "政策金利発表", "rateName": "翌日物金利の誘導目標", "tz": "America/Toronto", "time": "09:45", "timeLabel": "政策発表", "url": "https://www.bankofcanada.ca/2026/07/bank-canada-publishes-2027-schedule-policy-interest-rate-announcements-other-major-publications/", "current": {"display": "2.25%", "value": 2.25, "lastAction": "据え置き", "decided": "2026-09-02", "lastChange": "2025-10-29", "source": "https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/"}, "meetings": [{"date": "2026-10-28"}, {"date": "2026-12-09"}, {"date": "2027-01-27", "tag": "金融政策報告"}, {"date": "2027-03-03"}, {"date": "2027-04-28", "tag": "金融政策報告"}, {"date": "2027-06-02"}, {"date": "2027-07-21", "tag": "金融政策報告"}, {"date": "2027-09-08"}, {"date": "2027-10-27", "tag": "金融政策報告"}, {"date": "2027-12-08"}]}, {"id": "snb", "short": "SNB", "name": "スイス国立銀行（SNB）", "ccy": "CHF", "flag": "瑞", "bis": "CH", "meeting": "金融政策評価", "rateName": "SNB政策金利", "tz": "Europe/Zurich", "time": "09:30", "timeLabel": "政策発表（10:00から記者会見）", "url": "https://www.snb.ch/en/services-events/digital-services/event-schedule", "current": {"display": "0.00%", "value": 0, "lastAction": "据え置き", "decided": "2026-09-24", "source": "https://www.snb.ch/en/publications/communication/press-releases-restricted/pre_20260924"}, "meetings": [{"date": "2026-12-10"}, {"date": "2027-03-18"}, {"date": "2027-06-24"}, {"date": "2027-09-23"}, {"date": "2027-12-16"}]}]}, "manual/cftc_schedule.json": {"checked": "2026-10-03", "source": "https://www.cftc.gov/MarketReports/CommitmentsofTraders/ReleaseSchedule/index.htm", "note": "CFTCが公表する建玉明細の公表日（米東部15:30）。祝日の週は月曜などにずれます。翌年分が公表されたら追記してください。一覧の最後の日付より後は、毎週金曜として扱います。", "dates": ["2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-16", "2026-11-20", "2026-11-30", "2026-12-04", "2026-12-11", "2026-12-18", "2026-12-28"]}, "manual/holidays_jp_extra.json": {"checked": "2026-10-03", "source": "日本取引所グループ 休業日一覧 https://www.jpx.co.jp/corporate/about-jpx/calendar/index.html", "note": "国民の祝日以外で東京証券取引所が休業する日（年末年始）。", "days": [["2026-12-31", "年末年始の休業日（東京証券取引所）"], ["2027-01-02", "年末年始の休業日（東京証券取引所）"], ["2027-01-03", "年末年始の休業日（東京証券取引所）"], ["2027-12-31", "年末年始の休業日（東京証券取引所）"]]}, "manual/holidays_us.json": {"checked": "2026-10-03", "sources": ["NYSE: ICE（NYSEの親会社）2025年12月23日発表 2026〜2028年の休場・短縮取引日 https://ir.theice.com/press/news-details/2025/NYSE-Group-Announces-2026-2027-and-2028-Holiday-and-Early-Closings-Calendar/default.aspx", "連邦祝日: 米人事管理局（OPM）https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/"], "note": "type … both: NYSE休場かつ連邦祝日 / nyse: NYSEのみ休場 / fed: 連邦祝日（NYSEは通常取引）/ early: NYSE短縮取引。2028年分はNYSE・OPMの公表内容を確認して追記してください。", "days": [["2026-10-12", "fed", "コロンブス・デー", "連邦祝日（NYSEは通常取引）"], ["2026-11-11", "fed", "ベテランズ・デー", "連邦祝日（NYSEは通常取引）"], ["2026-11-26", "both", "サンクスギビング（感謝祭）", "NYSE休場"], ["2026-11-27", "early", "感謝祭の翌日", "NYSEは米東部13:00で取引終了"], ["2026-12-24", "early", "クリスマス・イブ", "NYSEは米東部13:00で取引終了"], ["2026-12-25", "both", "クリスマス", "NYSE休場"], ["2027-01-01", "both", "元日", "NYSE休場"], ["2027-01-18", "both", "キング牧師記念日", "NYSE休場"], ["2027-02-15", "both", "ワシントン誕生日", "NYSE休場"], ["2027-03-26", "nyse", "聖金曜日（グッドフライデー）", "NYSE休場（連邦祝日ではありません）"], ["2027-05-31", "both", "メモリアル・デー", "NYSE休場"], ["2027-06-18", "both", "ジューンティーンス（振替）", "NYSE休場"], ["2027-07-05", "both", "独立記念日（振替）", "NYSE休場"], ["2027-09-06", "both", "レイバー・デー", "NYSE休場"], ["2027-10-11", "fed", "コロンブス・デー", "連邦祝日（NYSEは通常取引）"], ["2027-11-11", "fed", "ベテランズ・デー", "連邦祝日（NYSEは通常取引）"], ["2027-11-25", "both", "サンクスギビング（感謝祭）", "NYSE休場"], ["2027-11-26", "early", "感謝祭の翌日", "NYSEは米東部13:00で取引終了"], ["2027-12-24", "both", "クリスマス（振替）", "NYSE休場"], ["2027-12-31", "fed", "元日（2028年）の振替", "連邦祝日（NYSEは通常取引）"]]}, "manual/indicators.json": {"checked": "2026-10-13", "note": "各国の統計作成機関が公表している発表予定です。予定は変更されることがあります。ISM景況指数・日銀短観などは公式の予定表を確認できなかったため載せていません。importance：3=特に注目、2=注目。新しい予定が公表されたら追記してください。", "items": [{"country": "英", "name": "GDP（月次）", "period": "2026年8月分", "date": "2026-10-15", "time": "07:00", "tz": "Europe/London", "importance": 2, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "米", "name": "小売売上高", "period": "2026年9月分", "date": "2026-10-15", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.census.gov/economic-indicators/calendar-listview-2026.html"}, {"country": "英", "name": "雇用統計", "period": "2026年10月公表分", "date": "2026-10-20", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "英", "name": "消費者物価指数（CPI）", "period": "2026年9月分", "date": "2026-10-21", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "英", "name": "小売売上高", "period": "2026年9月分", "date": "2026-10-23", "time": "07:00", "tz": "Europe/London", "importance": 2, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "日", "name": "全国消費者物価指数（CPI）", "period": "2026年9月分", "date": "2026-10-23", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "米", "name": "GDP速報値", "period": "2026年7-9月期", "date": "2026-10-29", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bea.gov/news/schedule", "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"}, {"country": "米", "name": "個人所得・個人消費支出（PCE）", "period": "2026年9月分", "date": "2026-10-29", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bea.gov/news/schedule", "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"}, {"country": "日", "name": "東京都区部消費者物価指数（中旬速報）", "period": "2026年10月分", "date": "2026-10-30", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "米", "name": "JOLTS求人件数", "period": "2026年9月分", "date": "2026-11-03", "time": "10:00", "tz": "America/New_York", "importance": 2, "source": "https://www.bls.gov/schedule/news_release/jolts.htm"}, {"country": "米", "name": "雇用統計", "period": "2026年10月分", "date": "2026-11-06", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/empsit.htm"}, {"country": "米", "name": "消費者物価指数（CPI）", "period": "2026年10月分", "date": "2026-11-10", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/cpi.htm"}, {"country": "英", "name": "GDP（月次）", "period": "2026年9月分", "date": "2026-11-12", "time": "07:00", "tz": "Europe/London", "importance": 2, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "米", "name": "生産者物価指数（PPI）", "period": "2026年10月分", "date": "2026-11-13", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.bls.gov/schedule/news_release/ppi.htm"}, {"country": "日", "name": "GDP速報（1次）", "period": "2026年7-9月期", "date": "2026-11-16", "time": "08:50", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.esri.cao.go.jp/jp/sna/kouhyou/kouhyou_top.html"}, {"country": "英", "name": "雇用統計", "period": "2026年11月公表分", "date": "2026-11-17", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "米", "name": "小売売上高", "period": "2026年10月分", "date": "2026-11-17", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.census.gov/economic-indicators/calendar-listview-2026.html"}, {"country": "英", "name": "消費者物価指数（CPI）", "period": "2026年10月分", "date": "2026-11-18", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "英", "name": "小売売上高", "period": "2026年10月分", "date": "2026-11-20", "time": "07:00", "tz": "Europe/London", "importance": 2, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "日", "name": "全国消費者物価指数（CPI）", "period": "2026年10月分", "date": "2026-11-20", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "米", "name": "GDP改定値", "period": "2026年7-9月期", "date": "2026-11-25", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.bea.gov/news/schedule", "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"}, {"country": "米", "name": "個人所得・個人消費支出（PCE）", "period": "2026年10月分", "date": "2026-11-25", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bea.gov/news/schedule", "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"}, {"country": "日", "name": "東京都区部消費者物価指数（中旬速報）", "period": "2026年11月分", "date": "2026-11-27", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "米", "name": "JOLTS求人件数", "period": "2026年10月分", "date": "2026-12-01", "time": "10:00", "tz": "America/New_York", "importance": 2, "source": "https://www.bls.gov/schedule/news_release/jolts.htm"}, {"country": "米", "name": "雇用統計", "period": "2026年11月分", "date": "2026-12-04", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/empsit.htm"}, {"country": "日", "name": "GDP速報（2次）", "period": "2026年7-9月期", "date": "2026-12-08", "time": "08:50", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.esri.cao.go.jp/jp/sna/kouhyou/kouhyou_top.html"}, {"country": "米", "name": "消費者物価指数（CPI）", "period": "2026年11月分", "date": "2026-12-10", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/cpi.htm"}, {"country": "英", "name": "GDP（月次）", "period": "2026年10月分", "date": "2026-12-11", "time": "07:00", "tz": "Europe/London", "importance": 2, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "英", "name": "雇用統計", "period": "2026年12月公表分", "date": "2026-12-15", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "米", "name": "生産者物価指数（PPI）", "period": "2026年11月分", "date": "2026-12-15", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.bls.gov/schedule/news_release/ppi.htm"}, {"country": "英", "name": "消費者物価指数（CPI）", "period": "2026年11月分", "date": "2026-12-16", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "米", "name": "小売売上高", "period": "2026年11月分", "date": "2026-12-16", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.census.gov/economic-indicators/calendar-listview-2026.html"}, {"country": "英", "name": "小売売上高", "period": "2026年11月分", "date": "2026-12-18", "time": "07:00", "tz": "Europe/London", "importance": 2, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "日", "name": "全国消費者物価指数（CPI）", "period": "2026年11月分", "date": "2026-12-18", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "米", "name": "GDP確定値", "period": "2026年7-9月期", "date": "2026-12-23", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.bea.gov/news/schedule", "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"}, {"country": "米", "name": "個人所得・個人消費支出（PCE）", "period": "2026年11月分", "date": "2026-12-23", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bea.gov/news/schedule", "note": "発表時刻は公表元の表記（8:30）を米東部時間として換算"}, {"country": "日", "name": "東京都区部消費者物価指数（中旬速報）", "period": "2026年12月分", "date": "2026-12-25", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "米", "name": "雇用統計", "period": "2026年12月分", "date": "2027-01-08", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/empsit.htm"}, {"country": "米", "name": "消費者物価指数（CPI）", "period": "2026年12月分", "date": "2027-01-13", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/cpi.htm"}, {"country": "米", "name": "生産者物価指数（PPI）", "period": "2026年12月分", "date": "2027-01-14", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.bls.gov/schedule/news_release/ppi.htm"}, {"country": "英", "name": "GDP（月次）", "period": "2026年11月分", "date": "2027-01-15", "time": "07:00", "tz": "Europe/London", "importance": 2, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "米", "name": "小売売上高", "period": "2026年12月分", "date": "2027-01-15", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.census.gov/economic-indicators/calendar-listview.html"}, {"country": "英", "name": "雇用統計", "period": "2027年1月公表分", "date": "2027-01-19", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "英", "name": "消費者物価指数（CPI）", "period": "2026年12月分", "date": "2027-01-20", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "英", "name": "小売売上高", "period": "2026年12月分", "date": "2027-01-22", "time": "07:00", "tz": "Europe/London", "importance": 2, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "日", "name": "全国消費者物価指数（CPI）", "period": "2026年12月分", "date": "2027-01-22", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "日", "name": "東京都区部消費者物価指数（中旬速報）", "period": "2027年1月分", "date": "2027-01-29", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "米", "name": "雇用統計", "period": "2027年1月分", "date": "2027-02-05", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/empsit.htm"}, {"country": "米", "name": "消費者物価指数（CPI）", "period": "2027年1月分", "date": "2027-02-11", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/cpi.htm"}, {"country": "米", "name": "生産者物価指数（PPI）", "period": "2027年1月分", "date": "2027-02-12", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.bls.gov/schedule/news_release/ppi.htm"}, {"country": "日", "name": "GDP速報（1次）", "period": "2026年10-12月期", "date": "2027-02-15", "time": "08:50", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.esri.cao.go.jp/jp/sna/kouhyou/kouhyou_top.html"}, {"country": "英", "name": "消費者物価指数（CPI）", "period": "2027年1月分", "date": "2027-02-17", "time": "07:00", "tz": "Europe/London", "importance": 3, "source": "https://www.ons.gov.uk/releasecalendar"}, {"country": "米", "name": "小売売上高", "period": "2027年1月分", "date": "2027-02-17", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.census.gov/economic-indicators/calendar-listview.html"}, {"country": "日", "name": "全国消費者物価指数（CPI）", "period": "2027年1月分", "date": "2027-02-19", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "日", "name": "東京都区部消費者物価指数（中旬速報）", "period": "2027年2月分", "date": "2027-02-26", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "米", "name": "雇用統計", "period": "2027年2月分", "date": "2027-03-05", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/empsit.htm"}, {"country": "日", "name": "GDP速報（2次）", "period": "2026年10-12月期", "date": "2027-03-09", "time": "08:50", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.esri.cao.go.jp/jp/sna/kouhyou/kouhyou_top.html"}, {"country": "米", "name": "消費者物価指数（CPI）", "period": "2027年2月分", "date": "2027-03-10", "time": "08:30", "tz": "America/New_York", "importance": 3, "source": "https://www.bls.gov/schedule/news_release/cpi.htm"}, {"country": "米", "name": "生産者物価指数（PPI）", "period": "2027年2月分", "date": "2027-03-12", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.bls.gov/schedule/news_release/ppi.htm"}, {"country": "米", "name": "小売売上高", "period": "2027年2月分", "date": "2027-03-16", "time": "08:30", "tz": "America/New_York", "importance": 2, "source": "https://www.census.gov/economic-indicators/calendar-listview.html"}, {"country": "日", "name": "全国消費者物価指数（CPI）", "period": "2027年2月分", "date": "2027-03-19", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}, {"country": "日", "name": "東京都区部消費者物価指数（中旬速報）", "period": "2027年3月分", "date": "2027-03-26", "time": "08:30", "tz": "Asia/Tokyo", "importance": 2, "source": "https://www.stat.go.jp/data/kouhyou/e-stat_cpi.xml"}]}, "manual/notices.json": {"items": []}};
 </script>
 <script>
 /*
@@ -1018,7 +1072,6 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   // 会員確認を先に始める（結果が出るまで本編は隠れたまま）
   window.PortalGateReady = window.PortalGate.start((window.PORTAL_CONFIG || {}).gate);
 </script>
-
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -1057,6 +1110,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     <div class="tabs-inner" role="tablist">
       <button role="tab" id="tab-home" aria-controls="pane-home" data-tab="home">きょう</button>
       <button role="tab" id="tab-paper" aria-controls="pane-paper" data-tab="paper">朝刊</button>
+      <button role="tab" id="tab-flow" aria-controls="pane-flow" data-tab="flow">ポンドフロー</button>
       <button role="tab" id="tab-chart" aria-controls="pane-chart" data-tab="chart">チャート</button>
       <button role="tab" id="tab-strength" aria-controls="pane-strength" data-tab="strength">通貨の強弱</button>
       <button role="tab" id="tab-rates" aria-controls="pane-rates" data-tab="rates">金利・中銀</button>
@@ -1098,7 +1152,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <section class="panel" data-panel="upcoming" data-title="このあとの予定">
           <div class="panel-head"><h2>このあとの予定</h2><span class="meta">日本時間・36時間先まで</span></div>
           <ol id="upcomingList" class="timeline-list"></ol>
-          <p class="fine">経済指標の発表予定は「経済指標」タブのカレンダーでご確認ください。</p>
+          <p class="fine">経済指標は米英日の主要なものだけを表示しています。すべての指標は「経済指標」タブでご確認ください。</p>
         </section>
         <section class="panel" data-panel="policy-mini" data-title="政策金利と次の会合">
           <div class="panel-head"><h2>政策金利と次の会合</h2><a class="meta link" href="#rates">くわしく</a></div>
@@ -1135,6 +1189,27 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <div id="paperBody" class="paper-body"><p class="empty">毎朝のデータ更新のあとに表示されます。</p></div>
         <footer class="paper-foot" id="paperFoot"></footer>
       </article>
+    </section>
+
+    <!-- ===================== ポンドフロー ===================== -->
+    <section class="pane" id="pane-flow" role="tabpanel" aria-labelledby="tab-flow" hidden>
+      <section class="flow-hero" data-panel="flow" data-title="ポンドフロー（ポンドに関わる8銘柄の流れ）">
+        <div class="flow-head">
+          <h2>ポンドフロー</h2>
+          <p id="flowBasis" class="flow-basis"></p>
+        </div>
+        <div id="flowGauges" class="flow-gauges"><p class="empty">毎朝のデータ更新のあとに表示されます。</p></div>
+        <p class="fine" id="flowNote"></p>
+      </section>
+      <section class="panel" data-panel="flow-table" data-title="ポンドフローの内訳（EMA・MACD・RCI）">
+        <div class="panel-head"><h2>内訳</h2><span class="meta">日足・EMA 20/30/40、MACD 6/13/4、RCI 9/14/26</span></div>
+        <div id="flowTable" class="table-wrap"></div>
+      </section>
+      <section class="panel" data-panel="flow-live" data-title="ポンドフローのライブチャート（TradingView）">
+        <div class="panel-head"><h2>ライブチャート</h2><span class="meta">TradingView・日足</span></div>
+        <div class="toolbar"><div id="flowTf" class="pills" role="group" aria-label="時間足"></div></div>
+        <div id="flowLive" class="flow-live"></div>
+      </section>
     </section>
 
     <!-- ===================== チャート ===================== -->
@@ -1247,8 +1322,15 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
     <!-- ===================== 経済指標 ===================== -->
     <section class="pane" id="pane-macro" role="tabpanel" aria-labelledby="tab-macro" hidden>
-      <section class="panel" data-panel="calendar" data-title="経済指標カレンダー">
-        <div class="panel-head"><h2>経済指標カレンダー</h2><span class="meta">TradingView・重要度 中以上</span></div>
+      <section class="panel" data-panel="ind-cal" data-title="主な経済指標の発表予定（日本時間・日本語）">
+        <div class="panel-head"><h2>主な経済指標の発表予定</h2><span class="meta">日本時間・米英日の主要指標</span></div>
+        <div class="toolbar"><div id="indPills" class="pills" role="group" aria-label="国"></div></div>
+        <div id="indList" class="ind-list"></div>
+        <p class="fine" id="indNote"></p>
+      </section>
+      <section class="panel" data-panel="calendar" data-title="経済指標カレンダー（TradingView・すべての指標）">
+        <div class="panel-head"><h2>経済指標カレンダー（すべての指標）</h2><span class="meta">TradingView・重要度 中以上</span></div>
+        <p class="fine">結果（実績・予想・前回）まで見たいときはこちら。指標名は英語のまま表示されることがあります。</p>
         <div class="tv-box tv-h640" data-tv="calendar"></div>
       </section>
       <section class="panel" data-panel="us-macro" data-title="米国の主要経済指標（物価・雇用）">
@@ -1260,8 +1342,19 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
     <!-- ===================== ニュース ===================== -->
     <section class="pane" id="pane-news" role="tabpanel" aria-labelledby="tab-news" hidden>
-      <section class="panel" data-panel="tv-news" data-title="為替ニュース（TradingView）">
-        <div class="panel-head"><h2>為替ニュース</h2><span class="meta">TradingView</span></div>
+      <div class="grid g-2">
+        <section class="panel" data-panel="mof-news" data-title="財務省の新着情報（為替介入・国債など）">
+          <div class="panel-head"><h2>財務省の新着情報</h2><span id="mofMeta" class="meta"></span></div>
+          <ul id="mofList" class="news-list"></ul>
+          <p class="fine">出典：財務省ウェブサイト（公共データ利用規約 第1.0版）。為替介入の実施状況（外国為替平衡操作の実施状況）もここで公表されます。</p>
+        </section>
+        <section class="panel" data-panel="jp-links" data-title="日本語で読めるニュース・指標サイト">
+          <div class="panel-head"><h2>日本語で読めるニュース・指標サイト</h2><span class="meta">外部サイトが開きます</span></div>
+          <ul id="jpLinks" class="link-list"></ul>
+        </section>
+      </div>
+      <section class="panel" data-panel="tv-news" data-title="海外の為替ニュース（TradingView）">
+        <div class="panel-head"><h2>海外の為替ニュース</h2><span class="meta">TradingView・英語の記事を含みます</span></div>
         <div class="tv-box tv-h640" data-tv="news"></div>
       </section>
     </section>
@@ -1984,7 +2077,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== タブ ==============================
-  var TABS = ["home", "paper", "chart", "strength", "rates", "macro", "news", "hours"];
+  var TABS = ["home", "paper", "flow", "chart", "strength", "rates", "macro", "news", "hours"];
   var inited = {};
   var INIT = {};
   function showTab(id, focusPanel) {
@@ -2133,6 +2226,8 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       if (listed) add(zonedToUtc(d4, "15:30", "America/New_York"), "CFTC 建玉明細（投機筋ポジション）の公表", "cftc", "火曜時点のポジション");
       else if (useDefault && dowOf(d4) === 5 && !usHol) add(zonedToUtc(d4, "15:30", "America/New_York"), "CFTC 建玉明細の公表（通常は金曜）", "cftc", "公表日の一覧が未登録のため目安です。祝日の週はずれます");
     }
+    // 経済指標（主要なもの）
+    indEvents(from, to).forEach(function (x) { ev.push(x); });
     // 夏時間の切り替え
     dstChanges(from, to).forEach(function (c) { add(c.at, c.label, "dst", c.note); });
     // 休場（その日の0時に置く）
@@ -2223,7 +2318,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       if (row < 0) return;
       lastX[row] = px;
       var edge = px < w / 2 ? " at-start" : px > boardW - w / 2 ? " at-end" : "";
-      html.push('<div class="sb-ev' + (e.kind === "cb" ? " is-cb" : "") + (row ? " row2" : "") + edge + '" style="left:' + x + '%" title="' + esc(jstTime(e.at) + " " + e.label) + '"><span>' + esc(jstTime(e.at) + " " + e.short) + "</span></div>");
+      html.push('<div class="sb-ev' + (e.kind === "cb" || e.kind === "ind" ? " is-cb" : "") + (row ? " row2" : "") + edge + '" style="left:' + x + '%" title="' + esc(jstTime(e.at) + " " + e.label) + '"><span>' + esc(jstTime(e.at) + " " + e.short) + "</span></div>");
     });
     html.push("</div></div>");
     // いまの線（ラベル列のぶんずらす）
@@ -2270,6 +2365,9 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         if (jd === today || jd === addDays(today, 1)) chips.push({ t: (jd === today ? "きょう" : "あす") + " " + b.short + "の政策発表" + (b.time ? "（" + jstTime(at) + "）" : "（時刻未定）"), key: jd === today });
       });
     });
+    indEvents(now, jstMidnight(addDays(today, 2))).filter(function (x) { return x.it.importance >= 3; }).forEach(function (x) {
+      var jd = jstDate(x.at); chips.push({ t: (jd === today ? "きょう" : "あす") + " " + jstTime(x.at) + " " + x.it.country + x.it.name, key: jd === today });
+    });
     dstChanges(now, now + 10 * DAY).forEach(function (c) { chips.push({ t: jaMD(c.date) + " " + c.label }); });
     var nyOff = tzOffsetMin(now, "America/New_York");
     var t830 = zonedToUtc(localDate(now, "America/New_York"), "08:30", "America/New_York");
@@ -2277,7 +2375,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     $("#heroChips").innerHTML = chips.map(function (c) { return '<span class="chip' + (c.key ? " is-key" : "") + '">' + esc(c.t) + "</span>"; }).join("");
   }
 
-  var KIND_TAG = { session: ["市場", ""], fix: ["定時", ""], cb: ["中銀", "cb"], hol: ["休場", "hol"], dst: ["時間変更", "hol"], cftc: ["CFTC", ""], week: ["週", ""] };
+  var KIND_TAG = { ind: ["指標", "ind"], session: ["市場", ""], fix: ["定時", ""], cb: ["中銀", "cb"], hol: ["休場", "hol"], dst: ["時間変更", "hol"], cftc: ["CFTC", ""], week: ["週", ""] };
   function renderUpcoming() {
     if (!CAL.ready) return;
     var now = Date.now(), today = jstDate(now);
@@ -2508,7 +2606,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     var today = jstDate(now);
     h += '<section class="pp-block pp-sched"><h4>これからの予定<small>日本時間・24時間先まで</small></h4>' + (evs.length ? "<ul>" + evs.map(function (ev) {
       return "<li><b>" + (ev.allDay ? "終日" : jstTime(ev.at)) + "</b><span>" + esc(ev.label) + (ev.sub ? "<small>" + esc(ev.sub) + "</small>" : "") + "</span></li>";
-    }).join("") + "</ul>" : '<p class="empty">中央銀行の発表・休場などの予定はありません。</p>') + '<p class="fine">経済指標の発表予定は「経済指標」タブのカレンダーでご確認ください。</p></section>';
+    }).join("") + "</ul>" : '<p class="empty">中央銀行の発表・休場などの予定はありません。</p>') + '<p class="fine">経済指標は主要なものだけを載せています。すべての指標は「経済指標」タブでご確認ください。</p></section>';
     // 強弱
     h += '<section class="pp-block"><h4>通貨の強弱<small>1週間・ほかの7通貨に対する平均</small></h4><ol class="pp-rank">' + st.map(function (x) {
       var w = Math.min(100, Math.abs(x.pct) / Math.max(0.01, Math.max(Math.abs(top.pct), Math.abs(bot.pct))) * 100);
@@ -2637,6 +2735,184 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       window.print();
       setTimeout(function () { document.body.classList.remove("printing-paper"); }, 500);
     });
+  }
+
+
+  // ============================== 経済指標の発表予定（日本語） ==============================
+  function indShort(it) {
+    var m = it.name.match(/（([A-Z]+)）/);
+    return it.country + (m ? m[1] : it.name.replace(/（.*$/, "").replace(/消費者物価指数|個人所得・個人消費支出/, "").slice(0, 5));
+  }
+  function indEvents(from, to) {
+    var out = [];
+    ((D.ind && D.ind.items) || []).forEach(function (it) {
+      var at = zonedToUtc(it.date, it.time, it.tz);
+      if (at >= from && at < to) out.push({ at: at, label: it.country + "・" + it.name + "（" + it.period + "）", kind: "ind", sub: it.importance >= 3 ? "特に注目" : "", short: it.importance >= 3 ? indShort(it) : "", it: it });
+    });
+    return out;
+  }
+  var indFilter = "all";
+  function renderIndicators() {
+    var list = $("#indList");
+    if (!D.ind || !D.ind.items) { list.innerHTML = '<p class="empty">読み込めませんでした。</p>'; return; }
+    $("#indPills").innerHTML = [["all", "すべて"], ["米", "米国"], ["英", "英国"], ["日", "日本"]].map(function (p) { return '<button type="button" class="pill" data-c="' + p[0] + '" aria-pressed="' + (p[0] === indFilter) + '">' + p[1] + "</button>"; }).join("");
+    var now = Date.now(), today = jstDate(now);
+    var evs = indEvents(jstMidnight(today), now + 60 * DAY).filter(function (e) { return indFilter === "all" || e.it.country === indFilter; });
+    if (!evs.length) { list.innerHTML = '<p class="empty">60日以内の予定は登録されていません。</p>'; }
+    else {
+      var html = "", last = "";
+      evs.forEach(function (e) {
+        var d = jstDate(e.at);
+        if (d !== last) { html += '<h3 class="ind-day' + (d === today ? " is-today" : "") + '">' + esc(dayWord(d, today) === jaMD(d) ? jaMD(d) : dayWord(d, today) + "　" + jaMD(d)) + "</h3>"; last = d; }
+        var it = e.it, past = e.at < now;
+        html += '<div class="ind-row' + (past ? " is-past" : "") + '"><span class="ind-time">' + jstTime(e.at) + '</span><span class="ind-flag f-' + (it.country === "米" ? "us" : it.country === "英" ? "uk" : "jp") + '">' + esc(it.country) + '</span><span class="ind-name">' + esc(it.name) + "<small>" + esc(it.period) + '</small></span><span class="ind-imp" aria-label="重要度' + it.importance + '">' + (it.importance >= 3 ? "★★★" : "★★") + '</span><span class="ind-left">' + (past ? "発表済み" : esc(fmtLeft(e.at - now))) + "</span></div>";
+      });
+      list.innerHTML = html;
+    }
+    $("#indNote").textContent = "発表予定は各国の統計作成機関（米労働統計局・米経済分析局・米国勢調査局・英国家統計局・総務省・内閣府）の公表資料で確認したものです（確認日 " + (D.ind.checked || "") + "）。予定は変更されることがあります。結果の数値は「すべての指標」のカレンダーでご確認ください。";
+  }
+  function initIndicators() {
+    $("#indPills").addEventListener("click", function (ev) { var b = ev.target.closest("[data-c]"); if (!b) return; indFilter = b.getAttribute("data-c"); renderIndicators(); });
+    renderIndicators();
+  }
+
+  // ============================== 財務省の新着・日本語サイト ==============================
+  var JP_LINKS = [
+    ["みんかぶFX 経済指標カレンダー", "https://fx.minkabu.jp/indicators", "経済指標の予定と結果（日本語）"],
+    ["日本経済新聞 為替・金融", "https://www.nikkei.com/markets/kawase/", "為替概況など"],
+    ["ロイター（日本語版）", "https://jp.reuters.com/", "国内外のニュース"],
+    ["ブルームバーグ（日本語版）", "https://www.bloomberg.co.jp/", "国内外のニュース"],
+    ["日本銀行", "https://www.boj.or.jp/", "金融政策・統計の公表"],
+    ["財務省 外国為替平衡操作の実施状況", "https://www.mof.go.jp/policy/international_policy/reference/feio/index.html", "為替介入の実績"]
+  ];
+  function renderNewsJp() {
+    $("#jpLinks").innerHTML = JP_LINKS.map(function (l) { return '<li><a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + "</a><small>" + esc(l[2]) + "</small></li>"; }).join("");
+    loadJson("news_mof.json").then(function (n) {
+      var ul = $("#mofList");
+      if (!n || !n.items || !n.items.length) { ul.innerHTML = '<li class="empty">データの初回取得前です。</li>'; return; }
+      $("#mofMeta").textContent = jstStamp(n.updated) + " 取得";
+      ul.innerHTML = n.items.slice(0, 15).map(function (it) {
+        var key = /為替|平衡操作|国際/.test(it.title);
+        return "<li" + (key ? ' class="is-key"' : "") + ">" + (it.date ? "<time>" + esc(jstStamp(it.date)) + "</time>" : "") + '<a href="' + esc(safeUrl(it.link)) + '" target="_blank" rel="noopener">' + esc(it.title) + "</a></li>";
+      }).join("");
+    });
+  }
+
+  // ============================== ポンドフロー ==============================
+  function idxSeries(e, ccy) {
+    var all = ["EUR"].concat(e.columns);
+    return e.rates.map(function (r) {
+      var rc = ecbRate(e, r, ccy); if (!rc) return null;
+      var sum = 0, n = 0;
+      all.forEach(function (x) { if (x === ccy) return; var rx = ecbRate(e, r, x); if (rx) { sum += Math.log(rx / rc); n++; } });
+      return n ? [r[0], Math.exp(sum / n)] : null;
+    }).filter(Boolean).map(function (p, i, arr) { return [p[0], p[1] / arr[0][1] * 100]; });
+  }
+  function emaArr(v, n) {
+    var out = new Array(v.length).fill(null);
+    if (v.length < n) return out;
+    var a = 2 / (n + 1), s = 0;
+    for (var i = 0; i < n; i++) s += v[i];
+    out[n - 1] = s / n;
+    for (var j = n; j < v.length; j++) out[j] = v[j] * a + out[j - 1] * (1 - a);
+    return out;
+  }
+  function rciAt(v, end, n) {
+    if (end + 1 < n) return null;
+    var w = v.slice(end - n + 1, end + 1);
+    var idx = w.map(function (x, i) { return i; });
+    var sorted = idx.slice().sort(function (a, b) { return w[b] - w[a]; });
+    var prank = new Array(n);
+    // 同値は平均順位
+    for (var i = 0; i < n;) { var j = i; while (j + 1 < n && w[sorted[j + 1]] === w[sorted[i]]) j++; for (var k = i; k <= j; k++) prank[sorted[k]] = (i + j) / 2 + 1; i = j + 1; }
+    var d2 = 0;
+    for (var t = 0; t < n; t++) { var trank = n - t; d2 += Math.pow(trank - prank[t], 2); }
+    return (1 - 6 * d2 / (n * (n * n - 1))) * 100;
+  }
+  function analyze(series, back) {
+    var s = back ? series.slice(0, series.length - back) : series;
+    var v = s.map(function (p) { return p[1]; }), n = v.length;
+    if (n < 60) return null;
+    var e20 = emaArr(v, 20), e30 = emaArr(v, 30), e40 = emaArr(v, 40);
+    var f = emaArr(v, 6), sl = emaArr(v, 13);
+    var macd = v.map(function (_, i) { return f[i] !== null && sl[i] !== null ? f[i] - sl[i] : null; });
+    var first = macd.findIndex(function (x) { return x !== null; });
+    var sig = new Array(n).fill(null), sv = emaArr(macd.slice(first), 4);
+    sv.forEach(function (x, i) { sig[first + i] = x; });
+    var L = n - 1;
+    var trend = e20[L] > e30[L] && e30[L] > e40[L] ? 1 : e20[L] < e30[L] && e30[L] < e40[L] ? -1 : 0;
+    var mom = macd[L] >= sig[L] ? 1 : -1;
+    var cross = null;
+    for (var i = L; i > L - 10 && i > first + 4; i--) {
+      var a = macd[i] - sig[i], b = macd[i - 1] - sig[i - 1];
+      if (a >= 0 && b < 0) { cross = { type: "GC", ago: L - i, date: s[i][0] }; break; }
+      if (a < 0 && b >= 0) { cross = { type: "DC", ago: L - i, date: s[i][0] }; break; }
+    }
+    var r9 = rciAt(v, L, 9), r14 = rciAt(v, L, 14), r26 = rciAt(v, L, 26), r9p = rciAt(v, L - 1, 9);
+    var score = trend * 0.5 + mom * 0.3 + (r9 / 100) * 0.2;
+    return { last: v[L], date: s[L][0], trend: trend, above: v[L] > e20[L], mom: mom, macd: macd[L], sig: sig[L], cross: cross, r9: r9, r14: r14, r26: r26, r9up: r9 > r9p, score: score, e20: e20, e30: e30, e40: e40, v: v, dates: s.map(function (p) { return p[0]; }) };
+  }
+  var FLOW_ITEMS = [
+    { id: "gbpjpy", name: "ポンド円", kind: "pair", a: "GBP", b: "JPY", gj: 1, gu: 0, tv: "FX:GBPJPY", dig: 3 },
+    { id: "gbpusd", name: "ポンドドル", kind: "pair", a: "GBP", b: "USD", gj: 0, gu: 1, tv: "FX:GBPUSD", dig: 5 },
+    { id: "gbpidx", name: "ポンド指数", kind: "idx", a: "GBP", gj: 1, gu: 1, tv: "TVC:BXY", dig: 2, note: "ほかの7通貨に対するポンドの平均" },
+    { id: "usdidx", name: "ドル指数", kind: "idx", a: "USD", gj: 0, gu: -1, tv: "TVC:DXY", dig: 2, note: "ほかの7通貨に対するドルの平均（DXYとは計算方法が異なる）" },
+    { id: "eurgbp", name: "ユーロポンド", kind: "pair", a: "EUR", b: "GBP", gj: -0.5, gu: -0.5, tv: "FX:EURGBP", dig: 5 },
+    { id: "usdjpy", name: "ドル円", kind: "pair", a: "USD", b: "JPY", gj: 0.5, gu: 0, tv: "FX:USDJPY", dig: 3 },
+    { id: "jpyidx", name: "円指数", kind: "idx", a: "JPY", gj: -1, gu: 0, tv: "TVC:JXY", dig: 2, note: "ほかの7通貨に対する円の平均" }
+  ];
+  function flowSeries(e, it) { return it.kind === "pair" ? pairSeries(e, it.a, it.b) : idxSeries(e, it.a); }
+  function flowScore(rows, key, back) {
+    var num = 0, den = 0;
+    rows.forEach(function (r) { var a = back ? r.prev : r.an; if (!a || !r.it[key]) return; num += r.it[key] * a.score; den += Math.abs(r.it[key]); });
+    return den ? Math.round(num / den * 100) : null;
+  }
+  function flowLabel(x) {
+    if (x >= 50) return ["ポンド高の流れが強い", "up2"];
+    if (x >= 20) return ["ポンド高の流れがやや優勢", "up1"];
+    if (x > -20) return ["方向感が出ていない", "flat"];
+    if (x > -50) return ["ポンド安の流れがやや優勢", "down1"];
+    return ["ポンド安の流れが強い", "down2"];
+  }
+  function renderFlow() {
+    var e = D.ecb, g = $("#flowGauges");
+    if (!ecbReady(e)) { g.innerHTML = '<p class="empty">毎朝のデータ更新のあとに表示されます。</p>'; $("#flowTable").innerHTML = ""; return; }
+    var rows = FLOW_ITEMS.map(function (it) { var s = flowSeries(e, it); return { it: it, s: s, an: analyze(s), prev: analyze(s, 1) }; });
+    var okRows = rows.filter(function (r) { return r.an; });
+    if (!okRows.length) { g.innerHTML = '<p class="empty">計算に必要な期間（60営業日）のデータがまだありません。データが貯まると表示されます。</p>'; return; }
+    $("#flowBasis").textContent = jaMD(e.latest) + " の参考レート（中欧16時ごろ）までの日足で判定";
+    g.innerHTML = [["gj", "ポンド円"], ["gu", "ポンドドル"]].map(function (k) {
+      var x = flowScore(okRows, k[0]), p = flowScore(okRows, k[0], true), lab = flowLabel(x);
+      var pos = (x + 100) / 2;
+      return '<div class="gauge"><div class="gauge-top"><span class="gauge-name">' + k[1] + '</span><span class="gauge-val">' + (x > 0 ? "+" : "") + x + '</span></div><p class="gauge-label ' + lab[1] + '">' + esc(lab[0]) + '</p><div class="gauge-bar" role="img" aria-label="' + esc(k[1] + "のポンドフロー " + x + "（−100〜+100）") + '"><span class="gb-mid"></span><span class="gb-mark" style="left:' + pos.toFixed(1) + '%"></span></div><div class="gauge-scale"><span>ポンド安 −100</span><span>0</span><span>+100 ポンド高</span></div>' + (p !== null ? '<p class="gauge-prev">前日は ' + (p > 0 ? "+" : "") + p + "（" + (x - p >= 0 ? "+" : "") + (x - p) + "）</p>" : "") + "</div>";
+    }).join("");
+    $("#flowNote").textContent = "ポンドに関わる7つの銘柄について、日足のEMA（20・30・40）の並び、MACD（6・13・4）、RCI（9）から流れを数値にし、ポンドへの影響の向きで重みを付けて合計しています（−100〜+100）。ECB（欧州中央銀行）の参考レート（ECBのサイトで無料公開）から当サイトで計算したもので、リアルタイムの値ではありません。これまでの値動きの状態を表すもので、将来の値動きの予測や売買の推奨ではありません。VIXはデータの利用条件の都合で計算に含めず、ライブチャートのみ表示しています。";
+    var tr = function (t) { return t > 0 ? '<span class="up">上昇の並び</span>' : t < 0 ? '<span class="down">下降の並び</span>' : "混在"; };
+    $("#flowTable").innerHTML = '<table class="tbl tbl-stack flow-tbl"><thead><tr><th>銘柄</th><th>EMAの並び</th><th>MACD</th><th>RCI 9/14/26</th><th>ポンドへの影響</th></tr></thead><tbody>' + rows.map(function (r) {
+      var a = r.an, it = r.it;
+      if (!a) return "<tr><td><b>" + esc(it.name) + '</b></td><td colspan="4" class="empty">データ不足</td></tr>';
+      var w = (it.gj || it.gu) ? (Math.abs(it.gj) >= Math.abs(it.gu) ? it.gj : it.gu) : 0;
+      var eff = w * a.score;
+      var effTxt = Math.abs(eff) < 0.15 ? "中立" : eff > 0 ? "ポンドに追い風" : "ポンドに向かい風";
+      var macdTxt = (a.mom > 0 ? '<span class="up">シグナルより上</span>' : '<span class="down">シグナルより下</span>') + (a.cross ? '<span class="note">' + (a.cross.type === "GC" ? "ゴールデンクロス" : "デッドクロス") + "（" + (a.cross.ago ? a.cross.ago + "日前" : "当日") + "）</span>" : "");
+      return "<tr><td><b>" + esc(it.name) + '</b><span class="note">' + esc(a.last.toFixed(it.dig)) + (it.note ? "・" + esc(it.note) : "") + '</span></td><td data-label="EMAの並び">' + tr(a.trend) + '<span class="note">価格はEMA20の' + (a.above ? "上" : "下") + '</span></td><td data-label="MACD">' + macdTxt + '</td><td data-label="RCI 9/14/26"><span class="nw">' + [a.r9, a.r14, a.r26].map(function (x) { return x === null ? "—" : Math.round(x); }).join(" / ") + '</span><span class="note">RCI9は' + (a.r9up ? "上向き" : "下向き") + '</span></td><td data-label="ポンドへの影響"><span class="eff ' + (Math.abs(eff) < 0.15 ? "" : eff > 0 ? "up" : "down") + '">' + effTxt + "</span></td></tr>";
+    }).join("") + "</tbody></table>";
+  }
+  var FLOW_TF = [["D", "日足"], ["240", "4時間足"], ["60", "1時間足"]];
+  function initFlow() {
+    var tf = store.get("mp_flow_tf", "D");
+    var live = $("#flowLive");
+    function draw() {
+      $("#flowTf").innerHTML = FLOW_TF.map(function (t) { return '<button type="button" class="pill" data-tf="' + t[0] + '" aria-pressed="' + (t[0] === tf) + '">' + t[1] + "</button>"; }).join("");
+      var items = FLOW_ITEMS.concat([{ name: "VIX（恐怖指数）", tv: "TVC:VIX" }]);
+      live.innerHTML = items.map(function (it) { return '<div class="mtf-cell"><h3>' + esc(it.name) + '</h3><div class="tv-box" data-flowtv="' + esc(it.tv) + '" aria-label="' + esc(it.name) + '"></div></div>'; }).join("") + '<p class="tv-credit fine" style="grid-column:1/-1">提供：<a href="https://jp.tradingview.com/" target="_blank" rel="noopener nofollow">TradingView</a>。ポンド指数（BXY）・円指数（JXY）はTradingViewの銘柄で、上の内訳の指数とは計算方法が異なります。</p>';
+      $$("[data-flowtv]", live).forEach(function (el) {
+        whenVisible(el, function () { tvMount(el, "advanced-chart", chartCfg(el.getAttribute("data-flowtv"), tf, true), true); });
+      });
+    }
+    $("#flowTf").addEventListener("click", function (ev) { var b = ev.target.closest("[data-tf]"); if (!b) return; tf = b.getAttribute("data-tf"); store.set("mp_flow_tf", tf); draw(); });
+    draw();
+    renderFlow();
   }
 
   // ============================== AIまとめ ==============================
@@ -3133,7 +3409,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== 検索 ==============================
-  var TAB_JA = { home: "きょう", paper: "朝刊", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
+  var TAB_JA = { home: "きょう", paper: "朝刊", flow: "ポンドフロー", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
   function initSearch() {
     var dlg = $("#searchDlg"), input = $("#searchInput"), list = $("#searchList");
     var index = $$("[data-panel]").map(function (el) {
@@ -3170,7 +3446,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== フッター・ダイアログ ==============================
-  var SRC_JA = { ecb: "為替の参考レート（ECB）", fred: "米国の金利・経済指標（FRED）", jgb: "日本国債の利回り（財務省）", cot: "投機筋ポジション（CFTC）", policy: "政策金利（BIS）", holidays: "祝日（内閣府・GOV.UK）", jwks: "会員確認の鍵（Fincs）" };
+  var SRC_JA = { ecb: "為替の参考レート（ECB）", mof: "財務省の新着情報", fred: "米国の金利・経済指標（FRED）", jgb: "日本国債の利回り（財務省）", cot: "投機筋ポジション（CFTC）", policy: "政策金利（BIS）", holidays: "祝日（内閣府・GOV.UK）", jwks: "会員確認の鍵（Fincs）" };
   function renderStatus(meta) {
     var src = (meta && meta.sources) || {};
     var keys = Object.keys(SRC_JA);
@@ -3218,6 +3494,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   INIT.chart = initChart;
   INIT.strength = function () { initStrengthPills(); renderStrength(); renderCot(); };
   INIT.paper = renderPaper;
+  INIT.flow = initFlow;
   INIT.rates = function () {
     renderPolicyTable(); renderCbCalendar();
     var cur = store.get("mp_spread", "10Y");
@@ -3230,8 +3507,8 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     draw();
     renderCurves();
   };
-  INIT.macro = function () { renderMacro(store.get("mp_macro", "") || null); };
-  INIT.news = function () {};
+  INIT.macro = function () { initIndicators(); renderMacro(store.get("mp_macro", "") || null); };
+  INIT.news = renderNewsJp;
   INIT.hours = function () { renderHolidays(); renderDst(); renderSessionTable(); renderFixedTimes(); };
 
   // ============================== 起動 ==============================
@@ -3269,8 +3546,9 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     Promise.all([
       loadJson("manual/central_banks.json"), loadJson("holidays_jp.json"), loadJson("manual/holidays_jp_extra.json"), loadJson("holidays_uk.json"),
       loadJson("manual/holidays_us.json"), loadJson("manual/cftc_schedule.json"), loadJson("policy_bis.json"), loadJson("us_rates.json"),
-      loadJson("brief.json"), loadJson("meta.json"), loadJson("brief_weekly.json")
+      loadJson("brief.json"), loadJson("meta.json"), loadJson("brief_weekly.json"), loadJson("manual/indicators.json")
     ]).then(function (r) {
+      D.ind = r[11];
       D.cb = r[0]; D.hjp = r[1]; D.hjpx = r[2]; D.huk = r[3]; D.hus = r[4]; D.cftc = r[5]; D.bis = r[6]; D.usRates = r[7]; D.brief = r[8]; D.weekly = r[10];
       buildCalendar();
       renderStatus(r[9]);
@@ -3303,7 +3581,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 
   // テスト用に一部の関数を公開
-  window.__portal = { ccyStrength: ccyStrength, pairRange: pairRange, makeCard: makeCard, moodAssess: moodAssess, zonedToUtc: zonedToUtc, gotobi: gotobi, collectEvents: collectEvents, dstChanges: dstChanges, resolvePolicy: resolvePolicy, weekClosed: weekClosed, D: D, CAL: CAL, buildCalendar: buildCalendar };
+  window.__portal = { analyze: analyze, rciAt: rciAt, emaArr: emaArr, flowScore: flowScore, indEvents: indEvents, ccyStrength: ccyStrength, pairRange: pairRange, makeCard: makeCard, moodAssess: moodAssess, zonedToUtc: zonedToUtc, gotobi: gotobi, collectEvents: collectEvents, dstChanges: dstChanges, resolvePolicy: resolvePolicy, weekClosed: weekClosed, D: D, CAL: CAL, buildCalendar: buildCalendar };
 })();
 
 </script>
