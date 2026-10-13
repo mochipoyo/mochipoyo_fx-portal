@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>もちぽよ マーケットポータル</title>
+<meta name="description" content="Fincs会員向けのFXマーケット情報ポータル（相場時計・チャート・通貨の強弱・金利と中央銀行・経済指標・AIまとめ）">
+<meta name="theme-color" content="#16203A">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<link rel="preconnect" href="https://s3.tradingview.com" crossorigin>
+<link rel="stylesheet" href="assets/app.css">
+<script>
+  // 表示テーマ（保存済みの選択 → なければOSの設定）を描画前に反映してちらつきを防ぐ
+  (function () {
+    try {
+      var t = localStorage.getItem("mp_theme");
+      if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<script src="config.js"></script>
+<script src="assets/gate.js"></script>
+<script>
+  // 会員確認を先に始める（結果が出るまで本編は隠れたまま）
+  window.PortalGateReady = window.PortalGate.start((window.PORTAL_CONFIG || {}).gate);
+</script>
+<script src="assets/charts.js" defer></script>
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">本文へ移動</a>
+
+<!-- 会員確認の画面（未確認のときだけ表示） -->
+<div id="gate" class="gate" hidden>
+  <div class="gate-card">
+    <div class="gate-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><rect width="40" height="40" rx="10"/><polyline points="7,27 14,15 19,22 26,10 33,24"/></svg></div>
+    <h1 class="gate-title" data-site-name>もちぽよ マーケットポータル</h1>
+    <p id="gateMsg" class="gate-msg">会員確認をしています…</p>
+    <p><a id="gateLink" class="btn btn-primary" href="#" hidden>Fincsを開く</a></p>
+    <pre id="gateDebug" class="gate-debug" hidden></pre>
+  </div>
+</div>
+
+<div id="app" class="app" hidden>
+  <header class="site-head">
+    <div class="head-inner">
+      <a class="brand" href="#home" aria-label="ホームへ">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><rect width="40" height="40" rx="10"/><polyline points="7,27 14,15 19,22 26,10 33,24"/></svg></span>
+        <span class="brand-text"><span class="brand-name" data-site-name>もちぽよ マーケットポータル</span><span class="brand-tag" data-tagline>波形で読むFX　Fincs会員専用</span></span>
+      </a>
+      <div class="head-clock" aria-label="日本時間"><span id="clockDate"></span><span id="clockTime" class="clock-time"></span><span class="clock-zone">日本時間</span></div>
+      <div class="head-actions">
+        <button id="searchBtn" class="icon-btn" type="button" aria-label="パネルを探す" title="パネルを探す（/ キー）"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5 16 16"/></svg></button>
+        <button id="themeBtn" class="icon-btn" type="button" aria-label="表示を明るく／暗く切り替え" title="表示を明るく／暗く切り替え"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
+        <button id="aboutBtn" class="icon-btn" type="button" aria-label="このサイトについて・データの出典" title="このサイトについて・データの出典"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
+      </div>
+    </div>
+    <div id="previewBar" class="preview-bar" hidden></div>
+  </header>
+
+  <div class="tape" aria-label="主要レート（TradingView）"><div id="tape" class="tv-box tv-tape"></div></div>
+
+  <nav class="tabs" aria-label="ページの切り替え">
+    <div class="tabs-inner" role="tablist">
+      <button role="tab" id="tab-home" aria-controls="pane-home" data-tab="home">きょう</button>
+      <button role="tab" id="tab-chart" aria-controls="pane-chart" data-tab="chart">チャート</button>
+      <button role="tab" id="tab-strength" aria-controls="pane-strength" data-tab="strength">通貨の強弱</button>
+      <button role="tab" id="tab-rates" aria-controls="pane-rates" data-tab="rates">金利・中銀</button>
+      <button role="tab" id="tab-macro" aria-controls="pane-macro" data-tab="macro">経済指標</button>
+      <button role="tab" id="tab-news" aria-controls="pane-news" data-tab="news">ニュース</button>
+      <button role="tab" id="tab-hours" aria-controls="pane-hours" data-tab="hours">休場・時間</button>
+    </div>
+  </nav>
+
+  <main id="main" class="main" tabindex="-1">
+
+    <!-- ===================== きょう ===================== -->
+    <section class="pane" id="pane-home" role="tabpanel" aria-labelledby="tab-home" hidden>
+      <section class="clock-hero" data-panel="hero" data-title="相場時計（いま開いている市場・きょうの予定）">
+        <div class="hero-head">
+          <h2 class="hero-title">相場時計</h2>
+          <p id="heroStatus" class="hero-status"></p>
+        </div>
+        <div id="sessionBoard" class="session-board" aria-describedby="heroNote"></div>
+        <div id="heroChips" class="chips"></div>
+        <p id="heroNote" class="fine">市場の時間帯は一般的な目安（現地8時〜17時、東京は9時〜15時）です。為替は24時間取引されています。</p>
+      </section>
+
+      <div class="grid g-home">
+        <section class="panel" data-panel="upcoming" data-title="このあとの予定">
+          <div class="panel-head"><h2>このあとの予定</h2><span class="meta">日本時間・36時間先まで</span></div>
+          <ol id="upcomingList" class="timeline-list"></ol>
+          <p class="fine">経済指標の発表予定は「経済指標」タブのカレンダーでご確認ください。</p>
+        </section>
+
+        <section class="panel panel-brief" data-panel="brief-home" data-title="AI朝のまとめ">
+          <div class="panel-head"><h2 id="briefHomeTitle">AI朝のまとめ</h2><span id="briefHomeMeta" class="meta"></span></div>
+          <div id="briefHome" class="brief-home"><p class="empty">読み込み中…</p></div>
+        </section>
+      </div>
+
+      <div class="grid g-2">
+        <section class="panel" data-panel="majors" data-title="主要通貨ペアの動き">
+          <div class="panel-head"><h2>主要通貨ペアの動き</h2><span class="meta">TradingView</span></div>
+          <div class="tv-box tv-h420" data-tv="overview"></div>
+        </section>
+        <section class="panel" data-panel="policy-mini" data-title="政策金利と次の会合">
+          <div class="panel-head"><h2>政策金利と次の会合</h2><a class="meta link" href="#rates">くわしく</a></div>
+          <div id="policyMini"></div>
+        </section>
+      </div>
+
+      <div class="grid g-2">
+        <section class="panel" data-panel="checklist" data-title="朝のチェックリスト">
+          <div class="panel-head"><h2>朝のチェックリスト</h2><button id="checkReset" class="meta link-btn" type="button">すべて外す</button></div>
+          <ul id="checklist" class="checklist"></ul>
+          <p class="fine">チェックはこのブラウザにだけ保存され、日付が変わると外れます。</p>
+        </section>
+        <section class="panel" id="noticePanel" data-panel="notices" data-title="お知らせ" hidden>
+          <div class="panel-head"><h2>お知らせ</h2></div>
+          <ul id="notices" class="notices"></ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================== チャート ===================== -->
+    <section class="pane" id="pane-chart" role="tabpanel" aria-labelledby="tab-chart" hidden>
+      <section class="panel" data-panel="main-chart" data-title="チャート（銘柄・時間足の切り替え）">
+        <div class="panel-head"><h2>チャート</h2><span class="meta">TradingView・日本時間</span></div>
+        <div class="toolbar">
+          <div id="symPills" class="pills" role="group" aria-label="銘柄"></div>
+          <div id="tfPills" class="pills" role="group" aria-label="時間足"></div>
+        </div>
+        <div id="mainChart" class="tv-box tv-main"></div>
+      </section>
+
+      <section class="panel" data-panel="mtf" data-title="マルチタイムフレーム（日足・4時間足・1時間足・15分足）">
+        <div class="panel-head"><h2>マルチタイムフレーム</h2><span id="mtfMeta" class="meta"></span></div>
+        <p class="fine">上の銘柄を、日足・4時間足・1時間足・15分足で並べて表示します。上位足の波の向きと、下位足の位置を見比べるときに。</p>
+        <div id="mtfGrid" class="mtf-grid"></div>
+      </section>
+
+      <section class="panel" data-panel="market-list" data-title="マーケット一覧（ミニチャート）">
+        <div class="panel-head"><h2>マーケット一覧</h2><span class="meta">TradingView・直近1カ月</span></div>
+        <div id="marketList"></div>
+      </section>
+    </section>
+
+    <!-- ===================== 通貨の強弱 ===================== -->
+    <section class="pane" id="pane-strength" role="tabpanel" aria-labelledby="tab-strength" hidden>
+      <div class="grid g-2">
+        <section class="panel" data-panel="heatmap" data-title="通貨ヒートマップ（強い通貨・弱い通貨）">
+          <div class="panel-head"><h2>通貨ヒートマップ</h2><span class="meta">TradingView</span></div>
+          <p class="fine">主要通貨の組み合わせごとの変化率を色で示します。強い通貨・弱い通貨をひと目で見比べるときに使えます。</p>
+          <div class="tv-box tv-h420" data-tv="heatmap"></div>
+        </section>
+        <section class="panel" data-panel="cross" data-title="クロスレート一覧">
+          <div class="panel-head"><h2>クロスレート</h2><span class="meta">TradingView</span></div>
+          <div class="tv-box tv-h420" data-tv="cross"></div>
+        </section>
+      </div>
+
+      <section class="panel" data-panel="cot" data-title="投機筋の通貨ポジション（CFTC）">
+        <div class="panel-head"><h2>投機筋の通貨ポジション</h2><span id="cotMeta" class="meta"></span></div>
+        <p class="fine">米国の通貨先物で、投機筋（非商業部門）が各通貨を対ドルで買い越しているか、売り越しているか。毎週金曜の夜（日本時間では土曜早朝）に、その週の火曜時点の数字が公表されます。</p>
+        <div class="cot-layout">
+          <div>
+            <h3 class="sub">建玉に対する買い越し・売り越しの割合（最新週）</h3>
+            <div id="cotBars"></div>
+          </div>
+          <div>
+            <h3 class="sub" id="cotHistTitle">推移</h3>
+            <div id="cotStats" class="stat-row"></div>
+            <div id="cotHist"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===================== 金利・中銀 ===================== -->
+    <section class="pane" id="pane-rates" role="tabpanel" aria-labelledby="tab-rates" hidden>
+      <section class="panel" data-panel="policy" data-title="主要中央銀行の政策金利">
+        <div class="panel-head"><h2>主要中央銀行の政策金利</h2><span id="policyMeta" class="meta"></span></div>
+        <div id="policyTable" class="table-wrap"></div>
+        <p class="fine" id="policyNote"></p>
+      </section>
+
+      <section class="panel" data-panel="cb-calendar" data-title="中央銀行の会合カレンダー">
+        <div class="panel-head"><h2>中央銀行の会合カレンダー</h2><span class="meta">発表時刻は日本時間</span></div>
+        <div id="cbCalendar" class="cb-calendar"></div>
+      </section>
+
+      <section class="panel" data-panel="spread" data-title="日米の金利差とドル円">
+        <div class="panel-head"><h2>日米の金利差とドル円</h2><span id="spreadMeta" class="meta"></span></div>
+        <div class="toolbar"><div id="spreadPills" class="pills" role="group" aria-label="年限"></div></div>
+        <div class="stack-charts">
+          <div><h3 class="sub" id="spreadT1">米国と日本の国債利回り</h3><div id="chartYields"></div></div>
+          <div><h3 class="sub" id="spreadT2">金利差（米国 − 日本）</h3><div id="chartSpread"></div></div>
+          <div><h3 class="sub">ドル円（NY正午の参考レート）</h3><div id="chartUsdJpy"></div></div>
+        </div>
+        <p class="fine">米国債はFRB（H.15）、日本国債は財務省の公表値です。算出方法が異なるため、金利差は目安です。ドル円はFRB（H.10）が週1回まとめて公表する参考レートで、最新の値動きはチャートタブでご確認ください。</p>
+      </section>
+
+      <div class="grid g-2">
+        <section class="panel" data-panel="curve-us" data-title="米国債の利回り曲線">
+          <div class="panel-head"><h2>米国債の利回り曲線</h2><span id="curveUsMeta" class="meta"></span></div>
+          <div id="curveUs"></div>
+        </section>
+        <section class="panel" data-panel="curve-jp" data-title="日本国債の利回り曲線">
+          <div class="panel-head"><h2>日本国債の利回り曲線</h2><span id="curveJpMeta" class="meta"></span></div>
+          <div id="curveJp"></div>
+        </section>
+      </div>
+
+      <section class="panel" data-panel="world-yields" data-title="主要国の10年債利回り">
+        <div class="panel-head"><h2>主要国の10年債利回り</h2><span class="meta">TradingView</span></div>
+        <div class="tv-box tv-h460" data-tv="yields"></div>
+      </section>
+    </section>
+
+    <!-- ===================== 経済指標 ===================== -->
+    <section class="pane" id="pane-macro" role="tabpanel" aria-labelledby="tab-macro" hidden>
+      <section class="panel" data-panel="calendar" data-title="経済指標カレンダー">
+        <div class="panel-head"><h2>経済指標カレンダー</h2><span class="meta">TradingView・重要度 中以上</span></div>
+        <div class="tv-box tv-h640" data-tv="calendar"></div>
+      </section>
+      <section class="panel" data-panel="us-macro" data-title="米国の主要経済指標（物価・雇用）">
+        <div class="panel-head"><h2>米国の主要経済指標</h2><span id="macroMeta" class="meta"></span></div>
+        <div id="macroTiles" class="tiles"></div>
+        <div id="macroDetail" class="macro-detail"></div>
+      </section>
+    </section>
+
+    <!-- ===================== ニュース ===================== -->
+    <section class="pane" id="pane-news" role="tabpanel" aria-labelledby="tab-news" hidden>
+      <section class="panel" data-panel="brief" data-title="AIマーケットまとめ（全文）">
+        <div class="panel-head"><h2>AIマーケットまとめ</h2>
+          <label class="meta select-wrap">過去のまとめ <select id="briefSelect" aria-label="表示するまとめ"></select></label>
+        </div>
+        <div id="briefFull" class="brief-full"><p class="empty">読み込み中…</p></div>
+      </section>
+      <section class="panel" data-panel="weekly" data-title="週末まとめ（先週の振り返りと来週の予定）">
+        <div class="panel-head"><h2>週末まとめ</h2><span id="weeklyMeta" class="meta"></span></div>
+        <div id="weeklyBrief" class="brief-full"><p class="empty">読み込み中…</p></div>
+      </section>
+      <section class="panel" data-panel="tv-news" data-title="為替ニュース（TradingView）">
+        <div class="panel-head"><h2>為替ニュース</h2><span class="meta">TradingView</span></div>
+        <div class="tv-box tv-h640" data-tv="news"></div>
+      </section>
+    </section>
+
+    <!-- ===================== 休場・時間 ===================== -->
+    <section class="pane" id="pane-hours" role="tabpanel" aria-labelledby="tab-hours" hidden>
+      <div class="grid g-2">
+        <section class="panel" data-panel="holidays" data-title="主要市場の休場予定">
+          <div class="panel-head"><h2>主要市場の休場予定</h2><span class="meta">これから90日</span></div>
+          <div id="holidayList" class="table-wrap"></div>
+          <p class="fine">為替は祝日も取引できますが、その国の参加者が減るため、値動きや取引コストがふだんと変わることがあります。</p>
+        </section>
+        <section class="panel" data-panel="dst" data-title="夏時間・冬時間の切り替え">
+          <div class="panel-head"><h2>夏時間・冬時間の切り替え</h2><span class="meta">これから1年</span></div>
+          <ul id="dstList" class="dst-list"></ul>
+        </section>
+      </div>
+      <div class="grid g-2">
+        <section class="panel" data-panel="session-table" data-title="市場の時間帯（日本時間）">
+          <div class="panel-head"><h2>市場の時間帯（日本時間）</h2><span class="meta">目安</span></div>
+          <div id="sessionTable" class="table-wrap"></div>
+        </section>
+        <section class="panel" data-panel="fixed-times" data-title="毎日決まった時刻のイベント">
+          <div class="panel-head"><h2>毎日決まった時刻のイベント</h2><span class="meta">日本時間</span></div>
+          <div id="fixedTimes" class="table-wrap"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="foot-inner">
+      <div>
+        <h2 class="foot-title">データの更新状況</h2>
+        <ul id="sourceStatus" class="source-status"></ul>
+      </div>
+      <div class="foot-notes">
+        <p>このサイトは情報提供を目的としたもので、特定の取引や銘柄を勧めるものではありません。掲載情報の正確性には注意していますが、内容を保証するものではありません。最終的な投資判断はご自身でお願いします。</p>
+        <p>This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.</p>
+        <p><button id="aboutBtn2" class="link-btn" type="button">データの出典・利用条件</button><span id="feedbackSlot"></span></p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- パネル検索 -->
+<dialog id="searchDlg" class="dlg dlg-search" aria-label="パネルを探す">
+  <form method="dialog" class="search-form">
+    <input id="searchInput" type="search" placeholder="パネル名で探す（例：金利、CFTC、休場）" autocomplete="off" aria-label="パネル名">
+    <ul id="searchList" class="search-list" role="listbox"></ul>
+  </form>
+</dialog>
+
+<!-- このサイトについて -->
+<dialog id="aboutDlg" class="dlg" aria-labelledby="aboutTitle">
+  <div class="dlg-head"><h2 id="aboutTitle">このサイトについて</h2><button class="icon-btn" type="button" data-close aria-label="閉じる"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="dlg-body prose">
+    <h3>データの出典</h3>
+    <ul>
+      <li><b>チャート・レート・ヒートマップ・経済指標カレンダー・ニュース：</b>TradingView の埋め込みウィジェット（各ウィジェット内の表示・リンクはTradingViewのものです）。</li>
+      <li><b>米国の金利・経済指標・ドル円などの参考レート：</b>FRED®（セントルイス連邦準備銀行）。原データの作成機関はFRB、米労働統計局（BLS）、米経済分析局（BEA）、米労働省、Claudia Sahm 氏です。This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. このサイトの利用者は <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" target="_blank" rel="noopener">FRED® API 利用規約</a> にも同意したものとします。</li>
+      <li><b>日本国債の利回り：</b>財務省「国債金利情報」（<a href="https://www.mof.go.jp/jgbs/reference/interest_rate/index.htm" target="_blank" rel="noopener">財務省ウェブサイト</a>）を加工して作成。<a href="https://www.digital.go.jp/resources/open_data/public_data_license_v1.0" target="_blank" rel="noopener">公共データ利用規約（第1.0版）</a>。</li>
+      <li><b>投機筋の通貨ポジション：</b>米商品先物取引委員会（CFTC）Commitments of Traders をもとに当サイトで集計。</li>
+      <li><b>政策金利：</b>各中央銀行の公表資料、および BIS（国際決済銀行）Central bank policy rates。BISの統計の日本語表記はBISによる公式翻訳ではありません。</li>
+      <li><b>祝日：</b>内閣府「国民の祝日について」（公共データ利用規約 第1.0版）を加工して作成。英国：Contains public sector information licensed under the Open Government Licence v3.0. 米国：NYSE（ICE）・米人事管理局（OPM）の公表資料をもとに作成。</li>
+      <li><b>AIまとめ：</b>Anthropic社のAI（Claude）がWeb上の公開情報を検索して自動作成しています。誤りを含むことがあります。各項目の出典リンクで原文をご確認ください。</li>
+    </ul>
+    <h3>ご注意</h3>
+    <p>掲載している情報は、取引の判断材料のひとつとしてお使いください。特定の通貨や商品の売買を勧めるものではありません。数値は提供元の更新タイミングにより遅れて反映されることがあります。</p>
+    <h3>このブラウザに保存しているもの</h3>
+    <p>会員確認の結果（一定時間）、表示テーマ、チャートの銘柄・時間足、チェックリストの状態だけです。</p>
+    <p><button id="logoutBtn" class="btn" type="button">このブラウザの会員確認を消す</button></p>
+  </div>
+</dialog>
+</body>
+</html>
