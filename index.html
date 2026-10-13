@@ -11,7 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%231B2A5C'/><polyline points='7,27 14,15 19,22 26,10 33,24' fill='none' stroke='%23F2B42A' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@600;800&family=Zen+Maru+Gothic:wght@500;700&display=swap">
 <link rel="preconnect" href="https://s3.tradingview.com" crossorigin>
 <style>
 /* もちぽよ マーケットポータル
@@ -288,6 +288,77 @@ button { font: inherit; color: inherit; }
 .wx-lg { width: 72px; height: 72px; }
 .wx svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
+/* ---------- きょうの市況：追加 ---------- */
+.btn-sm { padding: 6px 12px; font-size: var(--fs-xs); }
+.mood-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; }
+.mood-top .mood-date { margin-bottom: 6px; }
+.mood-strength { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; margin: 12px 0 0; font-size: var(--fs-sm); }
+.mood-strength .ms-label { font-weight: 700; color: var(--ink-2); margin-right: 6px; }
+.mood-strength .ms-item { white-space: nowrap; font-weight: 700; }
+.mood-strength .ms-item small { font-weight: 400; color: var(--ink-3); margin-left: 3px; font-variant-numeric: tabular-nums; }
+.mood-strength .ms-item.pos::before, .mood-strength .ms-item.neg::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: 1px; }
+.mood-strength .ms-item.pos::before { background: var(--pos); }
+.mood-strength .ms-item.neg::before { background: var(--neg); }
+.mood-strength .ms-sep { color: var(--ink-3); }
+.wx-sm { width: 26px; height: 26px; vertical-align: -7px; margin-right: 6px; }
+
+/* ---------- 朝刊 ---------- */
+.paper { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 26px 30px 22px; max-width: 1080px; margin: 0 auto; }
+.paper-mast { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6px 16px; border-bottom: 3px double var(--ink); padding-bottom: 12px; }
+.paper-name { font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif; font-weight: 800; font-size: clamp(34px, 6vw, 56px); line-height: 1.1; letter-spacing: .04em; margin: 0; }
+.paper-sub { grid-column: 1; margin: 0; font-size: var(--fs-sm); color: var(--ink-2); }
+.paper-actions { grid-column: 2; grid-row: 1 / span 2; display: flex; gap: 8px; align-self: center; }
+@media (max-width: 640px) { .paper { padding: 18px 16px; } .paper-mast { grid-template-columns: minmax(0, 1fr); } .paper-actions { grid-column: 1; grid-row: auto; } }
+.paper-body { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 28px; padding-top: 16px; }
+.paper-body > .empty { grid-column: 1 / -1; }
+.pp-lead { grid-column: 1 / -1; padding-bottom: 16px; border-bottom: 1px solid var(--line-strong); margin-bottom: 4px; }
+.pp-kicker { margin: 0 0 4px; font-weight: 700; font-size: var(--fs-sm); color: var(--ink-2); }
+.pp-headline { font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif; font-weight: 800; font-size: clamp(24px, 3.6vw, 36px); line-height: 1.4; margin: 0 0 10px; text-wrap: balance; }
+.pp-lede { margin: 0; font-size: var(--fs-md); line-height: 1.9; max-width: 62em; color: var(--ink); }
+.pp-block { padding: 14px 0; border-top: 1px solid var(--line); min-width: 0; }
+.pp-block h4 { font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif; font-weight: 800; font-size: var(--fs-lg); margin: 0 0 8px; }
+.pp-block h4 small { font-family: var(--font-body); font-weight: 400; font-size: var(--fs-xs); color: var(--ink-3); margin-left: 8px; }
+.pp-rates { grid-column: span 4; }
+.pp-sched { grid-column: span 2; }
+.paper-body > .pp-block:nth-child(n+4), .pp-col { grid-column: span 2; min-width: 0; }
+.pp-col > .pp-block + .pp-block { margin-top: 4px; }
+@media (max-width: 960px) { .paper-body { grid-template-columns: minmax(0, 1fr); } .pp-rates, .pp-sched, .paper-body > .pp-block:nth-child(n+4), .pp-col { grid-column: 1; } }
+.pp-tbl td:first-child { white-space: nowrap; }
+.pp-tbl td b { white-space: nowrap; }
+.pp-rate-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+@media (max-width: 640px) { .pp-rate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pp-rate { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; padding: 8px 10px 8px 0; border-bottom: 1px dotted var(--line-strong); align-items: baseline; }
+.pp-rate-name { font-size: var(--fs-sm); font-weight: 700; }
+.pp-rate-state { font-size: var(--fs-xs); color: var(--ink-3); text-align: right; white-space: nowrap; }
+.pp-rate-val { grid-column: 1; font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.3; }
+.pp-rate-chg { font-size: var(--fs-xs); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.pp-rate-chg.up { color: var(--up); } .pp-rate-chg.down { color: var(--down); }
+.pp-rate .spark { grid-column: 1 / -1; height: 30px; }
+.pp-sched ul { list-style: none; margin: 0; padding: 0; }
+.pp-sched li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 8px; padding: 6px 0; border-bottom: 1px dotted var(--line-strong); font-size: var(--fs-sm); }
+.pp-sched li b { font-variant-numeric: tabular-nums; }
+.pp-sched li small { display: block; color: var(--ink-3); font-size: var(--fs-xs); }
+.pp-rank { list-style: none; margin: 0; padding: 0; }
+.pp-rank li { display: grid; grid-template-columns: 88px minmax(0, 1fr) 64px; gap: 8px; align-items: center; padding: 3px 0; font-size: var(--fs-sm); }
+.pp-bar { height: 10px; background: var(--sunken); border-radius: 3px; overflow: hidden; }
+.pp-bar i { display: block; height: 100%; border-radius: 0 3px 3px 0; }
+.pp-bar i.pos { background: var(--pos); } .pp-bar i.neg { background: var(--neg); }
+.pp-pct { text-align: right; font-variant-numeric: tabular-nums; }
+.pp-tbl td { padding: 6px 4px; }
+.pp-tbl td.r { white-space: nowrap; }
+.paper-foot { margin-top: 14px; padding-top: 10px; border-top: 3px double var(--ink); font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.7; }
+
+/* ---------- 画像カード ---------- */
+.share-img { display: block; width: 100%; max-width: 432px; margin: 0 auto; border: 1px solid var(--line); border-radius: 8px; aspect-ratio: 4 / 5; background: var(--sunken); }
+.share-actions { display: flex; gap: 8px; justify-content: center; margin: 14px 0 0; }
+
+@media print {
+  body.printing-paper .site-head, body.printing-paper .tabs, body.printing-paper .tape, body.printing-paper .site-foot, body.printing-paper .paper-actions { display: none !important; }
+  body.printing-paper .pane:not(#pane-paper) { display: none !important; }
+  body.printing-paper #pane-paper { display: block !important; }
+  .paper { border: 0; padding: 0; max-width: none; }
+}
+
 /* ---------- 相場時計 ---------- */
 .clock-hero { background: var(--hero-bg); color: var(--hero-ink); border-radius: 16px; padding: 18px 20px 16px; }
 .hero-head { display: flex; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -545,7 +616,6 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
 @media print {
   .tabs, .tape, .head-actions, .site-foot, .tv-box { display: none !important; }
-  .pane[hidden] { display: block !important; }
   body { background: #fff; }
 }
 
@@ -986,6 +1056,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   <nav class="tabs" aria-label="ページの切り替え">
     <div class="tabs-inner" role="tablist">
       <button role="tab" id="tab-home" aria-controls="pane-home" data-tab="home">きょう</button>
+      <button role="tab" id="tab-paper" aria-controls="pane-paper" data-tab="paper">朝刊</button>
       <button role="tab" id="tab-chart" aria-controls="pane-chart" data-tab="chart">チャート</button>
       <button role="tab" id="tab-strength" aria-controls="pane-strength" data-tab="strength">通貨の強弱</button>
       <button role="tab" id="tab-rates" aria-controls="pane-rates" data-tab="rates">金利・中銀</button>
@@ -1000,7 +1071,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     <!-- ===================== きょう ===================== -->
     <section class="pane" id="pane-home" role="tabpanel" aria-labelledby="tab-home" hidden>
       <section class="mood" data-panel="mood" data-title="きょうの市況（ポンド円・ポンドドル・ドル円）">
-        <p class="mood-date" id="moodDate">きょうの市況</p>
+        <div class="mood-top"><p class="mood-date" id="moodDate">きょうの市況</p><button id="shareBtn" class="btn btn-sm" type="button" hidden>画像カードを作る</button></div>
         <div class="mood-main">
           <span id="moodIcon" class="wx wx-lg" aria-hidden="true"></span>
           <div class="mood-text">
@@ -1009,6 +1080,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
           </div>
         </div>
         <div id="moodCards" class="mood-cards"></div>
+        <p id="moodStrength" class="mood-strength" hidden></p>
         <p class="fine" id="moodNote"></p>
       </section>
 
@@ -1052,6 +1124,19 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       </div>
     </section>
 
+    <!-- ===================== 朝刊 ===================== -->
+    <section class="pane" id="pane-paper" role="tabpanel" aria-labelledby="tab-paper" hidden>
+      <article class="paper" data-panel="paper" data-title="朝刊（市況・主要レート・通貨の強弱・きょうの予定の1枚まとめ）">
+        <header class="paper-mast">
+          <h2 class="paper-name">もちぽよFX朝刊</h2>
+          <p class="paper-sub"><span id="paperDate"></span><span id="paperBasis"></span></p>
+          <div class="paper-actions"><button id="paperShare" class="btn btn-sm" type="button">画像カードを作る</button><button id="paperPrint" class="btn btn-sm" type="button">印刷する</button></div>
+        </header>
+        <div id="paperBody" class="paper-body"><p class="empty">毎朝のデータ更新のあとに表示されます。</p></div>
+        <footer class="paper-foot" id="paperFoot"></footer>
+      </article>
+    </section>
+
     <!-- ===================== チャート ===================== -->
     <section class="pane" id="pane-chart" role="tabpanel" aria-labelledby="tab-chart" hidden>
       <section class="panel" data-panel="main-chart" data-title="チャート（銘柄・時間足の切り替え）">
@@ -1077,6 +1162,19 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
     <!-- ===================== 通貨の強弱 ===================== -->
     <section class="pane" id="pane-strength" role="tabpanel" aria-labelledby="tab-strength" hidden>
+      <div class="grid g-2">
+        <section class="panel" data-panel="ccy-strength" data-title="通貨の強弱ランキング（ECB参考レートから計算）">
+          <div class="panel-head"><h2>通貨の強弱ランキング</h2><span id="strengthMeta" class="meta"></span></div>
+          <div class="toolbar"><div id="strengthPills" class="pills" role="group" aria-label="期間"></div></div>
+          <div id="strengthBars"></div>
+          <p class="fine">各通貨を、ほかの7通貨それぞれに対して見た変化率の平均です。ECB（欧州中央銀行）のユーロ参考レート（中欧16時ごろ・ECBのサイトで無料公開）から当サイトで計算しています。</p>
+        </section>
+        <section class="panel" data-panel="ranges" data-title="値幅の目安（1日にどれくらい動くか）">
+          <div class="panel-head"><h2>値幅の目安</h2><span id="rangeMeta" class="meta"></span></div>
+          <div id="rangeTable" class="table-wrap"></div>
+          <p class="fine">直近20営業日の、1日ごとの終値（ECB参考レート）の変化から計算した目安です。1日の中の高値・安値の幅は、これより大きくなるのがふつうです。将来の値動きを示すものではありません。</p>
+        </section>
+      </div>
       <div class="grid g-2">
         <section class="panel" data-panel="heatmap" data-title="通貨ヒートマップ（強い通貨・弱い通貨）">
           <div class="panel-head"><h2>通貨ヒートマップ</h2><span class="meta">TradingView</span></div>
@@ -1215,6 +1313,16 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     <input id="searchInput" type="search" placeholder="パネル名で探す（例：金利、CFTC、休場）" autocomplete="off" aria-label="パネル名">
     <ul id="searchList" class="search-list" role="listbox"></ul>
   </form>
+</dialog>
+
+<!-- 画像カード -->
+<dialog id="shareDlg" class="dlg" aria-labelledby="shareTitle">
+  <div class="dlg-head"><h2 id="shareTitle">画像カード</h2><button class="icon-btn" type="button" data-close aria-label="閉じる"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="dlg-body">
+    <img id="shareImg" class="share-img" alt="きょうの市況の画像カード">
+    <p class="share-actions"><a id="shareSave" class="btn btn-primary" href="#" download>画像を保存</a><button id="shareNative" class="btn" type="button" hidden>共有する</button></p>
+    <p class="fine">1080×1350ピクセル（4:5）の画像です。X・Instagramなどにそのまま投稿できます。画像内に出典と注意書きが入っています。</p>
+  </div>
 </dialog>
 
 <!-- このサイトについて -->
@@ -1876,7 +1984,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== タブ ==============================
-  var TABS = ["home", "chart", "strength", "rates", "macro", "news", "hours"];
+  var TABS = ["home", "paper", "chart", "strength", "rates", "macro", "news", "hours"];
   var inited = {};
   var INIT = {};
   function showTab(id, focusPanel) {
@@ -2260,7 +2368,275 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         '<span class="spark" data-mood="' + i + '"></span></div>';
     }).join("");
     res.forEach(function (x, i) { Charts.spark($('[data-mood="' + i + '"]', box), x.s.slice(-30)); });
+    $("#shareBtn").hidden = false;
+    if (ecbReady(e)) {
+      var st = ccyStrength(e, 5);
+      $("#moodStrength").hidden = false;
+      $("#moodStrength").innerHTML = '<span class="ms-label">1週間の通貨の強弱</span>' + st.map(function (x) { return '<span class="ms-item ' + (x.pct >= 0 ? "pos" : "neg") + '">' + esc(CCY_JA[x.ccy]) + "<small>" + esc((x.pct > 0 ? "+" : "") + x.pct.toFixed(1) + "%") + "</small></span>"; }).join('<span class="ms-sep" aria-hidden="true">›</span>');
+    }
     $("#moodNote").textContent = "ECB（欧州中央銀行）のユーロ参考レート（ECBのウェブサイトで無料公開）から当サイトで各ペアを計算し、直近の値動きの大きさ・向きを機械的に判定しています。リアルタイムの値ではなく、先行きの予想や売買の推奨でもありません。最新の値動きはチャートでご確認ください。";
+  }
+
+
+  // ============================== 通貨の強弱・値幅（ECB参考レートから計算） ==============================
+  var CCY_JA = { EUR: "ユーロ", USD: "米ドル", JPY: "円", GBP: "ポンド", AUD: "豪ドル", NZD: "NZドル", CAD: "カナダドル", CHF: "スイスフラン" };
+  var PAIR_DEF = [
+    ["GBPJPY", "ポンド円", "GBP", "JPY"], ["USDJPY", "ドル円", "USD", "JPY"], ["EURJPY", "ユーロ円", "EUR", "JPY"],
+    ["AUDJPY", "豪ドル円", "AUD", "JPY"], ["GBPUSD", "ポンドドル", "GBP", "USD"], ["EURUSD", "ユーロドル", "EUR", "USD"]
+  ];
+  // 1ユーロあたりの値（EURは1）
+  function ecbRate(e, row, ccy) {
+    if (ccy === "EUR") return 1;
+    var i = e.columns.indexOf(ccy);
+    return i < 0 ? null : row[i + 1];
+  }
+  function ecbReady(e) { return !!(e && e.rates && e.columns && e.rates.length > 22); }
+  // n営業日前からの強さ（ほかの7通貨に対する変化率の平均・%）
+  function ccyStrength(e, n) {
+    var rows = e.rates, last = rows[rows.length - 1], base = rows[rows.length - 1 - n];
+    if (!base) return [];
+    var all = ["EUR"].concat(e.columns);
+    var l = {};
+    all.forEach(function (c) { var a = ecbRate(e, last, c), b = ecbRate(e, base, c); l[c] = a && b ? Math.log(a / b) : null; });
+    var ok = all.filter(function (c) { return l[c] !== null; });
+    return ok.map(function (c) {
+      var others = ok.filter(function (x) { return x !== c; });
+      var s = others.reduce(function (sum, x) { return sum + (l[x] - l[c]); }, 0) / others.length;
+      return { ccy: c, pct: (Math.exp(s) - 1) * 100 };
+    }).sort(function (a, b) { return b.pct - a.pct; });
+  }
+  function pairSeries(e, base, quote) {
+    return e.rates.map(function (r) { var a = ecbRate(e, r, base), b = ecbRate(e, r, quote); return [r[0], a && b ? b / a : null]; }).filter(function (p) { return p[1]; });
+  }
+  function pairRange(e, def) {
+    var s = pairSeries(e, def[2], def[3]);
+    if (s.length < 22) return null;
+    var rets = [];
+    for (var i = s.length - 20; i < s.length; i++) rets.push(s[i][1] / s[i - 1][1] - 1);
+    var mean = rets.reduce(function (a, b) { return a + b; }, 0) / rets.length;
+    var sd = Math.sqrt(rets.reduce(function (a, b) { return a + (b - mean) * (b - mean); }, 0) / (rets.length - 1));
+    var absAvg = rets.reduce(function (a, b) { return a + Math.abs(b); }, 0) / rets.length;
+    var absMax = Math.max.apply(null, rets.map(Math.abs));
+    var last = s[s.length - 1][1], jpy = def[3] === "JPY", pip = jpy ? 0.01 : 0.0001;
+    return { def: def, last: last, jpy: jpy, pip: pip, sd: sd * last, avg: absAvg * last, max: absMax * last, date: s[s.length - 1][0] };
+  }
+  function fmtMoveHtml(r, v, plus) {
+    return '<span class="nw">' + (plus ? "±" : "") + esc(r.jpy ? v.toFixed(2) + "円" : v.toFixed(4)) + '</span><span class="note">約' + Math.round(v / r.pip) + "pips</span>";
+  }
+  var strengthPeriod = "5";
+  var STRENGTH_PERIODS = [["1", "前日比"], ["5", "1週間"], ["20", "1カ月"]];
+  function renderStrength() {
+    var e = D.ecb, box = $("#strengthBars");
+    if (!ecbReady(e)) { box.innerHTML = '<p class="empty">データの初回取得前です。</p>'; $("#rangeTable").innerHTML = '<p class="empty">データの初回取得前です。</p>'; return; }
+    strengthPeriod = store.get("mp_strength", "5");
+    $("#strengthMeta").textContent = jaMD(e.latest) + " 時点（中欧16時ごろ）";
+    $("#strengthPills").innerHTML = STRENGTH_PERIODS.map(function (p) { return '<button type="button" class="pill" data-n="' + p[0] + '" aria-pressed="' + (p[0] === strengthPeriod) + '">' + p[1] + "</button>"; }).join("");
+    var rows = ccyStrength(e, Number(strengthPeriod)).map(function (x) { return { key: x.ccy, label: CCY_JA[x.ccy] + "（" + x.ccy + "）", value: Math.round(x.pct * 100) / 100 }; });
+    Charts.bars(box, { rows: rows, posLabel: "強い", negLabel: "弱い", nameWidth: 140, nameHeader: "通貨", valueHeader: "ほかの7通貨に対する変化率の平均", fmt: function (v) { return (v > 0 ? "+" : "") + v.toFixed(2) + "%"; }, aria: "通貨の強弱ランキング" });
+    // 値幅
+    var rs = PAIR_DEF.map(function (d) { return pairRange(e, d); }).filter(Boolean);
+    $("#rangeMeta").textContent = "直近20営業日・" + jaMD(e.latest) + " 時点";
+    $("#rangeTable").innerHTML = '<table class="tbl tbl-stack"><thead><tr><th>通貨ペア</th><th>1日の動きの目安（標準偏差）</th><th>平均的な1日の変化</th><th>20日で最大の1日</th></tr></thead><tbody>' + rs.map(function (r) {
+      return "<tr><td><b>" + esc(r.def[1]) + '</b><span class="note">' + esc(r.last.toFixed(r.jpy ? 3 : 5)) + '</span></td><td data-label="1日の動きの目安（標準偏差）"><b>' + fmtMoveHtml(r, r.sd, true) + '</b></td><td data-label="平均的な1日の変化">' + fmtMoveHtml(r, r.avg) + '</td><td data-label="20日で最大の1日">' + fmtMoveHtml(r, r.max) + "</td></tr>";
+    }).join("") + "</tbody></table>";
+  }
+  function initStrengthPills() {
+    $("#strengthPills").addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-n]"); if (!b) return;
+      store.set("mp_strength", b.getAttribute("data-n")); renderStrength();
+    });
+  }
+
+  // ============================== 朝刊（定型文の自動まとめ） ==============================
+  function moodData() {
+    var e = D.ecb;
+    if (!e || !e.pairs) return null;
+    var res = MOOD_PAIRS.map(function (p) { return { p: p, a: moodAssess(e.pairs[p[0]] || []), s: e.pairs[p[0]] || [] }; }).filter(function (x) { return x.a; });
+    return res.length ? { e: e, res: res, headline: res.map(function (x) { return x.p[1] + "は" + MOOD[x.a.kind].word; }).join("、") } : null;
+  }
+  function todayEvents() {
+    var now = Date.now();
+    return collectEvents(now - 10 * MIN, now + DAY).filter(function (ev) {
+      return ev.kind !== "session";
+    });
+  }
+  function rateLine() {
+    var us = D.usRates, j = D.jgb;
+    if (!us || !j || !us.series || !us.series.DGS10) return null;
+    var u = us.series.DGS10, uLast = u[u.length - 1];
+    var i10 = j.tenors.indexOf("10Y"), jr = j.rows, jLast = jr[jr.length - 1];
+    var back = function (arr, d, f) { for (var i = arr.length - 1; i >= 0; i--) if (arr[i][0] <= d) return f(arr[i]); return null; };
+    var spread = uLast[1] - back(jr, uLast[0], function (r) { return r[1][i10]; });
+    var wk = addDays(uLast[0], -7);
+    var spreadWk = back(u, wk, function (r) { return r[1]; }) - back(jr, wk, function (r) { return r[1][i10]; });
+    return { us: uLast, jp: [jLast[0], jLast[1][i10]], spread: spread, chg: spread - spreadWk };
+  }
+  function cotLine() {
+    var c = D.cot;
+    if (!c || !c.currencies) return [];
+    return c.currencies.filter(function (x) { return ["JPY", "GBP", "EUR"].indexOf(x.ccy) >= 0 && x.rows.length > 1; }).map(function (x) {
+      var a = x.rows[x.rows.length - 1], b = x.rows[x.rows.length - 2];
+      return { ccy: x.ccy, name: COT_JA[x.ccy] || x.ccy, net: a[2] - a[3], chg: (a[2] - a[3]) - (b[2] - b[3]), date: a[0] };
+    });
+  }
+  function sgnNum(v, d, unit) { return (v > 0 ? "+" : v < 0 ? "−" : "±") + Math.abs(v).toFixed(d) + (unit || ""); }
+  function renderPaper() {
+    var md = moodData(), now = Date.now();
+    $("#paperDate").textContent = new Date(now + 9 * HOUR).getUTCFullYear() + "年" + jaDate(jstDate(now));
+    var foot = "ECB（欧州中央銀行）ユーロ参考レート（ECBのサイトで無料公開）をもとに当サイトで計算・自動編集。金利はFRB（FRED経由）・財務省、投機筋ポジションはCFTC、中央銀行の日程は各中央銀行の公表資料による。数値は公表元の更新タイミングにより遅れることがあります。過去の値動きの要約で、先行きの予想や売買の推奨ではありません。";
+    $("#paperFoot").textContent = foot;
+    if (!md || !ecbReady(md.e)) { $("#paperBasis").textContent = ""; $("#paperBody").innerHTML = '<p class="empty">毎朝のデータ更新のあとに表示されます。</p>'; return; }
+    var e = md.e;
+    $("#paperBasis").textContent = "　" + jaMD(e.latest) + " の参考レート（中欧16時ごろ）時点・自動編集";
+    var st = ccyStrength(e, 5), top = st[0], bot = st[st.length - 1];
+    var rl = rateLine(), cots = cotLine(), evs = todayEvents();
+    var g = md.res[0];
+    var lede = jaMD(e.latest) + "の参考レートでは、" + g.p[1] + "は" + MOOD[g.a.kind].word + "（前日比" + pctTxt(g.a.d1) + "、5営業日で" + pctTxt(g.a.r5) + "）。" +
+      "1週間の通貨の強弱では" + CCY_JA[top.ccy] + "が最も強く（" + sgnNum(top.pct, 2, "%") + "）、" + CCY_JA[bot.ccy] + "が最も弱い（" + sgnNum(bot.pct, 2, "%") + "）。" +
+      (rl ? "日米10年金利差は" + rl.spread.toFixed(2) + "%ptで、1週間前から" + sgnNum(rl.chg, 2, "%pt") + "。" : "");
+    var h = "";
+    h += '<section class="pp-lead"><p class="pp-kicker"><span class="wx wx-sm">' + wxSvg(g.a.kind) + "</span>" + esc(g.p[1] + "：" + MOOD[g.a.kind].label) + '</p><h3 class="pp-headline">' + esc(md.headline) + '</h3><p class="pp-lede">' + esc(lede) + "</p></section>";
+    // 主要レート
+    var rs = PAIR_DEF.map(function (d) {
+      var s = pairSeries(e, d[2], d[3]); var a = moodAssess(s); return a ? { d: d, s: s, a: a } : null;
+    }).filter(Boolean);
+    h += '<section class="pp-block pp-rates"><h4>主要レート<small>ECB参考レートから計算</small></h4><div class="pp-rate-grid">' + rs.map(function (x, i) {
+      var jpy = x.d[3] === "JPY";
+      return '<div class="pp-rate"><span class="pp-rate-name">' + esc(x.d[1]) + '</span><span class="pp-rate-state">' + esc(MOOD[x.a.kind].label) + '</span><span class="pp-rate-val">' + esc(x.a.last.toFixed(jpy ? 2 : 4)) + '</span><span class="pp-rate-chg ' + (x.a.d1 >= 0 ? "up" : "down") + '">' + (x.a.d1 >= 0 ? "▲ " : "▼ ") + esc(pctTxt(x.a.d1)) + '</span><span class="spark" data-pp="' + i + '"></span></div>';
+    }).join("") + "</div></section>";
+    // 予定
+    var today = jstDate(now);
+    h += '<section class="pp-block pp-sched"><h4>これからの予定<small>日本時間・24時間先まで</small></h4>' + (evs.length ? "<ul>" + evs.map(function (ev) {
+      return "<li><b>" + (ev.allDay ? "終日" : jstTime(ev.at)) + "</b><span>" + esc(ev.label) + (ev.sub ? "<small>" + esc(ev.sub) + "</small>" : "") + "</span></li>";
+    }).join("") + "</ul>" : '<p class="empty">中央銀行の発表・休場などの予定はありません。</p>') + '<p class="fine">経済指標の発表予定は「経済指標」タブのカレンダーでご確認ください。</p></section>';
+    // 強弱
+    h += '<section class="pp-block"><h4>通貨の強弱<small>1週間・ほかの7通貨に対する平均</small></h4><ol class="pp-rank">' + st.map(function (x) {
+      var w = Math.min(100, Math.abs(x.pct) / Math.max(0.01, Math.max(Math.abs(top.pct), Math.abs(bot.pct))) * 100);
+      return '<li><span class="pp-ccy">' + esc(CCY_JA[x.ccy]) + '</span><span class="pp-bar"><i class="' + (x.pct >= 0 ? "pos" : "neg") + '" style="width:' + w.toFixed(1) + '%"></i></span><span class="pp-pct">' + esc(sgnNum(x.pct, 2, "%")) + "</span></li>";
+    }).join("") + "</ol></section>";
+    // 値幅
+    var rg = PAIR_DEF.slice(0, 4).map(function (d) { return pairRange(e, d); }).filter(Boolean);
+    h += '<section class="pp-block"><h4>値幅の目安<small>直近20営業日・終値の1日の変化</small></h4><table class="tbl pp-tbl"><tbody>' + rg.map(function (r) {
+      return "<tr><td>" + esc(r.def[1]) + '</td><td class="r"><b>±' + esc(r.jpy ? r.sd.toFixed(2) + "円" : r.sd.toFixed(4)) + '</b></td><td class="r">約' + Math.round(r.sd / r.pip) + "pips</td></tr>";
+    }).join("") + "</tbody></table></section>";
+    // 金利
+    h += '<div class="pp-col">';
+    h += '<section class="pp-block"><h4>金利<small>日米10年国債</small></h4>' + (rl ? '<table class="tbl pp-tbl"><tbody><tr><td>米10年</td><td class="r"><b>' + rl.us[1].toFixed(2) + "%</b></td><td class=\"r\">" + esc(jaMD(rl.us[0])) + '</td></tr><tr><td>日本10年</td><td class="r"><b>' + Number(rl.jp[1]).toFixed(3) + '%</b></td><td class="r">' + esc(jaMD(rl.jp[0])) + '</td></tr><tr><td>日米金利差</td><td class="r"><b>' + rl.spread.toFixed(2) + '%pt</b></td><td class="r">1週間で' + esc(sgnNum(rl.chg, 2, "")) + "</td></tr></tbody></table>" : '<p class="empty">データの初回取得前です。</p>') + "</section>";
+    // CFTC
+    h += '<section class="pp-block"><h4>投機筋のポジション<small>CFTC・' + (cots[0] ? esc(jaMD(cots[0].date)) + "時点" : "") + "</small></h4>" + (cots.length ? '<table class="tbl pp-tbl"><tbody>' + cots.map(function (c) {
+      return "<tr><td>" + esc(c.name) + '</td><td class="r"><b>' + (c.net >= 0 ? "買い越し " : "売り越し ") + fmtNum(Math.abs(c.net)) + '枚</b></td><td class="r">前週比 ' + esc(signed(c.chg, 0, "")) + "</td></tr>";
+    }).join("") + "</tbody></table>" : '<p class="empty">データの初回取得前です。</p>') + "</section></div>";
+    var body = $("#paperBody");
+    body.innerHTML = h;
+    rs.forEach(function (x, i) { Charts.spark($('[data-pp="' + i + '"]', body), x.s.slice(-30)); });
+  }
+
+  // ============================== 画像カード ==============================
+  function wxImage(kind) {
+    var svg = wxSvg(kind).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" ').replace(/var\(--wx-cloud\)/g, "#e4e8f3").replace(/var\(--wx-cloud-edge\)/g, "#9aa6c2");
+    return new Promise(function (res) { var im = new Image(); im.onload = function () { res(im); }; im.onerror = function () { res(null); }; im.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg); });
+  }
+  function wrapText(ctx, text, maxW) {
+    var lines = [], line = "";
+    Array.from(text).forEach(function (ch) {
+      if (ctx.measureText(line + ch).width > maxW && line) { lines.push(line); line = ch.trim() ? ch : ""; }
+      else line += ch;
+    });
+    if (line) lines.push(line);
+    // 行頭に句読点が来ないように
+    for (var i = 1; i < lines.length; i++) if (/^[、。）」]/.test(lines[i])) { lines[i - 1] += lines[i][0]; lines[i] = lines[i].slice(1); }
+    return lines.filter(Boolean);
+  }
+  function makeCard() {
+    var md = moodData();
+    if (!md) return Promise.reject(new Error("no data"));
+    var e = md.e, W = 1080, H = 1350, c = document.createElement("canvas"); c.width = W; c.height = H;
+    var x = c.getContext("2d");
+    var SANS = '"BIZ UDPGothic","Hiragino Sans","Yu Gothic",sans-serif', HEAD = '"Zen Maru Gothic","BIZ UDPGothic",sans-serif', SERIF = '"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif';
+    var fontsReady = document.fonts && document.fonts.load ? Promise.all(['800 60px "Shippori Mincho B1"', '700 40px "Zen Maru Gothic"', '700 30px "BIZ UDPGothic"', '400 24px "BIZ UDPGothic"'].map(function (f) { return document.fonts.load(f).catch(function () {}); })) : Promise.resolve();
+    var kinds = md.res.map(function (r) { return r.a.kind; });
+    return fontsReady.then(function () { return Promise.all(kinds.map(wxImage)); }).then(function (imgs) {
+      // 地と見出し帯
+      x.fillStyle = "#f3f5fa"; x.fillRect(0, 0, W, H);
+      x.fillStyle = "#16203a"; x.fillRect(0, 0, W, 300);
+      x.strokeStyle = "rgba(242,180,42,.9)"; x.lineWidth = 8; x.lineJoin = "round"; x.lineCap = "round";
+      x.beginPath(); x.moveTo(760, 215); x.lineTo(830, 165); x.lineTo(880, 195); x.lineTo(950, 130); x.lineTo(990, 160); x.lineTo(1040, 118); x.globalAlpha = .35; x.stroke(); x.globalAlpha = 1;
+      x.fillStyle = "#aab5d0"; x.font = "700 30px " + SANS; x.textBaseline = "alphabetic";
+      x.fillText("もちぽよ マーケットポータル", 60, 82);
+      var now = Date.now(), y = new Date(now + 9 * HOUR).getUTCFullYear();
+      x.textAlign = "right"; x.fillText(y + "年" + jaDate(jstDate(now)), W - 60, 82); x.textAlign = "left";
+      x.fillStyle = "#ffffff"; x.font = "800 74px " + SERIF;
+      x.fillText("きょうの為替", 60, 186);
+      x.fillStyle = "#f2b42a"; x.font = "700 30px " + SANS;
+      x.fillText(jaMD(e.latest) + " の参考レート（中欧16時ごろ）時点", 60, 248);
+      // 一言
+      x.fillStyle = "#16203a"; x.font = "700 48px " + HEAD;
+      var lines = wrapText(x, md.headline, W - 120).slice(0, 3), ly = 380;
+      lines.forEach(function (l) { x.fillText(l, 60, ly); ly += 66; });
+      // 3ペア
+      var cardH = 160, cy = Math.min(ly + 4, 1350 - 120 - 190 - 3 * (cardH + 20));
+      md.res.forEach(function (r, i) {
+        var top = cy + i * (cardH + 20);
+        x.fillStyle = "#ffffff"; roundRect(x, 60, top, W - 120, cardH, 22); x.fill();
+        x.strokeStyle = "#dce1ea"; x.lineWidth = 2; x.stroke();
+        if (imgs[i]) x.drawImage(imgs[i], 88, top + 32, 96, 96);
+        x.fillStyle = "#16203a"; x.font = "700 40px " + SANS; x.fillText(r.p[1], 210, top + 68);
+        x.font = "700 44px " + HEAD; x.fillText(MOOD[r.a.kind].label, 210, top + 122);
+        x.textAlign = "right"; x.font = "700 46px " + SANS; x.fillText(r.a.last.toFixed(r.p[2]), W - 90, top + 70);
+        x.font = "700 30px " + SANS; x.fillStyle = r.a.d1 >= 0 ? "#0e7c57" : "#bf344a";
+        x.fillText((r.a.d1 >= 0 ? "▲ " : "▼ ") + "前日比 " + pctTxt(r.a.d1), W - 90, top + 120);
+        x.textAlign = "left";
+      });
+      // 通貨の強弱
+      var sy = cy + 3 * (cardH + 20) + 30;
+      if (ecbReady(e)) {
+        var st = ccyStrength(e, 5);
+        x.fillStyle = "#16203a"; x.font = "700 32px " + SANS; x.fillText("1週間の通貨の強弱", 60, sy + 10);
+        var bw = (W - 120 - 7 * 10) / 8;
+        st.forEach(function (s, i) {
+          var bx = 60 + i * (bw + 10), by = sy + 32;
+          x.fillStyle = s.pct >= 0 ? "#2a78d6" : "#e34948"; roundRect(x, bx, by, bw, 70, 14); x.fill();
+          x.fillStyle = "#ffffff"; x.textAlign = "center"; x.font = "700 26px " + SANS; x.fillText(s.ccy, bx + bw / 2, by + 32);
+          x.font = "400 22px " + SANS; x.fillText((s.pct > 0 ? "+" : "") + s.pct.toFixed(1) + "%", bx + bw / 2, by + 60); x.textAlign = "left";
+        });
+        x.fillStyle = "#5f6a84"; x.font = "400 22px " + SANS; x.fillText("左ほど強い（ほかの7通貨に対する変化率の平均）", 60, sy + 135);
+      }
+      // 注記
+      x.fillStyle = "#e6eaf2"; x.fillRect(0, H - 120, W, 120);
+      x.fillStyle = "#3a4661"; x.font = "400 21px " + SANS;
+      ["出典：ECB（欧州中央銀行）ユーロ参考レート（ECBのサイトで無料公開）をもとに計算", "過去の値動きを機械的に判定したもので、先行きの予想や売買の推奨ではありません"].forEach(function (t, i) { x.fillText(t, 60, H - 74 + i * 34); });
+      return new Promise(function (res) { c.toBlob(function (b) { res(b); }, "image/png"); });
+    });
+  }
+  function roundRect(x, l, t, w, h, r) { x.beginPath(); x.moveTo(l + r, t); x.arcTo(l + w, t, l + w, t + h, r); x.arcTo(l + w, t + h, l, t + h, r); x.arcTo(l, t + h, l, t, r); x.arcTo(l, t, l + w, t, r); x.closePath(); }
+  var cardUrl = null;
+  function openShare() {
+    var dlg = $("#shareDlg");
+    makeCard().then(function (blob) {
+      if (!blob) return;
+      if (cardUrl) URL.revokeObjectURL(cardUrl);
+      cardUrl = URL.createObjectURL(blob);
+      $("#shareImg").src = cardUrl;
+      var name = "mochipoyo-fx-" + jstDate(Date.now()).replace(/-/g, "") + ".png";
+      var a = $("#shareSave"); a.href = cardUrl; a.setAttribute("download", name);
+      var file = typeof File !== "undefined" ? new File([blob], name, { type: "image/png" }) : null;
+      var nat = $("#shareNative");
+      nat.hidden = !(file && navigator.canShare && navigator.canShare({ files: [file] }));
+      nat.onclick = function () { navigator.share({ files: [file], title: "きょうの為替" }).catch(function () {}); };
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+    }).catch(function () {});
+  }
+  function initShare() {
+    var dlg = $("#shareDlg");
+    $$("[data-close]", dlg).forEach(function (b) { b.addEventListener("click", function () { dlg.close(); }); });
+    dlg.addEventListener("click", function (ev) { if (ev.target === dlg) dlg.close(); });
+    $("#shareBtn").addEventListener("click", openShare);
+    $("#paperShare").addEventListener("click", openShare);
+    $("#paperPrint").addEventListener("click", function () {
+      document.body.classList.add("printing-paper");
+      window.print();
+      setTimeout(function () { document.body.classList.remove("printing-paper"); }, 500);
+    });
   }
 
   // ============================== AIまとめ ==============================
@@ -2757,7 +3133,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== 検索 ==============================
-  var TAB_JA = { home: "きょう", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
+  var TAB_JA = { home: "きょう", paper: "朝刊", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
   function initSearch() {
     var dlg = $("#searchDlg"), input = $("#searchInput"), list = $("#searchList");
     var index = $$("[data-panel]").map(function (el) {
@@ -2840,7 +3216,8 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     loadJson("manual/notices.json").then(renderNotices);
   };
   INIT.chart = initChart;
-  INIT.strength = function () { renderCot(); };
+  INIT.strength = function () { initStrengthPills(); renderStrength(); renderCot(); };
+  INIT.paper = renderPaper;
   INIT.rates = function () {
     renderPolicyTable(); renderCbCalendar();
     var cur = store.get("mp_spread", "10Y");
@@ -2883,7 +3260,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     if (window.PORTAL_PREVIEW) { var pb = $("#previewBar"); pb.hidden = false; pb.textContent = window.PORTAL_PREVIEW; }
     tickClock();
     setInterval(tickClock, 1000);
-    initTabs(); initTheme(); initDialogs(); initSearch();
+    initTabs(); initTheme(); initDialogs(); initSearch(); initShare();
     // ティッカー
     tvMount($("#tape"), "ticker-tape", function (t) {
       return { symbols: (CFG.ticker || []).map(function (x) { return { proName: x.s, title: x.t }; }), showSymbolLogo: false, isTransparent: true, displayMode: "adaptive", colorTheme: t, locale: "ja" };
@@ -2926,7 +3303,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 
   // テスト用に一部の関数を公開
-  window.__portal = { moodAssess: moodAssess, zonedToUtc: zonedToUtc, gotobi: gotobi, collectEvents: collectEvents, dstChanges: dstChanges, resolvePolicy: resolvePolicy, weekClosed: weekClosed, D: D, CAL: CAL, buildCalendar: buildCalendar };
+  window.__portal = { ccyStrength: ccyStrength, pairRange: pairRange, makeCard: makeCard, moodAssess: moodAssess, zonedToUtc: zonedToUtc, gotobi: gotobi, collectEvents: collectEvents, dstChanges: dstChanges, resolvePolicy: resolvePolicy, weekClosed: weekClosed, D: D, CAL: CAL, buildCalendar: buildCalendar };
 })();
 
 </script>
