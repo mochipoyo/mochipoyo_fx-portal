@@ -677,12 +677,104 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
   .tbl-stack tr:last-child { border-bottom: 0; }
   .tbl-stack td { display: block; padding: 0; border: 0; }
   .tbl-stack td[data-label]::before { content: attr(data-label); display: block; font-size: 11px; color: var(--ink-3); }
+  .tbl-stack th[scope="row"] { grid-column: 1 / -1; padding: 0; border: 0; font-size: var(--fs-sm); }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
 @media print {
   .tabs, .tape, .head-actions, .site-foot, .tv-box { display: none !important; }
   body { background: #fff; }
 }
+
+/* ---------- データの更新状況 ---------- */
+.data-lamp { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; margin-right: 4px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); font: 700 12.5px/1 var(--font-body, inherit); cursor: pointer; white-space: nowrap; }
+.data-lamp:hover { border-color: var(--brand); color: var(--ink); }
+.data-lamp:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.lamp-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-3); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ink-3) 25%, transparent); }
+.data-lamp[data-level="ok"] .lamp-dot { background: var(--up); box-shadow: 0 0 0 3px color-mix(in srgb, var(--up) 25%, transparent); }
+.data-lamp[data-level="warn"] .lamp-dot { background: var(--wave); box-shadow: 0 0 0 3px color-mix(in srgb, var(--wave) 30%, transparent); }
+.data-lamp[data-level="bad"] .lamp-dot { background: var(--down); box-shadow: 0 0 0 3px color-mix(in srgb, var(--down) 30%, transparent); }
+.data-lamp[data-level="bad"], .data-lamp[data-level="warn"] { color: var(--ink); }
+@media (max-width: 640px) { .data-lamp { padding: 0 8px; } .data-lamp .lamp-text { font-size: 11.5px; } }
+.lamp-n { margin-left: 4px; font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) { .data-lamp .lamp-long { display: none; } }
+.status-lead { margin: 0 0 10px; font-weight: 700; }
+.status-tbl th[scope="row"] { text-align: left; font-weight: 700; }
+.status-tbl td .fine { display: block; margin-top: 3px; }
+.state-pill { display: inline-block; white-space: nowrap; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; border: 1px solid currentColor; }
+.state-pill.st-ok { color: var(--up); }
+.state-pill.st-warn { color: var(--wave); }
+.state-pill.st-bad { color: var(--down); }
+.state-pill.st-off { color: var(--ink-3); }
+.crit-tag { display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 4px; font-size: 11px; background: var(--brand-soft); color: var(--ink-2); vertical-align: 1px; }
+.status-h3 { margin: 18px 0 8px; font-size: var(--fs-md); }
+.manual-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.manual-list li { display: flex; gap: 10px; align-items: flex-start; }
+.mtag { flex: none; min-width: 4.5em; text-align: center; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: 700; border: 1px solid var(--line-strong); }
+.mtag-auto { color: var(--up); border-color: currentColor; }
+.mtag-manual { color: var(--wave); border-color: currentColor; }
+.mtag-live { color: var(--brand); border-color: currentColor; }
+.stale-note { margin: 0 0 10px; padding: 8px 12px; border-radius: 8px; background: var(--warn-bg); color: var(--warn-ink); font-size: var(--fs-sm); line-height: 1.6; border-left: 4px solid var(--wave); }
+.mood .stale-note, .flow-hero .stale-note { margin: 10px 0; }
+
+/* ---------- 4銘柄ダッシュボード ---------- */
+.sym-switch { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.sym-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px; border-radius: 12px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); cursor: pointer; font-family: var(--font-head); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18); }
+.sym-btn b { font-size: var(--fs-md); color: var(--ink); }
+.sym-btn span { font-size: 11.5px; letter-spacing: .04em; color: var(--ink-3); }
+.sym-btn:hover { border-color: var(--brand); background: var(--brand-soft); }
+.sym-btn[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); }
+.sym-btn[aria-pressed="true"] b, .sym-btn[aria-pressed="true"] span { color: var(--brand-ink); }
+.sym-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.sym-lead { margin: 8px 2px 0; }
+.sym-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 12px; }
+.sym-grid > .panel { margin: 0; min-width: 0; }
+.sym-chart-panel, .sym-grid > [data-panel="sym-rates"] { grid-column: 1 / -1; }
+.sym-chart { height: 460px; margin-top: 10px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.ref-main { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.ref-val { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+.ref-ch { font-weight: 700; }
+.ref-ch small { font-weight: 400; color: var(--ink-3); margin-left: 4px; }
+.kv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; margin: 12px 0 6px; }
+.kv > div { padding: 8px 10px; border-radius: 8px; background: var(--sunken); }
+.kv dt { font-size: var(--fs-xs); color: var(--ink-3); }
+.kv dd { margin: 2px 0 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.kv dd .note { font-weight: 400; margin-left: 6px; font-size: var(--fs-xs); color: var(--ink-3); }
+.empty-note { margin: 0 0 10px; padding: 10px 12px; border-radius: 8px; background: var(--sunken); border: 1px dashed var(--line-strong); font-size: var(--fs-sm); line-height: 1.7; color: var(--ink-2); }
+.na { color: var(--ink-3); font-weight: 700; }
+.str-tbl td small.rank { display: block; font-size: 11px; color: var(--ink-3); }
+.str-tbl th[scope="row"], .yld-tbl th[scope="row"] { text-align: left; }
+.yld-tbl { margin-top: 12px; }
+.diff-line { margin: 10px 0 0; }
+.diff-line small { color: var(--ink-3); margin-left: 4px; }
+.cot-mini { padding: 10px 12px; border-radius: 8px; background: var(--sunken); margin-bottom: 8px; }
+.cot-mini h3 { font-size: var(--fs-sm); color: var(--ink-2); margin: 0 0 2px; }
+.cot-net { margin: 0; font-size: var(--fs-md); }
+.cot-net small { color: var(--ink-3); font-size: var(--fs-xs); margin-left: 4px; }
+.cot-mini .fine { margin: 2px 0 0; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.sym-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.sym-card { display: grid; gap: 6px; padding: 12px; border-radius: 12px; border: 1px solid var(--line-strong); background: var(--sunken); color: var(--ink); text-decoration: none; min-width: 0; transition: border-color .15s, transform .1s; }
+.sym-card:hover { border-color: var(--brand); }
+.sym-card:active { transform: translateY(1px); }
+.sym-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.sc-name { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; font-size: 11.5px; color: var(--ink-3); letter-spacing: .04em; }
+.sc-name b { font-size: var(--fs-md); color: var(--ink); letter-spacing: 0; font-family: var(--font-head); }
+.sc-ref { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-weight: 700; }
+.sc-val { font-size: 20px; font-variant-numeric: tabular-nums; }
+.sc-ref small { width: 100%; font-weight: 400; font-size: 11px; color: var(--ink-3); }
+.sc-next { font-size: var(--fs-xs); color: var(--ink-2); line-height: 1.5; }
+.sc-next small { display: block; color: var(--ink-3); font-size: 11px; }
+.sc-next .left { margin-left: 6px; color: var(--ink-3); }
+@media (max-width: 900px) { .sym-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .sym-grid { grid-template-columns: minmax(0, 1fr); }
+  .sym-chart { height: 380px; }
+  .sym-btn { padding: 8px 4px; }
+  .sym-btn b { font-size: var(--fs-sm); }
+  .kv { grid-template-columns: minmax(0, 1fr); }
+  .yld-tbl th, .yld-tbl td { font-size: var(--fs-xs); }
+}
+@media (max-width: 420px) { .sym-switch { gap: 5px; } .sym-btn span { font-size: 10px; } }
 
 </style>
 <script>
@@ -710,19 +802,21 @@ window.PORTAL_CONFIG = {
   // ── Fincs会員認証（トークンアクセスリンク） ────────────
   gate: {
     // false にすると認証なしで誰でも見られます（動作確認用）。本番は true のまま。
-    enabled: false,
+    enabled: true,
     // Fincsが発行するトークン（JWT）の発行元。通常は変更不要。
     issuer: "https://api.fincs.jp",
     // 署名検証用の公開鍵。上から順に試します。
     //  1) data/fincs_jwks.json … GitHub Actionsが毎日Fincsから取得して保存するコピー
     //  2) Fincsの公開URL（ブラウザから直接取得できない環境もあります）
     jwksUrls: ["data/fincs_jwks.json", "https://api.fincs.jp/token_access_link/jwks"],
-    // Fincsの外部アプリ設定で登録した audience（通常はこのサイトのURL）。
-    // 空の配列なら「このサイトのオリジン」と「このページのURL」を自動で許可します。
-    // 認証に失敗する場合は、URLの末尾に ?gate=debug を付けて開くと、トークンの aud が表示されます。
-    audiences: [],
-    // 閲覧を許可するプランID。空の配列なら、Fincsが発行したトークンはプランを問わず許可します。
+    // トークンの宛先（aud）。Fincs公式の実装仕様（2026-10-14受領）では https://mochipoyo.github.io
+    audiences: ["https://mochipoyo.github.io"],
+    // 閲覧を許可するプランID（文字列）。空の配列ならプランを問いません。
+    // ※ aud は同じドメインの別アプリと共通のため、ポータル用の値を入れて絞ることをおすすめします。
+    //   値は ?gate=inspect を付けて開くと確認できます。
     allowedPlanIds: [],
+    // 閲覧を許可するトークンアクセスリンクの識別子（token_access_link_key）。空なら問いません。
+    allowedLinkKeys: [],
     // プランIDが入っているトークン内の項目名
     planClaim: "plan_id",
     // 一度認証したら、何時間はFincsを経由せずに再訪問できるか
@@ -931,6 +1025,8 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       var okPlan = have.some(function (p) { return plans.indexOf(p) >= 0; });
       if (!okPlan) throw GateError("plan", have.join(", "));
     }
+    var links = toList(opts.allowedLinkKeys).filter(Boolean);
+    if (links.length && links.indexOf(String(payload.token_access_link_key)) < 0) throw GateError("plan", "link");
     return { header: header, payload: payload };
   }
 
@@ -1029,6 +1125,20 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   // 戻り値: { ok:true, via } または { ok:false, code, detail, claims }
   async function start(cfg) {
     cfg = cfg || {};
+    // 確認用：?gate=inspect&token=… で開くと、署名を検証したうえでトークンの項目名と主な値を表示する
+    // （サーバー側の設定値を決めるため。本編は表示せず、トークンはURLから消し、保存もしない）
+    if (/[?&]gate=inspect\b/.test((root.location && root.location.search) || "")) {
+      var it = takeTokenFromUrl();
+      if (!it) return { ok: false, code: "inspect", detail: "URLに token がありません" };
+      var cl = null;
+      try { cl = b64uToJson(String(it).split(".")[1]); } catch (_) {}
+      try {
+        await verifyWithSources(it, cfg.jwksUrls || [], { issuer: cfg.issuer, audiences: [], allowedPlanIds: [] });
+        return { ok: false, code: "inspect", verified: true, claims: cl };
+      } catch (e) {
+        return { ok: false, code: "inspect", verified: false, detail: e.code || "other", claims: cl };
+      }
+    }
     if (cfg.enabled === false) return { ok: true, via: "disabled" };
     var token = takeTokenFromUrl();
     if (token) {
@@ -1038,6 +1148,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
           issuer: cfg.issuer,
           audiences: audiences,
           allowedPlanIds: cfg.allowedPlanIds || [],
+          allowedLinkKeys: cfg.allowedLinkKeys || [],
           planClaim: cfg.planClaim || "plan_id"
         });
         writeSession(cfg.sessionHours);
@@ -1059,6 +1170,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     if (code === "jwks") return MESSAGES.jwks;
     if (code === "crypto") return MESSAGES.crypto;
     if (code === "none") return MESSAGES.none;
+    if (code === "inspect") return "トークンの確認用の表示です（本編は表示しません。この画面の内容は外部に送信していません）。";
     return MESSAGES.other;
   }
 
@@ -1080,8 +1192,119 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
 </script>
 <script>
+/*
+ * freshness.js — データの「取得できたか」と「中身が新しいか」を分けて判定する
+ * ------------------------------------------------------------
+ *  - 取得の成否（status）… 直近の取得処理が成功したか
+ *  - 取得の鮮度 … 最後に成功してから何時間たったか（自動更新が止まっていないか）
+ *  - データの鮮度 … データ自体の日付（観測日）が、公表のペースから見て古すぎないか
+ *    → 土日と、各国の休日（分かる範囲）を営業日の計算から除きます。
+ *
+ * ブラウザでは window.PortalFreshness、Node（データ取得・テスト）では module.exports として使います。
+ */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === "object" && module.exports) module.exports = api;
+  else root.PortalFreshness = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+  "use strict";
+
+  // 取得元ごとの更新ペースと「古い」とみなす基準
+  //   obs.bizDays … 観測日の翌日から今日（日本時間）の前日までの営業日数がこれを超えたら「古い」
+  //   obs.days    … 観測日から今日までの日数がこれを超えたら「古い」
+  //   fetchHours  … 最後の取得成功からこの時間を超えたら「自動更新が止まっている」
+  //   critical    … 失敗・遅れのときにワークフローを失敗扱いにして管理者に知らせる
+  var POLICY = {
+    ecb: { label: "為替の参考レート（ECB）", cadence: "日次（ECBの営業日、中欧16時ごろ公表）", obs: { bizDays: 2 }, fetchHours: 52, critical: true },
+    fred: { label: "米国の金利・経済指標（FRED）", cadence: "日次（米国債利回りは翌営業日に公表）・指標は月次/週次", obs: { bizDays: 3, cal: "us" }, fetchHours: 52, critical: true },
+    jgb: { label: "日本国債の利回り（財務省）", cadence: "日次（日本の営業日）", obs: { bizDays: 2, cal: "jp" }, fetchHours: 52, critical: true },
+    cot: { label: "投機筋ポジション（CFTC）", cadence: "週次（火曜時点の建玉を、原則金曜の米東部15:30に公表）", obs: { days: 13 }, fetchHours: 52, critical: true },
+    policy: { label: "政策金利（BIS）", cadence: "BISの更新に従う（数週間遅れることがあります）", obs: { days: 35 }, fetchHours: 52 },
+    mof: { label: "財務省の新着情報", cadence: "随時", obs: null, fetchHours: 52 },
+    holidays: { label: "祝日（内閣府・GOV.UK）", cadence: "公表元の更新時", obs: null, fetchHours: 24 * 8 },
+    jwks: { label: "会員確認の鍵（Fincs）", cadence: "毎回の取得時", obs: null, fetchHours: 24 * 8 }
+  };
+  var ORDER = ["ecb", "fred", "jgb", "cot", "policy", "mof", "holidays", "jwks"];
+
+  var DAY = 86400000;
+  function dnum(s) { return Date.parse(String(s).slice(0, 10) + "T00:00:00Z"); }
+  function ymd(t) { return new Date(t).toISOString().slice(0, 10); }
+  function jstToday(now) { return ymd(now.getTime() + 9 * 3600000); }
+
+  // 観測日の翌日〜今日の前日までの営業日数（土日と指定の休日を除く）
+  function bizDaysBetween(obs, today, holidays) {
+    var n = 0;
+    for (var t = dnum(obs) + DAY; t < dnum(today); t += DAY) {
+      var w = new Date(t).getUTCDay();
+      if (w === 0 || w === 6) continue;
+      if (holidays && holidays.has(ymd(t))) continue;
+      n++;
+    }
+    return n;
+  }
+
+  /**
+   * @param {string} name   取得元のID（ecb など）
+   * @param {object} s      meta.json の sources[name]
+   * @param {Date}   now
+   * @param {object} hol    { jp: Set<string>, us: Set<string> } 休日（任意）
+   * @returns {{state:string, level:string, label:string, text:string, obsLag:number|null, fetchAgeH:number|null, critical:boolean}}
+   *   state … ok / stale（データが古い）/ stalled（自動更新が止まっている）/ error / skipped / missing
+   *   level … ok / warn / bad / off（画面の色分け用）
+   */
+  function assess(name, s, now, hol) {
+    var p = POLICY[name] || { label: name, obs: null, fetchHours: 52 };
+    now = now || new Date();
+    var r = { name: name, label: p.label, cadence: p.cadence || "", critical: !!p.critical, obsLag: null, fetchAgeH: null, dataAsOf: null, lastSuccess: null };
+    if (!s) return fin(r, "missing", "off", "まだ取得していません");
+    r.dataAsOf = s.dataAsOf || s.asOf || null;
+    r.lastSuccess = s.lastSuccess || null;
+    if (s.status === "skipped") return fin(r, "skipped", "off", "未設定のため取得していません");
+    if (r.lastSuccess) r.fetchAgeH = Math.round((now.getTime() - Date.parse(r.lastSuccess)) / 36e5 * 10) / 10;
+    var today = jstToday(now);
+    var obsStale = false;
+    if (p.obs && r.dataAsOf) {
+      if (p.obs.bizDays != null) {
+        r.obsLag = bizDaysBetween(r.dataAsOf, today, p.obs.cal && hol ? hol[p.obs.cal] : null);
+        obsStale = r.obsLag > p.obs.bizDays;
+      } else if (p.obs.days != null) {
+        r.obsLag = Math.round((dnum(today) - dnum(r.dataAsOf)) / DAY);
+        obsStale = r.obsLag > p.obs.days;
+      }
+    }
+    if (s.status === "error") {
+      return fin(r, "error", "bad", r.lastSuccess ? "直近の取得に失敗（前回取得したデータを表示中）" : "取得に失敗しています（データはありません）");
+    }
+    if (r.fetchAgeH != null && r.fetchAgeH > p.fetchHours) return fin(r, "stalled", "bad", "自動更新が止まっている可能性があります");
+    if (obsStale) return fin(r, "stale", "warn", "取得は成功していますが、データの日付が古いままです");
+    return fin(r, "ok", "ok", "正常");
+  }
+  function fin(r, state, level, text) { r.state = state; r.level = level; r.text = text; return r; }
+
+  // 全体のまとめ（重要データのうち何件が正常か）
+  function summarize(sources, now, hol) {
+    var list = ORDER.map(function (k) { return assess(k, sources ? sources[k] : null, now, hol); });
+    var crit = list.filter(function (x) { return x.critical; });
+    var okCrit = crit.filter(function (x) { return x.state === "ok"; }).length;
+    var bad = list.some(function (x) { return x.critical && (x.level === "bad" || x.state === "missing"); });
+    var level = okCrit === crit.length ? "ok" : bad ? "bad" : "warn";
+    return { level: level, okCritical: okCrit, totalCritical: crit.length, list: list };
+  }
+
+  return { POLICY: POLICY, ORDER: ORDER, assess: assess, summarize: summarize, bizDaysBetween: bizDaysBetween };
+});
+
+</script>
+<script>
   // 会員確認を先に始める（結果が出るまで本編は隠れたまま）
   window.PortalGateReady = window.PortalGate.start((window.PORTAL_CONFIG || {}).gate);
+  // URLに残った token を消す（サーバー側で確認する方式でも、履歴・共有・スクリーンショットに残さないため）
+  (function () {
+    try {
+      var u = new URL(location.href);
+      if (u.searchParams.has("token")) { u.searchParams.delete("token"); history.replaceState(null, "", u.pathname + u.search + u.hash); }
+    } catch (e) {}
+  })();
 </script>
 </head>
 <body>
@@ -1107,6 +1330,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       </a>
       <div class="head-clock" aria-label="日本時間"><span id="clockDate"></span><span id="clockTime" class="clock-time"></span><span class="clock-zone">日本時間</span></div>
       <div class="head-actions">
+        <button id="dataLamp" class="data-lamp" type="button" data-level="off" aria-haspopup="dialog" title="データの更新状況を見る"><span class="lamp-dot" aria-hidden="true"></span><span class="lamp-text">データ確認中</span></button>
         <button id="searchBtn" class="icon-btn" type="button" aria-label="パネルを探す" title="パネルを探す（/ キー）"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5 16 16"/></svg></button>
         <button id="themeBtn" class="icon-btn" type="button" aria-label="表示を明るく／暗く切り替え" title="表示を明るく／暗く切り替え"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
         <button id="aboutBtn" class="icon-btn" type="button" aria-label="このサイトについて・データの出典" title="このサイトについて・データの出典"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
@@ -1120,6 +1344,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   <nav class="tabs" aria-label="ページの切り替え">
     <div class="tabs-inner" role="tablist">
       <button role="tab" id="tab-home" aria-controls="pane-home" data-tab="home">きょう</button>
+      <button role="tab" id="tab-sym" aria-controls="pane-sym" data-tab="sym">4銘柄</button>
       <button role="tab" id="tab-paper" aria-controls="pane-paper" data-tab="paper">朝刊</button>
       <button role="tab" id="tab-flow" aria-controls="pane-flow" data-tab="flow">ポンドフロー</button>
       <button role="tab" id="tab-chart" aria-controls="pane-chart" data-tab="chart">チャート</button>
@@ -1135,7 +1360,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
     <!-- ===================== きょう ===================== -->
     <section class="pane" id="pane-home" role="tabpanel" aria-labelledby="tab-home" hidden>
-      <section class="mood" data-panel="mood" data-title="きょうの市況（ポンド円・ポンドドル・ドル円）">
+      <section class="mood" data-panel="mood" data-src="ecb" data-title="きょうの市況（ポンド円・ポンドドル・ドル円）">
         <div class="mood-top"><p class="mood-date" id="moodDate">きょうの市況</p><button id="shareBtn" class="btn btn-sm" type="button" hidden>画像カードを作る</button></div>
         <div class="mood-main">
           <span id="moodIcon" class="wx wx-lg" aria-hidden="true"></span>
@@ -1147,6 +1372,11 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <div id="moodCards" class="mood-cards"></div>
         <p id="moodStrength" class="mood-strength" hidden></p>
         <p class="fine" id="moodNote"></p>
+      </section>
+
+      <section class="panel sym-strip-panel" data-panel="sym-strip" data-title="4銘柄のクイック確認（ポンド円・ポンドドル・ドル円・金）">
+        <div class="panel-head"><h2>4銘柄のクイック確認</h2><span class="meta">参考値は日次（ECB）・予定は日本時間</span></div>
+        <div id="symStrip" class="sym-strip"></div>
       </section>
 
       <section class="clock-hero" data-panel="hero" data-title="相場時計（いま開いている市場・きょうの予定）">
@@ -1190,6 +1420,51 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     </section>
 
     <!-- ===================== 朝刊 ===================== -->
+    <!-- ===================== 4銘柄 ===================== -->
+    <section class="pane" id="pane-sym" role="tabpanel" aria-labelledby="tab-sym" hidden>
+      <div class="sym-switch" id="symSwitch" role="group" aria-label="銘柄の切り替え"></div>
+      <p class="sym-lead fine" id="symLead"></p>
+      <div class="sym-grid">
+        <section class="panel sym-chart-panel" data-panel="sym-chart" data-title="4銘柄：ライブチャート（TradingView・表示のみ）">
+          <div class="panel-head"><h2 id="symChartTitle">ライブチャート</h2><span class="meta">TradingView・表示のみ・日本時間</span></div>
+          <div class="pills" id="symTf" role="group" aria-label="時間足"></div>
+          <div class="tv-box sym-chart" id="symChart"></div>
+        </section>
+        <section class="panel" data-panel="sym-ref" data-src="ecb" data-title="4銘柄：日次の参考値と値動きの大きさ">
+          <div class="panel-head"><h2>日次の参考値</h2><span class="meta" id="symRefMeta"></span></div>
+          <div id="symRef"></div>
+        </section>
+        <section class="panel" data-panel="sym-events" data-title="4銘柄：この先7日の注目予定">
+          <div class="panel-head"><h2>この先7日の注目予定</h2><span class="meta">日本時間</span></div>
+          <ol class="timeline-list" id="symEvents"></ol>
+        </section>
+        <section class="panel" data-panel="sym-strength" data-src="ecb" data-title="4銘柄：通貨の強弱">
+          <div class="panel-head"><h2>関係する通貨の強弱</h2><span class="meta" id="symStrMeta"></span></div>
+          <div id="symStrength"></div>
+        </section>
+        <section class="panel" data-panel="sym-cot" data-src="cot" data-title="4銘柄：投機筋ポジション（CFTC・週次）">
+          <div class="panel-head"><h2>投機筋ポジション</h2><span class="meta">CFTC・週次</span></div>
+          <div id="symCot"></div>
+        </section>
+        <section class="panel" data-panel="sym-rates" data-src="fred jgb" data-title="4銘柄：金利と中央銀行">
+          <div class="panel-head"><h2>金利と中央銀行</h2><span class="meta">データごとに日付を表示</span></div>
+          <div id="symRates"></div>
+        </section>
+        <section class="panel" data-panel="sym-tech" data-title="4銘柄：テクニカルの数値（ATR・ADR・時間足別のEMA/MACD/RCI）">
+          <div class="panel-head"><h2>テクニカルの数値</h2><span class="meta">準備中</span></div>
+          <div id="symTech"></div>
+        </section>
+        <section class="panel" data-panel="sym-news" data-title="4銘柄：関連する公式発表・ニュース">
+          <div class="panel-head"><h2>関連する公式発表</h2><span class="meta" id="symNewsMeta"></span></div>
+          <div id="symNews"></div>
+        </section>
+      </div>
+      <section class="panel" data-panel="sym-related" data-title="4銘柄：関連市場のミニチャート（TradingView）">
+        <div class="panel-head"><h2>関連する市場</h2><span class="meta">TradingView・直近1カ月・表示のみ</span></div>
+        <div class="mkt-grid" id="symRelated"></div>
+      </section>
+    </section>
+
     <section class="pane" id="pane-paper" role="tabpanel" aria-labelledby="tab-paper" hidden>
       <article class="paper" data-panel="paper" data-title="朝刊（市況・主要レート・通貨の強弱・きょうの予定の1枚まとめ）">
         <header class="paper-mast">
@@ -1204,7 +1479,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
     <!-- ===================== ポンドフロー ===================== -->
     <section class="pane" id="pane-flow" role="tabpanel" aria-labelledby="tab-flow" hidden>
-      <section class="flow-hero" data-panel="flow" data-title="ポンドフロー（ポンドに関わる8銘柄の流れ）">
+      <section class="flow-hero" data-panel="flow" data-src="ecb" data-title="ポンドフロー（ポンドに関わる8銘柄の流れ）">
         <div class="flow-head">
           <h2>ポンドフロー</h2>
           <p id="flowBasis" class="flow-basis"></p>
@@ -1212,7 +1487,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <div id="flowGauges" class="flow-gauges"><p class="empty">毎朝のデータ更新のあとに表示されます。</p></div>
         <p class="fine" id="flowNote"></p>
       </section>
-      <section class="panel" data-panel="flow-table" data-title="ポンドフローの内訳（EMA・MACD・RCI）">
+      <section class="panel" data-panel="flow-table" data-src="ecb" data-title="ポンドフローの内訳（EMA・MACD・RCI）">
         <div class="panel-head"><h2>内訳</h2><span class="meta">日足・EMA 20/30/40、MACD 6/13/4、RCI 9/14/26</span></div>
         <div id="flowTable" class="table-wrap"></div>
       </section>
@@ -1249,13 +1524,13 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     <!-- ===================== 通貨の強弱 ===================== -->
     <section class="pane" id="pane-strength" role="tabpanel" aria-labelledby="tab-strength" hidden>
       <div class="grid g-2">
-        <section class="panel" data-panel="ccy-strength" data-title="通貨の強弱ランキング（ECB参考レートから計算）">
+        <section class="panel" data-panel="ccy-strength" data-src="ecb" data-title="通貨の強弱ランキング（ECB参考レートから計算）">
           <div class="panel-head"><h2>通貨の強弱ランキング</h2><span id="strengthMeta" class="meta"></span></div>
           <div class="toolbar"><div id="strengthPills" class="pills" role="group" aria-label="期間"></div></div>
           <div id="strengthBars"></div>
           <p class="fine">各通貨を、ほかの7通貨それぞれに対して見た変化率の平均です。ECB（欧州中央銀行）のユーロ参考レート（中欧16時ごろ・ECBのサイトで無料公開）から当サイトで計算しています。</p>
         </section>
-        <section class="panel" data-panel="ranges" data-title="値幅の目安（1日にどれくらい動くか）">
+        <section class="panel" data-panel="ranges" data-src="ecb" data-title="値幅の目安（1日にどれくらい動くか）">
           <div class="panel-head"><h2>値幅の目安</h2><span id="rangeMeta" class="meta"></span></div>
           <div id="rangeTable" class="table-wrap"></div>
           <p class="fine">直近20営業日の、1日ごとの終値（ECB参考レート）の変化から計算した目安です。1日の中の高値・安値の幅は、これより大きくなるのがふつうです。将来の値動きを示すものではありません。</p>
@@ -1273,7 +1548,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         </section>
       </div>
 
-      <section class="panel" data-panel="cot" data-title="投機筋の通貨ポジション（CFTC）">
+      <section class="panel" data-panel="cot" data-src="cot" data-title="投機筋の通貨ポジション（CFTC）">
         <div class="panel-head"><h2>投機筋の通貨ポジション</h2><span id="cotMeta" class="meta"></span></div>
         <p class="fine">米国の通貨先物で、投機筋（非商業部門）が各通貨を対ドルで買い越しているか、売り越しているか。毎週金曜の夜（日本時間では土曜早朝）に、その週の火曜時点の数字が公表されます。</p>
         <div class="cot-layout">
@@ -1292,7 +1567,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
     <!-- ===================== 金利・中銀 ===================== -->
     <section class="pane" id="pane-rates" role="tabpanel" aria-labelledby="tab-rates" hidden>
-      <section class="panel" data-panel="policy" data-title="主要中央銀行の政策金利">
+      <section class="panel" data-panel="policy" data-src="policy" data-title="主要中央銀行の政策金利">
         <div class="panel-head"><h2>主要中央銀行の政策金利</h2><span id="policyMeta" class="meta"></span></div>
         <div id="policyTable" class="table-wrap"></div>
         <p class="fine" id="policyNote"></p>
@@ -1303,7 +1578,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <div id="cbCalendar" class="cb-calendar"></div>
       </section>
 
-      <section class="panel" data-panel="spread" data-title="日米の金利差とドル円">
+      <section class="panel" data-panel="spread" data-src="fred jgb" data-title="日米の金利差とドル円">
         <div class="panel-head"><h2>日米の金利差とドル円</h2><span id="spreadMeta" class="meta"></span></div>
         <div class="toolbar"><div id="spreadPills" class="pills" role="group" aria-label="年限"></div></div>
         <div class="stack-charts">
@@ -1315,11 +1590,11 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       </section>
 
       <div class="grid g-2">
-        <section class="panel" data-panel="curve-us" data-title="米国債の利回り曲線">
+        <section class="panel" data-panel="curve-us" data-src="fred" data-title="米国債の利回り曲線">
           <div class="panel-head"><h2>米国債の利回り曲線</h2><span id="curveUsMeta" class="meta"></span></div>
           <div id="curveUs"></div>
         </section>
-        <section class="panel" data-panel="curve-jp" data-title="日本国債の利回り曲線">
+        <section class="panel" data-panel="curve-jp" data-src="jgb" data-title="日本国債の利回り曲線">
           <div class="panel-head"><h2>日本国債の利回り曲線</h2><span id="curveJpMeta" class="meta"></span></div>
           <div id="curveJp"></div>
         </section>
@@ -1344,7 +1619,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <p class="fine">結果（実績・予想・前回）まで見たいときはこちら。指標名は英語のまま表示されることがあります。</p>
         <div class="tv-box tv-h640" data-tv="calendar"></div>
       </section>
-      <section class="panel" data-panel="us-macro" data-title="米国の主要経済指標（物価・雇用）">
+      <section class="panel" data-panel="us-macro" data-src="fred" data-title="米国の主要経済指標（物価・雇用）">
         <div class="panel-head"><h2>米国の主要経済指標</h2><span id="macroMeta" class="meta"></span></div>
         <div id="macroTiles" class="tiles"></div>
         <div id="macroDetail" class="macro-detail"></div>
@@ -1354,7 +1629,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     <!-- ===================== ニュース ===================== -->
     <section class="pane" id="pane-news" role="tabpanel" aria-labelledby="tab-news" hidden>
       <div class="grid g-2">
-        <section class="panel" data-panel="mof-news" data-title="財務省の新着情報（為替介入・国債など）">
+        <section class="panel" data-panel="mof-news" data-src="mof" data-title="財務省の新着情報（為替介入・国債など）">
           <div class="panel-head"><h2>財務省の新着情報</h2><span id="mofMeta" class="meta"></span></div>
           <ul id="mofList" class="news-list"></ul>
           <p class="fine">出典：財務省ウェブサイト（公共データ利用規約 第1.0版）。為替介入の実施状況（外国為替平衡操作の実施状況）もここで公表されます。</p>
@@ -1430,6 +1705,19 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 </dialog>
 
 <!-- このサイトについて -->
+<dialog id="statusDlg" class="dlg" aria-labelledby="statusTitle">
+  <div class="dlg-head"><h2 id="statusTitle">データの更新状況</h2><button class="icon-btn" type="button" data-close aria-label="閉じる"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="dlg-body">
+    <p id="statusLead" class="status-lead"></p>
+    <div class="tbl-wrap"><table class="tbl status-tbl tbl-stack">
+      <thead><tr><th scope="col">データ</th><th scope="col">状態</th><th scope="col">データの日付</th><th scope="col">最後に取得できた日時</th><th scope="col">更新の頻度</th></tr></thead>
+      <tbody id="statusRows"></tbody>
+    </table></div>
+    <p class="fine">「データの日付」は、その数値がいつ時点のものか（観測日・公表対象日）です。「最後に取得できた日時」は、このサイトが取得に成功した日時です。取得に失敗した場合は前回のデータをそのまま表示し、上の表で「失敗」と示します。土日と、分かる範囲の休日は営業日の計算から除いています。</p>
+    <h3 class="status-h3">自動で取得するもの・手で確認しているもの</h3>
+    <ul id="manualList" class="manual-list"></ul>
+  </div>
+</dialog>
 <dialog id="aboutDlg" class="dlg" aria-labelledby="aboutTitle">
   <div class="dlg-head"><h2 id="aboutTitle">このサイトについて</h2><button class="icon-btn" type="button" data-close aria-label="閉じる"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
   <div class="dlg-body prose">
@@ -2088,11 +2376,12 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== タブ ==============================
-  var TABS = ["home", "paper", "flow", "chart", "strength", "rates", "macro", "news", "hours"];
+  var TABS = ["home", "sym", "paper", "flow", "chart", "strength", "rates", "macro", "news", "hours"];
   var inited = {};
   var INIT = {};
   function showTab(id, focusPanel) {
     if (TABS.indexOf(id) < 0) id = "home";
+    if (id === "sym" && focusPanel && SYMS[focusPanel]) { setSym(focusPanel); focusPanel = null; if (inited.sym) renderSym(); }
     TABS.forEach(function (t) {
       var on = t === id;
       var b = $("#tab-" + t), p = $("#pane-" + t);
@@ -2102,6 +2391,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     });
     store.set("mp_tab", id);
     if (!inited[id]) { inited[id] = true; try { INIT[id](); } catch (e) { console.error(e); } }
+    if (FRESH) markStalePanels();
     mountTvBoxes($("#pane-" + id));
     var b = $("#tab-" + id);
     if (b.scrollIntoView) b.scrollIntoView({ block: "nearest", inline: "nearest" });
@@ -3389,6 +3679,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     }
     whenVisible($("#mainChart"), mountMain);
     mountMtf();
+    chartState.refresh = function () { pills(); mountMain(); mountMtf(); };
     $("#symPills").addEventListener("click", function (ev) {
       var b = ev.target.closest("[data-s]");
       if (!b) return;
@@ -3419,8 +3710,260 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     ml.insertAdjacentHTML("beforeend", '<p class="tv-credit fine">提供：<a href="https://jp.tradingview.com/" target="_blank" rel="noopener nofollow">TradingView</a></p>');
   }
 
+  // ============================== 4銘柄ダッシュボード ==============================
+  // 価格の数値は「ECBの日次参考レート」だけを使い、リアルタイム価格・高値安値・ATR・ADRは扱わない（要データ契約）。
+  // チャートはTradingViewの埋め込み表示のみで、そこから数値は取り出さない。
+  var SYM_ORDER = ["GBPJPY", "GBPUSD", "USDJPY", "XAUUSD"];
+  var SYMS = {
+    GBPJPY: { t: "ポンド円", tv: "FX:GBPJPY", base: "GBP", quote: "JPY", ccys: ["GBP", "JPY"], countries: ["英", "日"], cbs: ["boe", "boj"], cot: ["GBP", "JPY"], dig: 3,
+      yields: ["JP2Y", "JP10Y", "UK"], diff: ["boe", "boj"],
+      related: [["FX:GBPUSD", "ポンドドル"], ["FX:USDJPY", "ドル円"], ["FX:EURGBP", "ユーロポンド"], ["TVC:GB10Y", "英10年債利回り"], ["TVC:JP10Y", "日本10年債利回り"], ["TVC:VIX", "VIX（恐怖指数）"]],
+      news: "jpy", links: [["イングランド銀行（BOE）のニュース", "https://www.bankofengland.co.uk/news"], ["英国家統計局（ONS）の発表予定", "https://www.ons.gov.uk/releasecalendar"], ["日本銀行 金融政策", "https://www.boj.or.jp/mopo/index.htm"]] },
+    GBPUSD: { t: "ポンドドル", tv: "FX:GBPUSD", base: "GBP", quote: "USD", ccys: ["GBP", "USD"], countries: ["英", "米"], cbs: ["boe", "fed"], cot: ["GBP"], dig: 5,
+      yields: ["US2Y", "US10Y", "UK"], diff: ["boe", "fed"],
+      related: [["TVC:DXY", "ドル指数"], ["FX:EURGBP", "ユーロポンド"], ["FX:EURUSD", "ユーロドル"], ["TVC:US10Y", "米10年債利回り"], ["TVC:GB10Y", "英10年債利回り"]],
+      news: null, links: [["イングランド銀行（BOE）のニュース", "https://www.bankofengland.co.uk/news"], ["英国家統計局（ONS）の発表予定", "https://www.ons.gov.uk/releasecalendar"], ["FRB プレスリリース", "https://www.federalreserve.gov/newsevents/pressreleases.htm"]] },
+    USDJPY: { t: "ドル円", tv: "FX:USDJPY", base: "USD", quote: "JPY", ccys: ["USD", "JPY"], countries: ["米", "日"], cbs: ["fed", "boj"], cot: ["JPY"], dig: 3,
+      yields: ["US2Y", "US10Y", "JP2Y", "JP10Y", "SPREAD10", "SPREAD2"], diff: ["fed", "boj"],
+      related: [["TVC:US10Y", "米10年債利回り"], ["TVC:JP10Y", "日本10年債利回り"], ["TVC:DXY", "ドル指数"], ["FX:GBPJPY", "ポンド円"], ["TVC:VIX", "VIX（恐怖指数）"]],
+      news: "jpy", links: [["財務省 外国為替平衡操作の実施状況", "https://www.mof.go.jp/policy/international_policy/reference/feio/index.html"], ["FRB プレスリリース", "https://www.federalreserve.gov/newsevents/pressreleases.htm"], ["日本銀行 金融政策", "https://www.boj.or.jp/mopo/index.htm"]] },
+    XAUUSD: { t: "金（ゴールド）", tv: "OANDA:XAUUSD", base: null, quote: "USD", ccys: ["USD"], countries: ["米"], cbs: ["fed"], cot: ["XAU"], dig: 2, gold: true,
+      yields: ["US10Y", "REAL10", "SPREADBE", "BROAD"], diff: null,
+      related: [["TVC:DXY", "ドル指数"], ["TVC:US10Y", "米10年債利回り"], ["TVC:VIX", "VIX（恐怖指数）"], ["FX:USDJPY", "ドル円"], ["OANDA:XAGUSD", "銀"]],
+      news: null, links: [["FRB プレスリリース", "https://www.federalreserve.gov/newsevents/pressreleases.htm"], ["米労働統計局（BLS）の発表予定", "https://www.bls.gov/schedule/news_release/"], ["CFTC 建玉明細（COT）", "https://www.cftc.gov/MarketReports/CommitmentsofTraders/index.htm"]] }
+  };
+  var CB_SHORT = { fed: "FRB", boj: "日銀", boe: "BOE", ecb: "ECB" };
+  var SYM_TF = [["D", "日足"], ["240", "4時間足"], ["60", "1時間足"], ["15", "15分足"], ["5", "5分足"]];
+  var symState = { sym: null, tf: null };
+  function curSym() {
+    var s = symState.sym || store.get("mp_sym", "GBPJPY");
+    return SYMS[s] ? s : "GBPJPY";
+  }
+  function setSym(s) { if (!SYMS[s]) return; symState.sym = s; store.set("mp_sym", s); }
+
+  // この先の予定のうち、その銘柄に関係するもの
+  function symEvents(key, from, to) {
+    var def = SYMS[key], cbShorts = def.cbs.map(function (c) { return CB_SHORT[c]; });
+    var ctryHol = { "日": "日本", "英": "英国", "米": "米国" };
+    return collectEvents(from, to).filter(function (e) {
+      if (e.kind === "ind") return def.countries.indexOf(e.it.country) >= 0 ? true : e.it.country === "米" && e.it.importance >= 3;
+      if (e.kind === "cb") return cbShorts.indexOf(e.short) >= 0;
+      if (e.kind === "hol") return def.countries.some(function (c) { return e.label.indexOf(ctryHol[c] + "：") === 0; });
+      return e.kind === "dst" || e.kind === "cftc";
+    });
+  }
+  function evTag(e, def) {
+    if (e.kind === "ind" && def.countries.indexOf(e.it.country) < 0) return "米国の特に注目の指標";
+    return e.sub || "";
+  }
+  // ECB参考レートでの値（金は無し）
+  function symRef(key) {
+    var def = SYMS[key], e = D.ecb;
+    if (def.gold || !ecbReady(e)) return null;
+    var s = pairSeries(e, def.base, def.quote);
+    if (s.length < 22) return null;
+    var n = s.length, last = s[n - 1], prev = s[n - 2];
+    var ch = function (k) { return (last[1] / s[n - 1 - k][1] - 1) * 100; };
+    var rg = pairRange(e, ["", def.t, def.base, def.quote]);
+    return { last: last, prev: prev, d1: ch(1), d5: ch(5), d20: ch(20), pipDiff: (last[1] - prev[1]) / (def.quote === "JPY" ? 0.01 : 0.0001), range: rg };
+  }
+  function pctSpan(v) {
+    var cls = v > 0.0001 ? "up" : v < -0.0001 ? "down" : "";
+    return '<span class="' + cls + '">' + (v > 0 ? "+" : v < 0 ? "−" : "±") + Math.abs(v).toFixed(2) + "%</span>";
+  }
+
+  function renderSymSwitch() {
+    var cur = curSym();
+    $("#symSwitch").innerHTML = SYM_ORDER.map(function (k) {
+      return '<button type="button" class="sym-btn" data-sym="' + k + '" aria-pressed="' + (k === cur) + '"><b>' + esc(SYMS[k].t) + "</b><span>" + k + "</span></button>";
+    }).join("");
+  }
+  function renderSym() {
+    var key = curSym(), def = SYMS[key], now = Date.now(), today = jstDate(now);
+    renderSymSwitch();
+    $("#symLead").textContent = def.gold
+      ? "金はECBの参考レートがないため、価格の数値は表示していません（チャートはTradingViewの表示のみ）。米国の金利・ドル・CFTCの金先物ポジションを並べています。"
+      : "数値は日次・週次の公的データです（データごとに日付を表示）。リアルタイムの値動きはチャートでご確認ください。";
+    // チャート
+    symState.tf = store.get("mp_sym_tf", "240");
+    $("#symChartTitle").textContent = def.t + "（" + key + "）";
+    $("#symTf").innerHTML = SYM_TF.map(function (t) { return '<button type="button" class="pill" data-tf="' + t[0] + '" aria-pressed="' + (t[0] === symState.tf) + '">' + t[1] + "</button>"; }).join("");
+    whenVisible($("#symChart"), function () { tvMount($("#symChart"), "advanced-chart", chartCfg(def.tv, symState.tf, true)); });
+
+    // 日次の参考値
+    var ref = symRef(key), box = $("#symRef");
+    if (def.gold) {
+      $("#symRefMeta").textContent = "";
+      box.innerHTML = '<p class="empty-note">金の日次参考値：<b>未取得</b>。ECBは金の参考レートを公表していません。FREDで以前公開されていたLBMA金価格は2022年に削除されています。価格・値幅の数値は、商用利用が認められたデータ提供元と契約した後に追加します。</p>';
+    } else if (!ref) {
+      $("#symRefMeta").textContent = "";
+      box.innerHTML = '<p class="empty">データの初回取得前です。</p>';
+    } else {
+      var jpy = def.quote === "JPY";
+      $("#symRefMeta").textContent = jaMD(ref.last[0]) + "・中欧16時ごろの参考レート";
+      box.innerHTML = '<div class="ref-main"><span class="ref-val">' + esc(ref.last[1].toFixed(def.dig)) + '</span><span class="ref-ch">前日比 ' + pctSpan(ref.d1) + '<small>（約' + (ref.pipDiff > 0 ? "+" : "") + Math.round(ref.pipDiff) + "pips）</small></span></div>" +
+        '<dl class="kv"><div><dt>1週間（5営業日）</dt><dd>' + pctSpan(ref.d5) + "</dd></div><div><dt>1カ月（20営業日）</dt><dd>" + pctSpan(ref.d20) + "</dd></div>" +
+        (ref.range ? "<div><dt>平均的な1日の変化（直近20日・終値どうし）</dt><dd>" + fmtMoveHtml(ref.range, ref.range.avg) + "</dd></div><div><dt>1日の動きの目安（標準偏差）</dt><dd>" + fmtMoveHtml(ref.range, ref.range.sd, true) + "</dd></div>" : "") + "</dl>" +
+        '<p class="fine">ECBの1日1回の参考レート（終値ではありません）から計算しています。' + (jpy ? "pipsは0.01円で換算。" : "pipsは0.0001で換算。") + "取引会社のレートとは異なります。当日の高値・安値、ATR・ADRは、1日1回の値からは正しく計算できないため表示していません。</p>";
+    }
+
+    // 予定
+    var ev = symEvents(key, now - 5 * MIN, now + 7 * DAY).filter(function (e) { return e.allDay ? e.date >= today : true; }).slice(0, 12);
+    $("#symEvents").innerHTML = ev.length ? ev.map(function (e) {
+      var d = e.allDay ? e.date : jstDate(e.at), tag = KIND_TAG[e.kind] || ["", ""], sub = evTag(e, def);
+      return "<li><span class=\"tl-time\">" + (e.allDay ? "終日" : jstTime(e.at)) + '<span class="tl-day">' + esc(dayWord(d, today)) + "</span></span>" +
+        '<span class="tl-label"><span class="tag ' + tag[1] + '">' + tag[0] + "</span>" + esc(e.label) + (sub ? "<small>" + esc(sub) + "</small>" : "") + "</span>" +
+        '<span class="tl-left">' + (e.allDay ? "" : esc(fmtLeft(Math.max(0, e.at - now)))) + "</span></li>";
+    }).join("") : '<li><span></span><span class="empty">7日以内に登録済みの予定はありません（手動で登録している主要指標のみです）</span><span></span></li>';
+
+    // 通貨の強弱
+    var e = D.ecb, sb = $("#symStrength");
+    if (!ecbReady(e)) { sb.innerHTML = '<p class="empty">データの初回取得前です。</p>'; $("#symStrMeta").textContent = ""; }
+    else {
+      $("#symStrMeta").textContent = jaMD(e.latest) + "・ECB参考レート";
+      var per = [[1, "前日比"], [5, "1週間"], [20, "1カ月"]].map(function (p) { return { p: p, list: ccyStrength(e, p[0]) }; });
+      sb.innerHTML = '<table class="tbl str-tbl"><thead><tr><th scope="col">通貨</th>' + per.map(function (x) { return '<th scope="col">' + x.p[1] + "</th>"; }).join("") + "</tr></thead><tbody>" +
+        def.ccys.map(function (c) {
+          return '<tr><th scope="row">' + esc(CCY_JA[c] + "（" + c + "）") + "</th>" + per.map(function (x) {
+            var i = -1; x.list.forEach(function (y, j) { if (y.ccy === c) i = j; });
+            if (i < 0) return "<td>—</td>";
+            return "<td>" + pctSpan(x.list[i].pct) + '<small class="rank">' + (i + 1) + "位/" + x.list.length + "</small></td>";
+          }).join("") + "</tr>";
+        }).join("") + "</tbody></table>" +
+        '<p class="fine">ほかの7通貨に対する変化率の平均です（8通貨中の順位つき）。' + (def.gold ? "金は対象外のため、米ドルだけを表示しています。" : "") + '<a href="#strength" data-go="strength">8通貨のランキングを見る</a></p>';
+    }
+
+    // 金利と中央銀行
+    renderSymRates(key, now);
+    // CFTC
+    renderSymCot(key);
+    // テクニカル（未対応の明示）
+    $("#symTech").innerHTML = '<p class="empty-note"><b>未実装（価格データの契約が必要です）</b><br>ATR14・ADR20・当日／前日の高値安値・日足〜5分足のEMA20/30/40・MACD(6,13,4)・RCI9 を自動で計算するには、会員サイトでの表示が認められた価格データ（ローソク足）が必要です。TradingViewのチャートから数値を取り出すことは規約上できないため、契約前は表示しません。</p>' +
+      '<div class="btn-row"><button type="button" class="btn btn-sm" data-mtf-open="' + esc(def.tv) + '">この銘柄を4つの時間足で見る（表示のみ）</button>' + (def.base === "GBP" ? '<a class="btn btn-sm" href="#flow" data-go="flow">ポンドフロー（日次の参考判定）</a>' : "") + "</div>";
+    // 公式発表
+    renderSymNews(key);
+    // 関連市場
+    var rel = $("#symRelated");
+    rel.innerHTML = def.related.map(function (r) { return '<div class="mkt-cell"><div class="tv-box" data-rel="' + esc(r[0]) + '" aria-label="' + esc(r[1]) + '"></div></div>'; }).join("");
+    $$("[data-rel]", rel).forEach(function (el) {
+      var sym = el.getAttribute("data-rel");
+      whenVisible(el, function () { tvMount(el, "mini-symbol-overview", function (t) { return { symbol: sym, width: "100%", height: "100%", locale: "ja", dateRange: "1M", colorTheme: t, isTransparent: true, autosize: true, largeChartUrl: "" }; }, true); });
+    });
+    if (!rel.nextElementSibling || !rel.nextElementSibling.classList.contains("tv-credit")) rel.insertAdjacentHTML("afterend", '<p class="tv-credit fine">提供：<a href="https://jp.tradingview.com/" target="_blank" rel="noopener nofollow">TradingView</a>。チャートは表示のみで、このサイトの計算には使っていません。</p>');
+    if (FRESH) markStalePanels();
+  }
+
+  function lastOf(arr) { return arr && arr.length ? arr[arr.length - 1] : null; }
+  function yieldRow(label, pt, src, note) {
+    return "<tr><th scope=\"row\">" + esc(label) + "</th><td data-label=\"値\">" + (pt ? "<b>" + esc(pt[1].toFixed(3).replace(/0$/, "")) + "%</b>" : '<span class="na">未取得</span>') + "</td><td data-label=\"データの日付\">" + (pt ? esc(ymdSlash(pt[0])) : "—") + '</td><td class="fine" data-label="出典・注記">' + esc(src) + (note ? "。" + esc(note) : "") + "</td></tr>";
+  }
+  // 2系列の、同じ日付どうしの差（最新の共通日）
+  function commonDiff(a, b) {
+    if (!a || !b || !a.length || !b.length) return null;
+    var m = {}; b.forEach(function (p) { m[p[0]] = p[1]; });
+    for (var i = a.length - 1; i >= 0; i--) if (m[a[i][0]] !== undefined) return [a[i][0], a[i][1] - m[a[i][0]]];
+    return null;
+  }
+  function renderSymRates(key, now) {
+    var def = SYMS[key], us = D.usRates, box = $("#symRates");
+    var pol = resolvePolicy(now).filter(function (r) { return def.cbs.indexOf(r.b.id) >= 0; });
+    var h = '<table class="tbl tbl-stack"><thead><tr><th scope="col">中央銀行</th><th scope="col">政策金利</th><th scope="col">次回の発表</th></tr></thead><tbody>' +
+      pol.map(function (r) { return '<tr><th scope="row">' + esc(r.b.short) + '</th><td data-label="政策金利"><b>' + esc(r.display) + '</b><small class="note">' + esc(r.src) + "</small></td><td data-label=\"次回の発表\">" + nextHtml(r, now) + "</td></tr>"; }).join("") + "</tbody></table>";
+    if (def.diff) {
+      var a = pol.filter(function (r) { return r.b.id === def.diff[0]; })[0], b = pol.filter(function (r) { return r.b.id === def.diff[1]; })[0];
+      if (a && b) h += '<p class="diff-line">政策金利の差（' + esc(a.b.short + "−" + b.b.short) + "）：<b>" + esc((a.value - b.value > 0 ? "+" : "") + (a.value - b.value).toFixed(2)) + "%</b><small>（FRBは誘導目標の中央値で計算）</small></p>";
+    }
+    var S = (us && us.series) || {}, X = (us && us.extra) || {};
+    var rows = [];
+    def.yields.forEach(function (y) {
+      if (y === "US2Y") rows.push(yieldRow("米国債2年", lastOf(S.DGS2), "FRB（FRED経由）・日次"));
+      if (y === "US10Y") rows.push(yieldRow("米国債10年", lastOf(S.DGS10), "FRB（FRED経由）・日次"));
+      if (y === "JP2Y") rows.push(yieldRow("日本国債2年", lastOf(jgbSeries("2Y")), "財務省・日次"));
+      if (y === "JP10Y") rows.push(yieldRow("日本国債10年", lastOf(jgbSeries("10Y")), "財務省・日次"));
+      if (y === "REAL10") rows.push(yieldRow("米10年実質金利（物価連動債）", lastOf(X.DFII10 && X.DFII10.series), "FRB（FRED経由）・日次", "金と逆に動きやすいと言われますが、常に成り立つ関係ではありません"));
+      if (y === "SPREADBE") {
+        var be = commonDiff(S.DGS10, X.DFII10 && X.DFII10.series);
+        rows.push(yieldRow("期待インフレ率の目安（名目10年−実質10年）", be, "上の2つの同じ日付どうしの差"));
+      }
+      if (y === "BROAD") {
+        var bd = X.DTWEXBGS && X.DTWEXBGS.series, lb = lastOf(bd);
+        rows.push("<tr><th scope=\"row\">広義ドル指数（FRB・名目）</th><td data-label=\"値\">" + (lb ? "<b>" + esc(lb[1].toFixed(2)) + "</b>" : '<span class="na">未取得</span>') + "</td><td data-label=\"データの日付\">" + (lb ? esc(ymdSlash(lb[0])) : "—") + '</td><td class="fine" data-label="出典・注記">FRB（FRED経由）。ICEのドル指数（DXY）とは別の指数です</td></tr>');
+      }
+      if (y === "UK") rows.push('<tr><th scope="row">英国債10年</th><td data-label="値"><span class="na">未取得</span></td><td data-label="データの日付">—</td><td class="fine" data-label="出典・注記">利用条件を確認できた無料の日次データがないため、数値は扱っていません（下の関連市場でチャート表示のみ）</td></tr>');
+      if (y === "SPREAD10" || y === "SPREAD2") {
+        var t = y === "SPREAD10" ? "10Y" : "2Y";
+        var sp = commonDiff(t === "10Y" ? S.DGS10 : S.DGS2, jgbSeries(t));
+        rows.push(yieldRow("日米金利差（" + (t === "10Y" ? "10年" : "2年") + "・米−日）", sp, "同じ日付どうしの差"));
+      }
+    });
+    h += '<table class="tbl yld-tbl tbl-stack"><thead><tr><th scope="col">金利</th><th scope="col">値</th><th scope="col">データの日付</th><th scope="col">出典・注記</th></tr></thead><tbody>' + rows.join("") + "</tbody></table>";
+    if (!us) h += '<p class="fine">米国のデータ（FRED）はまだ取得できていません。管理者の設定が終わると表示されます。</p>';
+    box.innerHTML = h;
+  }
+  function renderSymCot(key) {
+    var def = SYMS[key], c = D.cot, box = $("#symCot");
+    if (!c || !c.currencies) { box.innerHTML = '<p class="empty">データの初回取得前です。</p>'; return; }
+    var pool = c.currencies.concat(c.commodities || []);
+    var name = { GBP: "英ポンド先物", JPY: "日本円先物", XAU: "金先物（COMEX）" };
+    box.innerHTML = def.cot.map(function (k) {
+      var x = pool.filter(function (y) { return y.ccy === k; })[0];
+      if (!x || x.rows.length < 2) return '<div class="cot-mini"><h3>' + esc(name[k] || k) + '</h3><p class="na">未取得</p></div>';
+      var r = x.rows[x.rows.length - 1], p = x.rows[x.rows.length - 2];
+      var net = r[2] - r[3], pnet = p[2] - p[3];
+      return '<div class="cot-mini"><h3>' + esc(name[k] || k) + '</h3><p class="cot-net">' + (net >= 0 ? "買い越し " : "売り越し ") + "<b>" + fmtNum(Math.abs(net)) + "枚</b>" +
+        "<small>（建玉の " + (Math.round(net / r[1] * 1000) / 10).toFixed(1) + "%）</small></p><p class=\"fine\">前週から " + esc(signed(net - pnet, 0, "枚")) + "・" + esc(ymdSlash(r[0])) + "（火曜）時点</p></div>";
+    }).join("") + '<p class="fine">CFTC建玉明細（Legacy・先物のみ）の大口投機筋（非商業）の買い越し・売り越しです。' + (def.gold ? "金はCOMEX金先物（1枚=100トロイオンス）で、スポット金（XAUUSD）とは別の市場です。" : "通貨は対ドルの先物です（円・ポンドが買われる側を買い越しとして表示）。") + "火曜時点の数値が原則金曜に公表されるため、数日遅れの週次データです。</p>";
+  }
+  function renderSymNews(key) {
+    var def = SYMS[key], box = $("#symNews");
+    var links = '<ul class="link-list">' + def.links.map(function (l) { return '<li><a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + "</a></li>"; }).join("") + "</ul>";
+    if (def.news !== "jpy") { $("#symNewsMeta").textContent = "公式サイトへのリンク"; box.innerHTML = links; return; }
+    box.innerHTML = '<ul class="news-list" id="symMof"><li class="empty">読み込み中…</li></ul>' + links;
+    loadJson("news_mof.json").then(function (n) {
+      var ul = $("#symMof");
+      if (!ul) return;
+      var items = (n && n.items || []).filter(function (it) { return /為替|平衡操作|国際|国債/.test(it.title); }).slice(0, 6);
+      $("#symNewsMeta").textContent = n ? "財務省の新着情報・" + jstStamp(n.updated) + " 取得" : "";
+      ul.innerHTML = items.length ? items.map(function (it) {
+        return "<li" + (/為替|平衡操作/.test(it.title) ? ' class="is-key"' : "") + ">" + (it.date ? "<time>" + esc(jstStamp(it.date)) + "</time>" : "") + '<a href="' + esc(safeUrl(it.link)) + '" target="_blank" rel="noopener">' + esc(it.title) + "</a></li>";
+      }).join("") : '<li class="empty">関係する新着情報はありません</li>';
+    });
+  }
+  function initSym() {
+    var pane = $("#pane-sym");
+    pane.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-sym]");
+      if (b) { setSym(b.getAttribute("data-sym")); history.replaceState(null, "", "#sym/" + curSym()); renderSym(); return; }
+      var t = ev.target.closest("[data-tf]");
+      if (t && t.closest("#symTf")) { store.set("mp_sym_tf", t.getAttribute("data-tf")); renderSym(); return; }
+      var m = ev.target.closest("[data-mtf-open]");
+      if (m) {
+        var ts = m.getAttribute("data-mtf-open");
+        store.set("mp_chart_sym", ts);
+        if (inited.chart && chartState.refresh) { chartState.sym = ts; chartState.refresh(); }
+        history.replaceState(null, "", "#chart/mtf"); showTab("chart", "mtf"); return;
+      }
+      var g = ev.target.closest("[data-go]");
+      if (g) { ev.preventDefault(); var id = g.getAttribute("data-go"); history.replaceState(null, "", "#" + id); showTab(id); }
+    });
+    renderSym();
+  }
+  // ホームの4銘柄カード
+  function renderSymStrip() {
+    var box = $("#symStrip");
+    if (!box) return;
+    var now = Date.now(), today = jstDate(now);
+    box.innerHTML = SYM_ORDER.map(function (k) {
+      var def = SYMS[k], ref = symRef(k);
+      var nx = symEvents(k, now, now + 3 * DAY).filter(function (e) { return !e.allDay && (e.kind === "cb" || (e.kind === "ind" && e.it.importance >= 3)); })[0];
+      var refHtml = def.gold ? '<span class="na">日次の参考値なし</span>' : ref ? '<span class="sc-val">' + esc(ref.last[1].toFixed(def.dig)) + "</span>" + pctSpan(ref.d1) + '<small>' + esc(jaMD(ref.last[0])) + " ECB</small>" : '<span class="na">未取得</span>';
+      var nxHtml = nx ? "<small>次の注目</small>" + esc(dayWord(jstDate(nx.at), today) + " " + jstTime(nx.at)) + " " + esc(nx.short || nx.label) + '<span class="left">' + esc(fmtLeft(Math.max(0, nx.at - now))) + "</span>" : "<small>次の注目</small>3日以内の登録なし";
+      return '<a class="sym-card" href="#sym/' + k + '" data-symlink="' + k + '"><span class="sc-name"><b>' + esc(def.t) + "</b>" + k + '</span><span class="sc-ref">' + refHtml + '</span><span class="sc-next">' + nxHtml + "</span></a>";
+    }).join("");
+  }
+
   // ============================== 検索 ==============================
-  var TAB_JA = { home: "きょう", paper: "朝刊", flow: "ポンドフロー", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
+  var TAB_JA = { home: "きょう", sym: "4銘柄", paper: "朝刊", flow: "ポンドフロー", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
   function initSearch() {
     var dlg = $("#searchDlg"), input = $("#searchInput"), list = $("#searchList");
     var index = $$("[data-panel]").map(function (el) {
@@ -3458,18 +4001,95 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 
   // ============================== フッター・ダイアログ ==============================
   var SRC_JA = { ecb: "為替の参考レート（ECB）", mof: "財務省の新着情報", fred: "米国の金利・経済指標（FRED）", jgb: "日本国債の利回り（財務省）", cot: "投機筋ポジション（CFTC）", policy: "政策金利（BIS）", holidays: "祝日（内閣府・GOV.UK）", jwks: "会員確認の鍵（Fincs）" };
+  // 取得の成否とデータの日付を分けて判定する（判定ルールは assets/freshness.js）
+  var FR = window.PortalFreshness;
+  var META = null, FRESH = null;
+  function holSets() {
+    var us = new Set(), jp = new Set();
+    Object.keys(CAL.jp).forEach(function (d) { jp.add(d); });
+    Object.keys(CAL.us).forEach(function (d) { var t = CAL.us[d].type; if (t === "both" || t === "fed") us.add(d); });
+    return { jp: jp, us: us };
+  }
+  var STATE_JA = { ok: "正常", stale: "データが古い", stalled: "更新停止", error: "取得失敗", skipped: "未設定", missing: "未取得" };
+  function ymdSlash(d) { if (!d) return "—"; var a = String(d).slice(0, 10).split("-").map(Number); return a[0] + "/" + a[1] + "/" + a[2]; }
+  function freshOf(name) { return FRESH ? FRESH.list.filter(function (x) { return x.name === name; })[0] || null : null; }
   function renderStatus(meta) {
-    var src = (meta && meta.sources) || {};
-    var keys = Object.keys(SRC_JA);
-    $("#sourceStatus").innerHTML = keys.map(function (k) {
-      var s = src[k];
-      if (!s) return '<li><span class="st st-skip">–</span><span>' + esc(SRC_JA[k]) + "：まだ取得していません</span></li>";
-      var icon = s.status === "ok" ? '<span class="st st-ok" aria-label="正常">✓</span>' : s.status === "skipped" ? '<span class="st st-skip" aria-label="未設定">–</span>' : '<span class="st st-err" aria-label="要確認">!</span>';
-      var txt = s.status === "skipped" ? "未設定" : (s.lastSuccess ? jstStamp(s.lastSuccess) + " 更新" : "未取得") + (s.status === "error" ? "（直近の取得に失敗）" : "");
-      return "<li>" + icon + "<span>" + esc(SRC_JA[k]) + "：" + esc(txt) + "</span></li>";
+    META = meta || META;
+    if (!FR) return;
+    FRESH = FR.summarize(META && META.sources, new Date(), holSets());
+    // フッターの一覧
+    $("#sourceStatus").innerHTML = FRESH.list.map(function (x) {
+      var icon = x.level === "ok" ? '<span class="st st-ok" aria-hidden="true">✓</span>' : x.level === "off" ? '<span class="st st-skip" aria-hidden="true">–</span>' : '<span class="st st-err" aria-hidden="true">!</span>';
+      var when = x.state === "skipped" || x.state === "missing" ? "" : "　データ " + ymdSlash(x.dataAsOf) + (x.lastSuccess ? "・取得 " + jstStamp(x.lastSuccess) : "");
+      return "<li>" + icon + "<span>" + esc(x.label) + "：<b>" + esc(STATE_JA[x.state]) + "</b>" + esc(when) + "</span></li>";
     }).join("");
+    // ヘッダーのランプ
+    var lamp = $("#dataLamp");
+    if (lamp) {
+      lamp.setAttribute("data-level", FRESH.level);
+      var txt = FRESH.level === "ok" ? "データ 正常" : "データ 一部停止（" + FRESH.okCritical + "/" + FRESH.totalCritical + "）";
+      $(".lamp-text", lamp).innerHTML = FRESH.level === "ok" ? "データ<span class=\"lamp-long\"> </span>正常" : "<span class=\"lamp-long\">データ </span>一部停止<span class=\"lamp-n\">" + FRESH.okCritical + "/" + FRESH.totalCritical + "</span>";
+      lamp.setAttribute("aria-label", "データの更新状況：" + txt + "。くわしく見る");
+    }
+    // 詳細ダイアログ
+    var rows = $("#statusRows");
+    if (rows) {
+      rows.innerHTML = FRESH.list.map(function (x) {
+        var s = (META && META.sources && META.sources[x.name]) || {};
+        return '<tr data-level="' + x.level + '"><th scope="row" data-label="データ">' + esc(x.label) + (x.critical ? '<span class="crit-tag">重要</span>' : "") + "</th>" +
+          '<td data-label="状態"><span class="state-pill st-' + x.level + '">' + esc(STATE_JA[x.state]) + "</span>" + (x.state === "ok" ? "" : "<span class=\"fine\">" + esc(x.text) + (s.errorCode ? "（" + esc(s.errorCode) + "）" : "") + "</span>") + "</td>" +
+          '<td data-label="データの日付">' + esc(ymdSlash(x.dataAsOf)) + "</td>" +
+          '<td data-label="最後に取得できた日時">' + esc(x.lastSuccess ? jstStamp(x.lastSuccess) + "（日本時間）" : "—") + "</td>" +
+          '<td data-label="更新の頻度">' + esc(x.cadence) + "</td></tr>";
+      }).join("");
+      $("#statusLead").textContent = "重要なデータ（ECB・FRED・日本国債・CFTC）のうち " + FRESH.okCritical + " / " + FRESH.totalCritical + " 件が正常です。" + (META && META.updated ? "最終の取得処理：" + jstStamp(META.updated) + "（日本時間）" : "");
+    }
+    renderManualList();
+    markStalePanels();
+  }
+  // 古い・失敗したデータを使っているパネルに注意書きを出す
+  function markStalePanels() {
+    $$("[data-src]").forEach(function (el) {
+      var bad = el.getAttribute("data-src").split(" ").map(freshOf).filter(function (x) { return x && x.state !== "ok"; });
+      var box = $(".stale-note", el);
+      if (!bad.length) { if (box) box.remove(); return; }
+      if (!box) {
+        box = document.createElement("div");
+        box.className = "stale-note";
+        box.setAttribute("role", "note");
+        var head = $(".panel-head", el);
+        if (head) head.insertAdjacentElement("afterend", box); else el.insertBefore(box, el.firstChild);
+      }
+      box.innerHTML = bad.map(function (x) {
+        var tail = x.state === "missing" || (x.state === "error" && !x.lastSuccess) || x.state === "skipped" ? "このため、この欄は表示できないか一部が空欄です。" : "表示中の数値は " + ymdSlash(x.dataAsOf) + " 時点のものです。";
+        return "<b>" + esc(x.label) + "：" + esc(STATE_JA[x.state]) + "</b>　" + esc(tail);
+      }).join("<br>");
+    });
+  }
+  // 自動取得と手動確認の区別
+  function renderManualList() {
+    var ul = $("#manualList");
+    if (!ul) return;
+    var chk = function (o) { return o && o.checked ? "最終確認 " + ymdSlash(o.checked) : "最終確認日の記録なし"; };
+    var items = [
+      ["auto", "為替の参考レート（ECB）・米国金利と指標（FRED）・日本国債（財務省）・CFTC建玉・政策金利（BIS）・財務省の新着情報・日英の祝日", "毎朝の自動取得（上の表の状態を参照）"],
+      ["manual", "主な経済指標の発表予定（米英日）", chk(D.ind) + "。各国の統計作成機関の予定表を手で転記しています。結果・予想の数値は扱っていません"],
+      ["manual", "中央銀行の会合日程・政策金利の基準値", chk(D.cb) + "。BIS・FREDの値の方が新しい場合は、自動でそちらを表示します"],
+      ["manual", "米国の休場日・短縮取引（NYSE・連邦祝日）", chk(D.hus)],
+      ["manual", "東証の年末年始の休業日", chk(D.hjpx)],
+      ["manual", "CFTCの公表日（祝日の週の例外）", chk(D.cftc)],
+      ["live", "チャート・ティッカー・ヒートマップ・指標カレンダー（すべて）・海外ニュース", "TradingViewの埋め込み表示（配信の頻度・遅延はTradingViewに従います。このサイトでは数値を取り出していません）"]
+    ];
+    var tag = { auto: "自動", manual: "手動", live: "埋め込み" };
+    ul.innerHTML = items.map(function (x) { return '<li><span class="mtag mtag-' + x[0] + '">' + tag[x[0]] + "</span><span><b>" + esc(x[1]) + "</b><br><span class=\"fine\">" + esc(x[2]) + "</span></span></li>"; }).join("");
   }
   function initDialogs() {
+    var sd = $("#statusDlg");
+    if (sd) {
+      $("#dataLamp").addEventListener("click", function () { renderStatus(); if (sd.showModal) sd.showModal(); else sd.setAttribute("open", ""); });
+      $$("[data-close]", sd).forEach(function (b) { b.addEventListener("click", function () { sd.close(); }); });
+      sd.addEventListener("click", function (ev) { if (ev.target === sd) sd.close(); });
+    }
     var about = $("#aboutDlg");
     function openAbout() { if (about.showModal) about.showModal(); else about.setAttribute("open", ""); }
     $("#aboutBtn").addEventListener("click", openAbout);
@@ -3498,7 +4118,9 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== タブごとの初期化 ==============================
+  INIT.sym = initSym;
   INIT.home = function () {
+    renderSymStrip();
     renderMood(); renderHero(); renderUpcoming(); renderPolicyMini(); initChecklist();
     loadJson("manual/notices.json").then(renderNotices);
   };
@@ -3534,6 +4156,24 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     var link = $("#gateLink");
     var url = (CFG.gate && CFG.gate.fincsUrl) || "";
     if (url) { link.href = safeUrl(url); link.hidden = false; }
+    if (res.code === "inspect") {
+      var cl = res.claims || {};
+      var mask = function (v) { var t = String(v); return t.length <= 4 ? "****" : t.slice(0, 2) + "…" + t.slice(-2) + "（" + t.length + "文字）"; };
+      var lines = ["署名の検証：" + (res.verified ? "OK（Fincsの公開鍵で確認）" : "NG " + (res.detail || ""))];
+      lines.push("含まれている項目：" + Object.keys(cl).join(", "));
+      Object.keys(cl).forEach(function (k) {
+        var v = cl[k];
+        if (k === "exp" || k === "iat" || k === "nbf") v = typeof v === "number" ? new Date(v * 1000).toISOString() + "（" + v + "）" : v;
+        else if (/^(sub|email|name|jti|uid|user|member)/i.test(k)) v = mask(JSON.stringify(v));
+        else v = JSON.stringify(v);
+        lines.push(k + "：" + v);
+      });
+      if (typeof cl.exp === "number" && typeof cl.iat === "number") lines.push("有効期間：" + Math.round((cl.exp - cl.iat) / 60) + "分");
+      lines.push("\n※会員を特定できる値は一部を伏せています。この画面のスクリーンショットを共有する場合も、念のため伏せ字の部分は消してください。");
+      $("#gateDebug").hidden = false;
+      $("#gateDebug").textContent = lines.join("\n");
+      return;
+    }
     if (/[?&]gate=debug\b/.test(location.search)) {
       var c = res.claims || {};
       $("#gateDebug").hidden = false;
