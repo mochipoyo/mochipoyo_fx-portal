@@ -34,9 +34,11 @@ jobs:
         with:
           node-version: 22
 
+      # 取得元ごとの失敗は data/meta.json に記録して続行します（前回のデータは残ります）。
+      # スクリプト自体が異常終了したときだけ、ここでジョブが止まります（公開中のサイトはそのまま）。
+      # APIキーは、この手順にだけ渡します。ログや公開ファイルには出しません。
       - name: データ取得
         if: github.event_name != 'push'
-        continue-on-error: true
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: node portal-update.mjs
@@ -63,3 +65,10 @@ jobs:
 
       - id: deployment
         uses: actions/deploy-pages@v5
+
+      # 公開後の点検：重要データ（ECB・FRED・日本国債・CFTC）の取得失敗、更新停止、データの遅れがあれば
+      # このジョブを「失敗」にします。GitHubの通知設定に従い、管理者にメール等で知らされます。
+      # 点検結果の表は、実行結果ページの「Summary」に出ます（秘密値は含みません）。
+      - name: データの点検
+        if: github.event_name != 'push'
+        run: node portal-update.mjs --check
