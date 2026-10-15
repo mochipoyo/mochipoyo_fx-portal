@@ -1,11 +1,129 @@
 // もちぽよ マーケットポータル データ更新スクリプト（1ファイル版・自動生成）
-// 使い方: node portal-update.mjs
-// 必要な環境変数: FRED_API_KEY（米国データ）
+// 使い方: node portal-update.mjs（取得） / node portal-update.mjs --check（点検）
+// 必要な環境変数: FRED_API_KEY（米国データ。英小文字と数字の32文字のキーだけ）
+var __create = Object.create;
 var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+
+// src/site/assets/freshness.js
+var require_freshness = __commonJS({
+  "src/site/assets/freshness.js"(exports, module) {
+    (function(root, factory) {
+      var api = factory();
+      if (typeof module === "object" && module.exports) module.exports = api;
+      else root.PortalFreshness = api;
+    })(typeof globalThis !== "undefined" ? globalThis : exports, function() {
+      "use strict";
+      var POLICY = {
+        ecb: { label: "\u70BA\u66FF\u306E\u53C2\u8003\u30EC\u30FC\u30C8\uFF08ECB\uFF09", cadence: "\u65E5\u6B21\uFF08ECB\u306E\u55B6\u696D\u65E5\u3001\u4E2D\u6B2716\u6642\u3054\u308D\u516C\u8868\uFF09", obs: { bizDays: 2 }, fetchHours: 52, critical: true },
+        fred: { label: "\u7C73\u56FD\u306E\u91D1\u5229\u30FB\u7D4C\u6E08\u6307\u6A19\uFF08FRED\uFF09", cadence: "\u65E5\u6B21\uFF08\u7C73\u56FD\u50B5\u5229\u56DE\u308A\u306F\u7FCC\u55B6\u696D\u65E5\u306B\u516C\u8868\uFF09\u30FB\u6307\u6A19\u306F\u6708\u6B21/\u9031\u6B21", obs: { bizDays: 3, cal: "us" }, fetchHours: 52, critical: true },
+        jgb: { label: "\u65E5\u672C\u56FD\u50B5\u306E\u5229\u56DE\u308A\uFF08\u8CA1\u52D9\u7701\uFF09", cadence: "\u65E5\u6B21\uFF08\u65E5\u672C\u306E\u55B6\u696D\u65E5\uFF09", obs: { bizDays: 2, cal: "jp" }, fetchHours: 52, critical: true },
+        cot: { label: "\u6295\u6A5F\u7B4B\u30DD\u30B8\u30B7\u30E7\u30F3\uFF08CFTC\uFF09", cadence: "\u9031\u6B21\uFF08\u706B\u66DC\u6642\u70B9\u306E\u5EFA\u7389\u3092\u3001\u539F\u5247\u91D1\u66DC\u306E\u7C73\u6771\u90E815:30\u306B\u516C\u8868\uFF09", obs: { days: 13 }, fetchHours: 52, critical: true },
+        policy: { label: "\u653F\u7B56\u91D1\u5229\uFF08BIS\uFF09", cadence: "BIS\u306E\u66F4\u65B0\u306B\u5F93\u3046\uFF08\u6570\u9031\u9593\u9045\u308C\u308B\u3053\u3068\u304C\u3042\u308A\u307E\u3059\uFF09", obs: { days: 35 }, fetchHours: 52 },
+        mof: { label: "\u8CA1\u52D9\u7701\u306E\u65B0\u7740\u60C5\u5831", cadence: "\u968F\u6642", obs: null, fetchHours: 52 },
+        holidays: { label: "\u795D\u65E5\uFF08\u5185\u95A3\u5E9C\u30FBGOV.UK\uFF09", cadence: "\u516C\u8868\u5143\u306E\u66F4\u65B0\u6642", obs: null, fetchHours: 24 * 8 },
+        jwks: { label: "\u4F1A\u54E1\u78BA\u8A8D\u306E\u9375\uFF08Fincs\uFF09", cadence: "\u6BCE\u56DE\u306E\u53D6\u5F97\u6642", obs: null, fetchHours: 24 * 8 }
+      };
+      var ORDER = ["ecb", "fred", "jgb", "cot", "policy", "mof", "holidays", "jwks"];
+      var DAY = 864e5;
+      function dnum(s2) {
+        return Date.parse(String(s2).slice(0, 10) + "T00:00:00Z");
+      }
+      function ymd2(t) {
+        return new Date(t).toISOString().slice(0, 10);
+      }
+      function jstToday(now) {
+        return ymd2(now.getTime() + 9 * 36e5);
+      }
+      function bizDaysBetween(obs, today, holidays) {
+        var n = 0;
+        for (var t = dnum(obs) + DAY; t < dnum(today); t += DAY) {
+          var w = new Date(t).getUTCDay();
+          if (w === 0 || w === 6) continue;
+          if (holidays && holidays.has(ymd2(t))) continue;
+          n++;
+        }
+        return n;
+      }
+      function assess(name, s2, now, hol) {
+        var p = POLICY[name] || { label: name, obs: null, fetchHours: 52 };
+        now = now || /* @__PURE__ */ new Date();
+        var r = { name, label: p.label, cadence: p.cadence || "", critical: !!p.critical, obsLag: null, fetchAgeH: null, dataAsOf: null, lastSuccess: null };
+        if (!s2) return fin(r, "missing", "off", "\u307E\u3060\u53D6\u5F97\u3057\u3066\u3044\u307E\u305B\u3093");
+        r.dataAsOf = s2.dataAsOf || s2.asOf || null;
+        r.lastSuccess = s2.lastSuccess || null;
+        if (s2.status === "skipped") return fin(r, "skipped", "off", "\u672A\u8A2D\u5B9A\u306E\u305F\u3081\u53D6\u5F97\u3057\u3066\u3044\u307E\u305B\u3093");
+        if (r.lastSuccess) r.fetchAgeH = Math.round((now.getTime() - Date.parse(r.lastSuccess)) / 36e5 * 10) / 10;
+        var today = jstToday(now);
+        var obsStale = false;
+        if (p.obs && r.dataAsOf) {
+          if (p.obs.bizDays != null) {
+            r.obsLag = bizDaysBetween(r.dataAsOf, today, p.obs.cal && hol ? hol[p.obs.cal] : null);
+            obsStale = r.obsLag > p.obs.bizDays;
+          } else if (p.obs.days != null) {
+            r.obsLag = Math.round((dnum(today) - dnum(r.dataAsOf)) / DAY);
+            obsStale = r.obsLag > p.obs.days;
+          }
+        }
+        if (s2.status === "error") {
+          return fin(r, "error", "bad", r.lastSuccess ? "\u76F4\u8FD1\u306E\u53D6\u5F97\u306B\u5931\u6557\uFF08\u524D\u56DE\u53D6\u5F97\u3057\u305F\u30C7\u30FC\u30BF\u3092\u8868\u793A\u4E2D\uFF09" : "\u53D6\u5F97\u306B\u5931\u6557\u3057\u3066\u3044\u307E\u3059\uFF08\u30C7\u30FC\u30BF\u306F\u3042\u308A\u307E\u305B\u3093\uFF09");
+        }
+        if (r.fetchAgeH != null && r.fetchAgeH > p.fetchHours) return fin(r, "stalled", "bad", "\u81EA\u52D5\u66F4\u65B0\u304C\u6B62\u307E\u3063\u3066\u3044\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059");
+        if (obsStale) return fin(r, "stale", "warn", "\u53D6\u5F97\u306F\u6210\u529F\u3057\u3066\u3044\u307E\u3059\u304C\u3001\u30C7\u30FC\u30BF\u306E\u65E5\u4ED8\u304C\u53E4\u3044\u307E\u307E\u3067\u3059");
+        return fin(r, "ok", "ok", "\u6B63\u5E38");
+      }
+      function fin(r, state, level, text) {
+        r.state = state;
+        r.level = level;
+        r.text = text;
+        return r;
+      }
+      function summarize(sources, now, hol) {
+        var list = ORDER.map(function(k) {
+          return assess(k, sources ? sources[k] : null, now, hol);
+        });
+        var crit = list.filter(function(x) {
+          return x.critical;
+        });
+        var okCrit = crit.filter(function(x) {
+          return x.state === "ok";
+        }).length;
+        var bad = list.some(function(x) {
+          return x.critical && (x.level === "bad" || x.state === "missing");
+        });
+        var level = okCrit === crit.length ? "ok" : bad ? "bad" : "warn";
+        return { level, okCritical: okCrit, totalCritical: crit.length, list };
+      }
+      return { POLICY, ORDER, assess, summarize, bizDaysBetween };
+    });
+  }
+});
 
 // src/entry.mjs
 import { join as join10 } from "node:path";
@@ -14,6 +132,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 // src/scripts/update-data.mjs
 import { fileURLToPath } from "node:url";
 import { dirname as dirname2, join as join9 } from "node:path";
+import { appendFile } from "node:fs/promises";
 
 // src/scripts/lib/util.mjs
 import { mkdir, readFile, writeFile, rename } from "node:fs/promises";
@@ -27,8 +146,8 @@ async function httpGet(fetchImpl, url, { headers = {}, timeoutMs = 3e4, retries 
     try {
       const res = await fetchImpl(url, { headers: { "user-agent": UA, ...headers }, signal: ac.signal });
       if (!res.ok) {
-        const body = await safeText(res);
-        const err = new Error(`HTTP ${res.status} ${url} ${body.slice(0, 200)}`);
+        await safeText(res);
+        const err = new Error(`HTTP ${res.status} ${redactUrl(url)}`);
         err.status = res.status;
         if (res.status >= 400 && res.status < 500 && res.status !== 429) throw Object.assign(err, { fatal: true });
         throw err;
@@ -48,6 +167,22 @@ async function httpGet(fetchImpl, url, { headers = {}, timeoutMs = 3e4, retries 
     }
   }
   throw lastErr;
+}
+function redactUrl(url) {
+  try {
+    const u = new URL(String(url));
+    return u.origin + u.pathname + (u.search ? "?\uFF08\u7701\u7565\uFF09" : "");
+  } catch {
+    return String(url).replace(/\?.*$/, "?\uFF08\u7701\u7565\uFF09");
+  }
+}
+function redactText(text, secrets = []) {
+  let t = String(text ?? "");
+  for (const s2 of secrets) if (s2 && String(s2).length >= 6) t = t.split(String(s2)).join("***");
+  t = t.replace(/(https?:\/\/[^\s"'<>?]+)\?[^\s"'<>]*/g, "$1?\uFF08\u7701\u7565\uFF09");
+  t = t.replace(/\b(api_key|apikey|key|token|access_token|secret)=[^&\s"']+/gi, "$1=***");
+  t = t.replace(/eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]+/g, "\uFF08JWT\u7701\u7565\uFF09");
+  return t;
 }
 async function safeText(res) {
   try {
@@ -124,9 +259,9 @@ function parseCsv(text) {
 }
 function num(v) {
   if (v === null || v === void 0) return null;
-  const s = String(v).trim();
-  if (s === "" || s === "." || s === "-" || s.toLowerCase() === "nan") return null;
-  const n = Number(s);
+  const s2 = String(v).trim();
+  if (s2 === "" || s2 === "." || s2 === "-" || s2.toLowerCase() === "nan") return null;
+  const n = Number(s2);
   return Number.isFinite(n) ? n : null;
 }
 function round(v, digits = 4) {
@@ -135,12 +270,17 @@ function round(v, digits = 4) {
   return Math.round(v * p) / p;
 }
 
+// src/scripts/update-data.mjs
+var import_freshness = __toESM(require_freshness(), 1);
+
 // src/scripts/fetch-fred.mjs
 var fetch_fred_exports = {};
 __export(fetch_fred_exports, {
+  GOLD_SERIES: () => GOLD_SERIES,
   RATE_SERIES: () => RATE_SERIES,
   buildMacro: () => buildMacro,
   changePoints: () => changePoints,
+  checkFredKey: () => checkFredKey,
   crossMultiply: () => crossMultiply,
   diff: () => diff,
   mom: () => mom,
@@ -158,7 +298,22 @@ var RATE_SERIES = [
 ];
 var FED_SERIES = ["DFEDTARL", "DFEDTARU"];
 var FX_SERIES = ["DEXJPUS", "DEXUSUK", "DEXUSEU"];
+var GOLD_SERIES = [["DFII10", "\u7C7310\u5E74\u5B9F\u8CEA\u91D1\u5229\uFF08TIPS\uFF09"], ["DTWEXBGS", "\u5E83\u7FA9\u30C9\u30EB\u6307\u6570\uFF08FRB\uFF09"]];
 var MACRO_SERIES = ["CPIAUCSL", "CPILFESL", "PCEPI", "PCEPILFE", "UNRATE", "PAYEMS", "CES0500000003", "ICSA", "SAHMREALTIME"];
+function checkFredKey(raw) {
+  if (raw == null || String(raw).trim() === "") return { ok: false, code: "FRED_KEY_MISSING", message: "FRED_API_KEY \u304C\u672A\u8A2D\u5B9A\u3067\u3059" };
+  const k = String(raw).trim();
+  if (/^[a-z0-9]{32}$/.test(k)) {
+    if (k === "abcdefghijklmnopqrstuvwxyz123456") return { ok: false, code: "FRED_KEY_SAMPLE", message: "FRED_API_KEY \u306B\u516C\u5F0F\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u306E\u898B\u672C\u30AD\u30FC\u304C\u5165\u3063\u3066\u3044\u307E\u3059\u3002\u3054\u81EA\u8EAB\u306E\u30AD\u30FC\u3092\u767B\u9332\u3057\u3066\u304F\u3060\u3055\u3044" };
+    return { ok: true, key: k };
+  }
+  const hints = [];
+  if (/https?:\/\//i.test(k)) hints.push("URL\u304C\u5165\u3063\u3066\u3044\u307E\u3059");
+  if (/api_key=/i.test(k)) hints.push("\u300Capi_key\u300D\u3068\u3044\u3046\u6587\u5B57\u304C\u542B\u307E\u308C\u3066\u3044\u307E\u3059");
+  if (/[A-Z]/.test(k) && /^[A-Za-z0-9]{32}$/.test(k)) hints.push("\u5927\u6587\u5B57\u304C\u542B\u307E\u308C\u3066\u3044\u307E\u3059");
+  if (/\s/.test(k)) hints.push("\u7A7A\u767D\u304C\u542B\u307E\u308C\u3066\u3044\u307E\u3059");
+  return { ok: false, code: "FRED_KEY_FORMAT", message: "FRED_API_KEY \u306E\u5F62\u5F0F\u304C\u6B63\u3057\u304F\u3042\u308A\u307E\u305B\u3093\uFF08\u82F1\u5C0F\u6587\u5B57\u3068\u6570\u5B57\u306E32\u6587\u5B57\u3060\u3051\u3092\u767B\u9332\u3057\u3066\u304F\u3060\u3055\u3044" + (hints.length ? "\u3002" + hints.join("\u30FB") : "") + "\uFF09" };
+}
 async function getSeries(fetchImpl, key, id, start) {
   const url = `${API}?series_id=${id}&api_key=${encodeURIComponent(key)}&file_type=json&observation_start=${start}`;
   const json = await httpGet(fetchImpl, url, { as: "json" });
@@ -232,18 +387,27 @@ function buildMacro(raw) {
   return ind;
 }
 async function run({ fetch: fetchImpl = fetch, outDir, env = process.env, now = /* @__PURE__ */ new Date(), log = console.log } = {}) {
-  const key = env.FRED_API_KEY;
-  if (!key) return { ok: false, skipped: true, message: "FRED_API_KEY \u304C\u672A\u8A2D\u5B9A\u306E\u305F\u3081\u30B9\u30AD\u30C3\u30D7" };
+  if (!env.FRED_API_KEY) return { ok: false, skipped: true, errorCode: "FRED_KEY_MISSING", message: "FRED_API_KEY \u304C\u672A\u8A2D\u5B9A\u306E\u305F\u3081\u30B9\u30AD\u30C3\u30D7" };
+  const chk = checkFredKey(env.FRED_API_KEY);
+  if (!chk.ok) throw Object.assign(new Error(chk.message), { code: chk.code });
+  const key = chk.key;
   const today = ymd(now);
   const raw = {};
   const plan = [
     ...RATE_SERIES.map(([id]) => [id, addDays(today, -365 * 3)]),
     ...FED_SERIES.map((id) => [id, addDays(today, -365 * 6)]),
     ...FX_SERIES.map((id) => [id, addDays(today, -365 * 3)]),
+    ...GOLD_SERIES.map(([id]) => [id, addDays(today, -365 * 3)]),
     ...MACRO_SERIES.map((id) => [id, addDays(today, -365 * 5)])
   ];
   for (const [id, start] of plan) {
-    raw[id] = await getSeries(fetchImpl, key, id, start);
+    try {
+      raw[id] = await getSeries(fetchImpl, key, id, start);
+    } catch (e) {
+      const code = e.status === 400 || e.status === 403 ? "FRED_KEY_REJECTED" : e.status === 429 ? "FRED_RATE_LIMIT" : "FRED_FETCH";
+      const why = code === "FRED_KEY_REJECTED" ? "\uFF08API\u30AD\u30FC\u304C\u53D7\u3051\u4ED8\u3051\u3089\u308C\u307E\u305B\u3093\u3067\u3057\u305F\u3002Secret\u306E\u5024\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\uFF09" : "";
+      throw Object.assign(new Error(`${id}: ${e.message}${why}`), { code });
+    }
     if (!raw[id].length) throw new Error(`${id}: \u30C7\u30FC\u30BF\u304C\u7A7A\u3067\u3059`);
     await sleep(env.NODE_ENV === "test" ? 0 : 250);
   }
@@ -259,7 +423,9 @@ async function run({ fetch: fetchImpl = fetch, outDir, env = process.env, now = 
     note: fredNote,
     tenors: RATE_SERIES.map(([id, label]) => ({ id, label })),
     series: Object.fromEntries(RATE_SERIES.map(([id]) => [id, raw[id]])),
-    fed: { lower: lastL[1], upper: lastU[1], date: lastU[0], lowerHistory: lower, upperHistory: upper }
+    fed: { lower: lastL[1], upper: lastU[1], date: lastU[0], lowerHistory: lower, upperHistory: upper },
+    // 実質金利・ドル指数（ゴールドのページで使う。日次・米国営業日）
+    extra: Object.fromEntries(GOLD_SERIES.map(([id, label]) => [id, { label, series: raw[id] }]))
   };
   await writeJson(join(outDir, "us_rates.json"), rates);
   await writeJson(join(outDir, "us_macro.json"), { updated, source: "FRED\u7D4C\u7531\uFF08\u5404\u7D71\u8A08\u306E\u4F5C\u6210\u6A5F\u95A2\u306F\u9805\u76EE\u3054\u3068\u306B\u8A18\u8F09\uFF09", note: fredNote, indicators: buildMacro(raw) });
@@ -292,14 +458,14 @@ import { join as join2 } from "node:path";
 var URL_CURRENT = "https://www.mof.go.jp/jgbs/reference/interest_rate/jgbcm.csv";
 var URL_ALL = "https://www.mof.go.jp/jgbs/reference/interest_rate/data/jgbcm_all.csv";
 var ERA = { M: 1867, T: 1911, S: 1925, H: 1988, R: 2018 };
-function parseJgbDate(s) {
-  s = String(s || "").trim();
-  let m = s.match(/^([MTSHR])(\d+|元)\.(\d{1,2})\.(\d{1,2})$/);
+function parseJgbDate(s2) {
+  s2 = String(s2 || "").trim();
+  let m = s2.match(/^([MTSHR])(\d+|元)\.(\d{1,2})\.(\d{1,2})$/);
   if (m) {
     const y = ERA[m[1]] + (m[2] === "\u5143" ? 1 : Number(m[2]));
     return `${y}-${String(m[3]).padStart(2, "0")}-${String(m[4]).padStart(2, "0")}`;
   }
-  m = s.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+  m = s2.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
   if (m) return `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`;
   return null;
 }
@@ -353,6 +519,7 @@ async function run2({ fetch: fetchImpl = fetch, outDir, now = /* @__PURE__ */ ne
 // src/scripts/fetch-cot.mjs
 var fetch_cot_exports = {};
 __export(fetch_cot_exports, {
+  COMMODITIES: () => COMMODITIES,
   CURRENCIES: () => CURRENCIES,
   buildUrl: () => buildUrl,
   run: () => run3,
@@ -370,6 +537,10 @@ var CURRENCIES = [
   { ccy: "CHF", code: "092741", name: "\u30B9\u30A4\u30B9\u30D5\u30E9\u30F3" },
   { ccy: "MXN", code: "095741", name: "\u30E1\u30AD\u30B7\u30B3\u30DA\u30BD" }
 ];
+var COMMODITIES = [
+  { ccy: "XAU", code: "088691", name: "\u91D1\uFF08COMEX\u5148\u7269\uFF09", unit: "\u679A\uFF081\u679A=100\u30C8\u30ED\u30A4\u30AA\u30F3\u30B9\uFF09" }
+];
+var ALL = [...CURRENCIES, ...COMMODITIES];
 var FIELDS = [
   "report_date_as_yyyy_mm_dd",
   "cftc_contract_market_code",
@@ -382,7 +553,7 @@ var FIELDS = [
   "nonrept_positions_short_all"
 ];
 function buildUrl(since) {
-  const codes = CURRENCIES.map((c) => `'${c.code}'`).join(",");
+  const codes = ALL.map((c) => `'${c.code}'`).join(",");
   const params = new URLSearchParams({
     $select: FIELDS.join(","),
     $where: `cftc_contract_market_code in(${codes}) AND report_date_as_yyyy_mm_dd >= '${since}T00:00:00.000'`,
@@ -391,8 +562,8 @@ function buildUrl(since) {
   });
   return `${ENDPOINT}?${params.toString()}`;
 }
-function shape(records) {
-  const by = new Map(CURRENCIES.map((c) => [c.code, /* @__PURE__ */ new Map()]));
+function shape(records, list = CURRENCIES) {
+  const by = new Map(list.map((c) => [c.code, /* @__PURE__ */ new Map()]));
   for (const r of records) {
     const m = by.get(String(r.cftc_contract_market_code || "").trim());
     if (!m) continue;
@@ -411,7 +582,7 @@ function shape(records) {
     if (row.slice(1, 4).some((v) => v === null)) continue;
     m.set(d, row);
   }
-  return CURRENCIES.map((c) => ({
+  return list.map((c) => ({
     ...c,
     rows: [...by.get(c.code).values()].sort((a, b) => a[0] < b[0] ? -1 : 1)
   }));
@@ -422,6 +593,7 @@ async function run3({ fetch: fetchImpl = fetch, outDir, now = /* @__PURE__ */ ne
   const records = await httpGet(fetchImpl, buildUrl(since), { as: "json", headers, timeoutMs: 6e4 });
   if (!Array.isArray(records)) throw new Error("CFTC: \u60F3\u5B9A\u5916\u306E\u5FDC\u7B54");
   const currencies = shape(records);
+  const commodities = shape(records, COMMODITIES).filter((c) => c.rows.length);
   const missing = currencies.filter((c) => !c.rows.length).map((c) => c.ccy);
   if (missing.length === currencies.length) throw new Error("CFTC: \u5BFE\u8C61\u901A\u8CA8\u306E\u30C7\u30FC\u30BF\u304C\u3042\u308A\u307E\u305B\u3093");
   const latest = currencies.map((c) => c.rows.at(-1)?.[0]).filter(Boolean).sort().at(-1);
@@ -430,7 +602,8 @@ async function run3({ fetch: fetchImpl = fetch, outDir, now = /* @__PURE__ */ ne
     source: "\u7C73\u5546\u54C1\u5148\u7269\u53D6\u5F15\u59D4\u54E1\u4F1A\uFF08CFTC\uFF09Commitments of Traders\uFF08Legacy\u30FBFutures Only\uFF09",
     columns: ["date", "open_interest", "noncomm_long", "noncomm_short", "comm_long", "comm_short", "nonrept_long", "nonrept_short"],
     latest,
-    currencies
+    currencies,
+    commodities
   });
   log(`CFTC: ${currencies.length}\u901A\u8CA8\uFF08\u6700\u65B0 ${latest}${missing.length ? `\u3001\u6B20\u3051: ${missing.join(",")}` : ""}\uFF09`);
   return { ok: true, message: missing.length ? `\u4E00\u90E8\u6B20\u3051 ${missing.join(",")}` : `${currencies.length}\u901A\u8CA8`, asOf: latest };
@@ -683,7 +856,7 @@ __export(fetch_mof_exports, {
 });
 import { join as join8 } from "node:path";
 var URL_MOF = "https://www.mof.go.jp/news.rss";
-var unesc = (s) => String(s || "").replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&amp;/g, "&").trim();
+var unesc = (s2) => String(s2 || "").replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&amp;/g, "&").trim();
 var tag = (block, name) => {
   const m = block.match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)</${name}>`, "i"));
   return m ? unesc(m[1]) : "";
@@ -729,6 +902,8 @@ async function updateAll({ outDir = join9(ROOT, "site", "data"), only = null, fe
   const metaPath = join9(outDir, "meta.json");
   const meta2 = await readJson(metaPath, null) || { sources: {} };
   meta2.sources ||= {};
+  const secrets = [env.FRED_API_KEY, env.ANTHROPIC_API_KEY].filter(Boolean);
+  const clean = (t) => redactText(t, secrets).slice(0, 240);
   for (const [name, mod] of Object.entries(TASKS)) {
     if (only && !only.includes(name)) continue;
     const prev = meta2.sources[name] || {};
@@ -736,19 +911,76 @@ async function updateAll({ outDir = join9(ROOT, "site", "data"), only = null, fe
     try {
       const r = await mod.run({ fetch: fetchImpl, outDir, now, env, log });
       if (r.skipped) {
-        meta2.sources[name] = { ...prev, status: "skipped", message: r.message, checkedAt: at };
-        log(`- ${name}: \u30B9\u30AD\u30C3\u30D7\uFF08${r.message}\uFF09`);
+        meta2.sources[name] = { ...keep(prev), status: "skipped", errorCode: r.errorCode || null, message: clean(r.message), checkedAt: at };
+        log(`- ${name}: \u30B9\u30AD\u30C3\u30D7\uFF08${clean(r.message)}\uFF09`);
       } else {
-        meta2.sources[name] = { status: r.ok ? "ok" : "partial", message: r.message, asOf: r.asOf || null, checkedAt: at, lastSuccess: at };
+        const asOf = r.asOf || null;
+        meta2.sources[name] = { status: r.ok ? "ok" : "partial", message: clean(r.message), dataAsOf: asOf, asOf, checkedAt: at, lastSuccess: at, errorCode: null };
       }
     } catch (e) {
-      meta2.sources[name] = { ...prev, status: "error", message: String(e.message || e).slice(0, 300), checkedAt: at };
-      log(`! ${name}: \u5931\u6557 ${e.message}`);
+      const msg = clean(e.message || e);
+      meta2.sources[name] = { ...keep(prev), status: "error", errorCode: e.code || (e.status ? "HTTP_" + e.status : "FETCH_FAILED"), message: msg, checkedAt: at };
+      log(`! ${name}: \u5931\u6557 ${msg}`);
     }
   }
   meta2.updated = (/* @__PURE__ */ new Date()).toISOString();
+  meta2.schema = 2;
+  const hol = await loadHolidaySets(outDir);
+  meta2.summary = summarizeForMeta(import_freshness.default.summarize(meta2.sources, now, hol));
   await writeJson(metaPath, meta2);
   return meta2;
+}
+function keep(prev) {
+  const o = {};
+  for (const k of ["lastSuccess", "dataAsOf", "asOf"]) if (prev[k] !== void 0) o[k] = prev[k];
+  if (o.dataAsOf === void 0 && prev.asOf !== void 0) o.dataAsOf = prev.asOf;
+  return o;
+}
+function summarizeForMeta(sum) {
+  return {
+    level: sum.level,
+    okCritical: sum.okCritical,
+    totalCritical: sum.totalCritical,
+    states: Object.fromEntries(sum.list.map((x) => [x.name, x.state]))
+  };
+}
+async function loadHolidaySets(dir) {
+  const jp = /* @__PURE__ */ new Set(), us = /* @__PURE__ */ new Set();
+  const a = await readJson(join9(dir, "holidays_jp.json"), null);
+  (a && a.days || []).forEach(([d]) => jp.add(d));
+  const b = await readJson(join9(dir, "manual", "holidays_jp_extra.json"), null);
+  (b && b.days || []).forEach(([d]) => jp.add(d));
+  const c = await readJson(join9(dir, "manual", "holidays_us.json"), null);
+  (c && c.days || []).forEach(([d, type]) => {
+    if (type === "both" || type === "fed") us.add(d);
+  });
+  return { jp, us };
+}
+async function checkData({ dataDir: dataDir2, now = /* @__PURE__ */ new Date(), log = console.log, summaryFile = null } = {}) {
+  const meta2 = await readJson(join9(dataDir2, "meta.json"), null);
+  const hol = await loadHolidaySets(dataDir2);
+  const sum = import_freshness.default.summarize(meta2 && meta2.sources, now, hol);
+  const rows = [];
+  let fail = 0;
+  for (const x of sum.list) {
+    const s2 = meta2 && meta2.sources && meta2.sources[x.name] || {};
+    const bad = x.critical && ["error", "stalled", "stale", "missing"].includes(x.state);
+    const warn = !bad && x.state !== "ok";
+    if (bad) fail++;
+    const line = `${x.label}\uFF1A${x.text}\uFF08\u30C7\u30FC\u30BF\u306E\u65E5\u4ED8 ${x.dataAsOf || "\u306A\u3057"}\uFF0F\u6700\u7D42\u6210\u529F ${x.lastSuccess || "\u306A\u3057"}${s2.errorCode ? "\uFF0F" + s2.errorCode : ""}\uFF09`;
+    if (bad) log(`::error title=\u30C7\u30FC\u30BF\u53D6\u5F97\u306E\u7570\u5E38::${line}`);
+    else if (warn) log(`::warning title=\u30C7\u30FC\u30BF\u53D6\u5F97\u306E\u6CE8\u610F::${line}`);
+    rows.push(`| ${bad ? "\u274C" : warn ? "\u26A0\uFE0F" : "\u2705"} | ${x.label} | ${x.text} | ${x.dataAsOf || "\u2014"} | ${x.lastSuccess || "\u2014"} | ${s2.errorCode || ""} |`);
+  }
+  const md = ["### \u30C7\u30FC\u30BF\u53D6\u5F97\u306E\u70B9\u691C\u7D50\u679C", "", `\u91CD\u8981\u30C7\u30FC\u30BF ${sum.okCritical}/${sum.totalCritical} \u304C\u6B63\u5E38`, "", "| | \u30C7\u30FC\u30BF | \u72B6\u614B | \u30C7\u30FC\u30BF\u306E\u65E5\u4ED8 | \u6700\u7D42\u53D6\u5F97\u6210\u529F\uFF08UTC\uFF09 | \u30A8\u30E9\u30FC\u7A2E\u5225 |", "|---|---|---|---|---|---|", ...rows, ""].join("\n");
+  if (summaryFile) {
+    try {
+      await appendFile(summaryFile, md + "\n");
+    } catch {
+    }
+  }
+  log(fail ? `\u70B9\u691C\uFF1A\u91CD\u8981\u30C7\u30FC\u30BF\u306B ${fail} \u4EF6\u306E\u7570\u5E38\u304C\u3042\u308A\u307E\u3059` : "\u70B9\u691C\uFF1A\u91CD\u8981\u30C7\u30FC\u30BF\u306F\u3059\u3079\u3066\u6B63\u5E38\u3067\u3059");
+  return { ok: fail === 0, fail, summary: sum };
 }
 
 // src/manual.mjs
@@ -756,11 +988,15 @@ var MANUAL = { "central_banks.json": { "checked": "2026-10-03", "note": "\u5404\
 
 // src/entry.mjs
 var dataDir = join10(process.cwd(), "data");
+if (process.argv.includes("--check")) {
+  const r = await checkData({ dataDir, summaryFile: process.env.GITHUB_STEP_SUMMARY || null });
+  process.exit(r.ok ? 0 : 1);
+}
 mkdirSync(join10(dataDir, "manual"), { recursive: true });
 for (const [name, obj] of Object.entries(MANUAL)) {
   const p = join10(dataDir, "manual", name);
   if (!existsSync(p)) writeFileSync(p, JSON.stringify(obj, null, 2) + "\n");
 }
 var meta = await updateAll({ outDir: dataDir });
-var bad = Object.entries(meta.sources).filter(([, v]) => v.status === "error").map(([k]) => k);
-console.log(bad.length ? `\u30C7\u30FC\u30BF\u53D6\u5F97 \u5B8C\u4E86\uFF08\u5931\u6557: ${bad.join(", ")}\uFF09` : "\u30C7\u30FC\u30BF\u53D6\u5F97 \u5B8C\u4E86");
+var s = meta.summary || {};
+console.log(`\u30C7\u30FC\u30BF\u53D6\u5F97 \u5B8C\u4E86\uFF08\u91CD\u8981\u30C7\u30FC\u30BF ${s.okCritical ?? "?"}/${s.totalCritical ?? "?"} \u304C\u6B63\u5E38\u3002\u8A73\u3057\u304F\u306F\u6B21\u306E\u300C\u30C7\u30FC\u30BF\u306E\u70B9\u691C\u300D\u3067\u78BA\u8A8D\u3057\u307E\u3059\uFF09`);
