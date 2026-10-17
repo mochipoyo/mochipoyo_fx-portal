@@ -927,6 +927,42 @@ body.view-simple [data-adv] { display: none !important; }
 .chk-st { white-space: nowrap; }
 @media (max-width: 340px) { .form-grid, .res-cards { grid-template-columns: minmax(0, 1fr); } }
 
+/* ---------- メニュー：すべてのボタンを押せるように ---------- */
+.tabs { position: sticky; }
+.tabs-inner.less.more { -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 88%, transparent); mask-image: linear-gradient(to right, transparent, #000 10%, #000 88%, transparent); }
+.tabs-inner.less:not(.more) { -webkit-mask-image: linear-gradient(to right, transparent, #000 10%); mask-image: linear-gradient(to right, transparent, #000 10%); }
+.tabs-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font-size: 22px; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, .35); display: grid; place-items: center; padding: 0 0 2px; }
+.tabs-arrow[hidden] { display: none; }
+.tabs-arrow.prev { left: 4px; }
+.tabs-arrow.next { right: 4px; }
+.tabs-arrow:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+/* PC・タブレットは折り返して全部表示（横スクロールしない） */
+@media (min-width: 761px) {
+  .tabs-inner { flex-wrap: wrap; overflow: visible; row-gap: 8px; }
+  .tabs-inner.more, .tabs-inner.less { -webkit-mask-image: none; mask-image: none; }
+  .tabs-arrow { display: none !important; }
+}
+/* スマホ：横にスワイプ（矢印ボタンでも移動可）。端のボタンが矢印に隠れないよう余白を取る */
+@media (max-width: 760px) {
+  .tabs-inner { padding-left: 12px; padding-right: 12px; scroll-padding: 0 44px; }
+}
+.tab-break { display: none; }
+@media (min-width: 761px) {
+  /* ツールは2行目にまとめる */
+  .tab-break { display: block; flex-basis: 100%; height: 0; }
+  .tab-sep { margin: 0 4px 0 2px; padding-left: 0; border-left: 0; }
+}
+@media (min-width: 761px) and (max-width: 1120px) {
+  .tabs [role="tab"] { padding: 7px 12px; font-size: 14px; }
+  .tabs-inner { gap: 6px; row-gap: 6px; }
+}
+/* ヘッダー：ボタンが増えたため、タブレット幅でも時計を2行目に回して重ならないようにする */
+@media (min-width: 641px) and (max-width: 980px) {
+  .head-inner { flex-wrap: wrap; row-gap: 4px; }
+  .head-actions { margin-left: auto; }
+  .head-clock { order: 3; width: 100%; margin-left: 0; justify-content: flex-start; }
+}
+
 </style>
 <script>
   // 表示テーマ（保存済みの選択 → なければOSの設定）を描画前に反映してちらつきを防ぐ
@@ -1494,6 +1530,8 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   <div class="tape" aria-label="主要レート（TradingView）"><div id="tape" class="tv-box tv-tape"></div></div>
 
   <nav class="tabs" aria-label="ページの切り替え">
+    <button type="button" class="tabs-arrow prev" id="tabsPrev" aria-label="メニューを左にずらす" hidden>‹</button>
+    <button type="button" class="tabs-arrow next" id="tabsNext" aria-label="メニューを右にずらす" hidden>›</button>
     <div class="tabs-inner" role="tablist">
       <button role="tab" id="tab-home" aria-controls="pane-home" data-tab="home">きょう</button>
       <button role="tab" id="tab-sym" aria-controls="pane-sym" data-tab="sym">4銘柄</button>
@@ -1505,6 +1543,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       <button role="tab" id="tab-macro" aria-controls="pane-macro" data-tab="macro">経済指標</button>
       <button role="tab" id="tab-news" aria-controls="pane-news" data-tab="news">ニュース</button>
       <button role="tab" id="tab-hours" aria-controls="pane-hours" data-tab="hours">休場・時間</button>
+      <span class="tab-break" aria-hidden="true"></span>
       <span class="tab-sep" aria-hidden="true">ツール</span>
       <button role="tab" id="tab-check" aria-controls="pane-check" data-tab="check">分析チェック</button>
       <button role="tab" id="tab-risk" aria-controls="pane-risk" data-tab="risk">資金管理</button>
@@ -4055,11 +4094,26 @@ window.PORTAL_ANALYSIS = {
       showTab(TABS[i]);
       $("#tab-" + TABS[i]).focus();
     });
-    var ti = $(".tabs-inner");
-    var edge = function () { ti.classList.toggle("more", ti.scrollWidth - ti.clientWidth - ti.scrollLeft > 8); };
+    // メニューが横にはみ出すとき（スマホ）は、左右の矢印・マウスホイールでも動かせるようにする
+    var ti = $(".tabs-inner"), prev = $("#tabsPrev"), next = $("#tabsNext");
+    var edge = function () {
+      var over = ti.scrollWidth - ti.clientWidth > 4;
+      var atEnd = ti.scrollWidth - ti.clientWidth - ti.scrollLeft <= 8, atStart = ti.scrollLeft <= 8;
+      ti.classList.toggle("more", over && !atEnd);
+      ti.classList.toggle("less", over && !atStart);
+      prev.hidden = !over || atStart;
+      next.hidden = !over || atEnd;
+    };
     ti.addEventListener("scroll", edge, { passive: true });
     window.addEventListener("resize", edge);
+    prev.addEventListener("click", function () { ti.scrollBy({ left: -ti.clientWidth * 0.7, behavior: "smooth" }); });
+    next.addEventListener("click", function () { ti.scrollBy({ left: ti.clientWidth * 0.7, behavior: "smooth" }); });
+    ti.addEventListener("wheel", function (ev) {
+      if (ti.scrollWidth - ti.clientWidth <= 4 || Math.abs(ev.deltaX) > Math.abs(ev.deltaY)) return;
+      ev.preventDefault(); ti.scrollLeft += ev.deltaY;
+    }, { passive: false });
     setTimeout(edge, 0);
+    setTimeout(edge, 600);
     window.addEventListener("hashchange", function () {
       var parts = location.hash.replace("#", "").split("/");
       if (TABS.indexOf(parts[0]) >= 0) showTab(parts[0], parts[1]);
