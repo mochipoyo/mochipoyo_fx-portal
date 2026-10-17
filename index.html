@@ -776,6 +776,157 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
 }
 @media (max-width: 420px) { .sym-switch { gap: 5px; } .sym-btn span { font-size: 10px; } }
 
+/* ---------- メニューの区切り（ツール） ---------- */
+.tab-sep { flex: none; align-self: center; margin: 0 2px 0 8px; padding-left: 10px; border-left: 1px solid var(--line-strong); font-size: 11px; color: var(--ink-3); letter-spacing: .08em; }
+
+/* ---------- 入力フォーム（ツール共通） ---------- */
+.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px 14px; margin: 6px 0 12px; }
+.fld { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fld[hidden] { display: none; }
+.fld.wide { grid-column: 1 / -1; }
+.fld-label { font-size: var(--fs-xs); font-weight: 700; color: var(--ink-2); }
+.fld-in { display: flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--sunken); overflow: hidden; }
+.fld-in:focus-within { border-color: var(--brand); box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 30%, transparent); }
+.fld-in input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 16px; padding: 9px 10px; font-variant-numeric: tabular-nums; }
+.fld-in input:focus { outline: none; }
+.fld-unit { padding: 0 10px; font-size: var(--fs-xs); color: var(--ink-3); white-space: nowrap; }
+.fld select, .fld textarea { font: inherit; font-size: 16px; color: var(--ink); background: var(--sunken); border: 1px solid var(--line-strong); border-radius: 8px; padding: 9px 10px; width: 100%; }
+.fld textarea { resize: vertical; min-height: 64px; line-height: 1.6; }
+.fld select:focus-visible, .fld textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.fld-help { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
+.fld-check { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px; }
+.fld-check input { width: 18px; height: 18px; }
+.fld-check .fld-help { flex-basis: 100%; }
+.fld-group { grid-column: 1 / -1; margin: 8px 0 -2px; font-weight: 700; font-size: var(--fs-sm); color: var(--ink); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.err-box { margin: 10px 0; padding: 10px 14px; border-radius: 8px; background: color-mix(in srgb, var(--down) 14%, var(--surface)); border-left: 4px solid var(--down); color: var(--ink); font-size: var(--fs-sm); }
+.err-box ul { margin: 6px 0 0; padding-left: 1.2em; }
+.warn-note { padding: 8px 12px; border-radius: 8px; background: var(--warn-bg); color: var(--warn-ink); font-size: var(--fs-sm); border-left: 4px solid var(--wave); }
+.mode-switch { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 10px; }
+.mode-switch button { padding: 12px 8px; border-radius: 12px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); font-family: var(--font-head); font-weight: 700; font-size: var(--fs-md); cursor: pointer; }
+.mode-switch button[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+.mode-switch button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.mode-note { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.7; margin: 0 0 8px; }
+.res-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 8px 0; }
+.res-card { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: 10px; background: var(--sunken); border: 1px solid var(--line); min-width: 0; }
+.res-card.key { border-color: var(--brand); }
+.res-label { font-size: var(--fs-xs); color: var(--ink-3); font-weight: 700; }
+.res-value { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.res-value .big { font-size: 26px; }
+.res-value small.unit, .res-value .unit { display: block; font-size: var(--fs-xs); color: var(--ink-2); font-weight: 700; }
+.res-sub { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
+.res-notes { margin: 6px 0; padding-left: 1.2em; font-size: var(--fs-sm); color: var(--warn-ink); }
+.sub-h { font-size: var(--fs-md); margin: 16px 0 8px; }
+.dd-hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.dd-hist li { display: grid; grid-template-columns: 76px 1fr 56px; gap: 8px; align-items: center; font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.dd-bar { height: 10px; border-radius: 5px; background: var(--sunken); overflow: hidden; }
+.dd-bar i { display: block; height: 100%; background: var(--series-2, #d95926); }
+.dd-n { text-align: right; color: var(--ink-2); }
+.sim-chart svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
+.ch-wrap { position: relative; }
+.ch-tip { position: absolute; top: 8px; min-width: 170px; padding: 8px 10px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line-strong); box-shadow: 0 4px 14px rgba(0, 0, 0, .25); font-size: var(--fs-xs); line-height: 1.6; pointer-events: none; font-variant-numeric: tabular-nums; }
+.ch-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 6px; font-size: var(--fs-xs); color: var(--ink-2); }
+.ch-legend i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+.ch-legend i.band { height: 10px; opacity: .25; }
+.ch-legend i.dash { height: 0; border-top: 2px dashed; background: none !important; }
+.ch-legend i.dot { height: 0; border-top: 2px dotted; background: none !important; }
+.tbl-scroll { max-height: 420px; overflow: auto; }
+.tbl-wrap { overflow-x: auto; }
+.num-tbl td { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.num-tbl th[scope="row"] { text-align: left; white-space: nowrap; }
+.cmp-tbl th small { display: block; font-weight: 400; color: var(--ink-3); font-size: 11px; }
+.cmp-tbl td { font-variant-numeric: tabular-nums; }
+.scen-save { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin-bottom: 10px; }
+.scen-save .fld { flex: 1 1 240px; }
+.scen-list { list-style: none; margin: 0 0 10px; padding: 0; }
+.scen-list li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.scen-pick { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.scen-pick input { width: 18px; height: 18px; }
+.scen-pick small { display: block; color: var(--ink-3); font-size: 11.5px; }
+.scen-act { display: flex; gap: 6px; }
+
+/* ---------- 分析チェック ---------- */
+.chk-top { display: grid; gap: 10px; margin-bottom: 6px; }
+.sym-switch-sm .sym-btn { padding: 7px 4px; }
+.chk-verdict { margin: 10px 0; padding: 12px 14px; border-radius: 10px; border: 1px dashed var(--line-strong); background: var(--sunken); }
+.chk-verdict.on { border: 2px solid var(--up); background: color-mix(in srgb, var(--up) 12%, var(--surface)); }
+.chk-list { list-style: none; margin: 0 0 10px; padding: 0; }
+.chk-item { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.chk-st { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); font-weight: 700; align-self: start; padding: 3px 8px; border-radius: 999px; border: 1px solid currentColor; width: fit-content; }
+.chk-st i { font-style: normal; }
+.st-ok .chk-st { color: var(--up); }
+.st-ng .chk-st { color: var(--down); }
+.st-na .chk-st, .st-wait .chk-st { color: var(--ink-3); }
+.chk-body b { font-size: var(--fs-sm); }
+.chk-body small { display: block; color: var(--ink-3); font-size: var(--fs-xs); margin-top: 2px; }
+.req { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 4px; font-size: 11px; background: var(--brand-soft); color: var(--ink-2); vertical-align: 1px; }
+.chk-tfs { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 6px; }
+.chk-tfs label { display: inline-flex; align-items: center; gap: 5px; font-size: var(--fs-xs); padding: 4px 8px; border: 1px solid var(--line-strong); border-radius: 999px; cursor: pointer; }
+.chk-tfs input { width: 16px; height: 16px; }
+.chk-rr, .chk-how { margin: 8px 0; }
+.chk-rr summary, .chk-how summary { cursor: pointer; font-weight: 700; font-size: var(--fs-sm); padding: 6px 0; }
+.how-list dt { font-weight: 700; margin-top: 8px; font-size: var(--fs-sm); }
+.how-list dd { margin: 2px 0 0; font-size: var(--fs-xs); color: var(--ink-2); line-height: 1.7; }
+@media (max-width: 560px) { .chk-item { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+
+/* ---------- トレード記録 ---------- */
+.jr-list { list-style: none; margin: 8px 0 0; padding: 0; }
+.jr-list > li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.jr-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
+.jr-head time { margin-left: auto; font-size: var(--fs-xs); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.jr-st { font-size: var(--fs-xs); color: var(--ink-2); }
+.jr-res { font-weight: 700; font-variant-numeric: tabular-nums; }
+.jr-body { font-size: var(--fs-sm); color: var(--ink-2); margin-top: 4px; line-height: 1.7; }
+.jr-body p { margin: 4px 0 0; white-space: pre-wrap; }
+.jr-review { color: var(--ink); }
+.jr-act { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.dojo-card .dojo-in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+.dojo-card h2 { font-size: var(--fs-lg); margin: 0 0 4px; }
+.dojo-card p { margin: 0; font-size: var(--fs-sm); color: var(--ink-2); }
+@media (max-width: 640px) {
+  .mode-switch button { font-size: var(--fs-sm); padding: 10px 4px; }
+  .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 10px; }
+  .res-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .res-value { font-size: 16px; }
+}
+
+/* ---------- ホーム：次の重要イベント・注意事項・解説 ---------- */
+.view-btn { height: 32px; padding: 0 10px; margin-right: 4px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); font: 700 12.5px/1 var(--font-body); cursor: pointer; white-space: nowrap; }
+.view-btn[aria-pressed="true"] { background: var(--brand-soft); color: var(--ink); border-color: var(--brand); }
+.view-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+body.view-simple [data-adv] { display: none !important; }
+@media (max-width: 480px) { .view-btn { padding: 0 8px; font-size: 11.5px; } }
+.alert-next { padding: 12px 14px; border-radius: 10px; background: var(--sunken); border: 1px solid var(--line); }
+.alert-next.stage-s30 { border-color: var(--wave); }
+.alert-next.stage-s15, .alert-next.stage-s5, .alert-next.stage-now { border: 2px solid var(--down); background: color-mix(in srgb, var(--down) 10%, var(--surface)); }
+.an-main { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.an-stage { padding: 2px 10px; border-radius: 999px; background: var(--down); color: #fff; font-weight: 700; font-size: var(--fs-xs); }
+.stage-s30 .an-stage { background: var(--wave); color: #1a1300; }
+.an-when { font-weight: 700; font-variant-numeric: tabular-nums; }
+.an-name { font-size: var(--fs-md); }
+.an-left { margin-left: auto; color: var(--ink-2); font-variant-numeric: tabular-nums; font-weight: 700; }
+.an-more { list-style: none; margin: 8px 0 0; padding: 0; font-size: var(--fs-xs); color: var(--ink-2); display: grid; gap: 2px; }
+.alert-notes { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 6px; }
+.alert-notes li { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 8px; font-size: var(--fs-sm); line-height: 1.6; }
+.nt-tag { align-self: start; text-align: center; font-size: 11.5px; font-weight: 700; padding: 1px 6px; border-radius: 6px; border: 1px solid var(--line-strong); color: var(--ink-2); }
+.note-warn .nt-tag { border-color: var(--wave); color: var(--wave); }
+.note-base .nt-tag { color: var(--ink-3); }
+.commentary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.commentary > .fine { grid-column: 1 / -1; }
+.cm-sec { padding: 12px 14px; border-radius: 10px; background: var(--sunken); border: 1px solid var(--line); min-width: 0; }
+.cm-sec h3 { font-size: var(--fs-md); margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
+.cm-n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--brand); color: var(--brand-ink); font-size: 12px; }
+.cm-sec ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; font-size: var(--fs-sm); line-height: 1.65; }
+.cm-sec small { display: block; color: var(--ink-3); font-size: 11.5px; }
+@media (max-width: 900px) { .commentary { grid-template-columns: minmax(0, 1fr); } }
+.sc-trend { font-size: var(--fs-xs); font-weight: 700; }
+.sc-trend.up { color: var(--up); } .sc-trend.down { color: var(--down); } .sc-trend.na { color: var(--ink-3); font-weight: 400; }
+.sc-check { font-size: 11.5px; color: var(--ink-2); padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line-strong); width: fit-content; }
+.tech-tbl th[scope="row"] { text-align: left; font-weight: 700; }
+.plain-list { margin: 0; padding-left: 1.2em; font-size: var(--fs-sm); line-height: 1.7; }
+.chk-item { grid-template-columns: 136px minmax(0, 1fr); }
+.chk-st { white-space: nowrap; }
+@media (max-width: 340px) { .form-grid, .res-cards { grid-template-columns: minmax(0, 1fr); } }
+
 </style>
 <script>
   // 表示テーマ（保存済みの選択 → なければOSの設定）を描画前に反映してちらつきを防ぐ
@@ -1331,6 +1482,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       <div class="head-clock" aria-label="日本時間"><span id="clockDate"></span><span id="clockTime" class="clock-time"></span><span class="clock-zone">日本時間</span></div>
       <div class="head-actions">
         <button id="dataLamp" class="data-lamp" type="button" data-level="off" aria-haspopup="dialog" title="データの更新状況を見る"><span class="lamp-dot" aria-hidden="true"></span><span class="lamp-text">データ確認中</span></button>
+        <button id="viewBtn" class="view-btn" type="button" aria-pressed="false" title="表示する情報の量を切り替えます">詳細表示</button>
         <button id="searchBtn" class="icon-btn" type="button" aria-label="パネルを探す" title="パネルを探す（/ キー）"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5 16 16"/></svg></button>
         <button id="themeBtn" class="icon-btn" type="button" aria-label="表示を明るく／暗く切り替え" title="表示を明るく／暗く切り替え"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
         <button id="aboutBtn" class="icon-btn" type="button" aria-label="このサイトについて・データの出典" title="このサイトについて・データの出典"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
@@ -1353,6 +1505,11 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       <button role="tab" id="tab-macro" aria-controls="pane-macro" data-tab="macro">経済指標</button>
       <button role="tab" id="tab-news" aria-controls="pane-news" data-tab="news">ニュース</button>
       <button role="tab" id="tab-hours" aria-controls="pane-hours" data-tab="hours">休場・時間</button>
+      <span class="tab-sep" aria-hidden="true">ツール</span>
+      <button role="tab" id="tab-check" aria-controls="pane-check" data-tab="check">分析チェック</button>
+      <button role="tab" id="tab-risk" aria-controls="pane-risk" data-tab="risk">資金管理</button>
+      <button role="tab" id="tab-sim" aria-controls="pane-sim" data-tab="sim">複利シミュレーター</button>
+      <button role="tab" id="tab-journal" aria-controls="pane-journal" data-tab="journal">トレード記録</button>
     </div>
   </nav>
 
@@ -1377,6 +1534,19 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       <section class="panel sym-strip-panel" data-panel="sym-strip" data-title="4銘柄のクイック確認（ポンド円・ポンドドル・ドル円・金）">
         <div class="panel-head"><h2>4銘柄のクイック確認</h2><span class="meta">参考値は日次（ECB）・予定は日本時間</span></div>
         <div id="symStrip" class="sym-strip"></div>
+      </section>
+
+      <section class="panel home-alert" data-panel="alert" data-title="次の重要イベントとトレード前の注意事項">
+        <div class="panel-head"><h2>次の重要イベント</h2><span class="meta">ポンド・円・ドル関連／日本時間</span></div>
+        <div id="alertNext" class="alert-next" role="status" aria-live="polite"></div>
+        <h3 class="sub-h">トレード前の注意事項</h3>
+        <ul id="alertNotes" class="alert-notes"></ul>
+        <div class="btn-row"><button type="button" class="btn btn-sm" id="notifyBtn">発表30・15・5分前にブラウザで知らせる</button><span class="fine" id="notifyNote"></span></div>
+      </section>
+
+      <section class="panel" data-panel="commentary" data-title="きょうのマーケット解説（ルールベース）">
+        <div class="panel-head"><h2>きょうのマーケット解説</h2><span class="meta">データから自動で作る定型文（AIは使っていません）</span></div>
+        <div id="commentary" class="commentary"></div>
       </section>
 
       <section class="clock-hero" data-panel="hero" data-title="相場時計（いま開いている市場・きょうの予定）">
@@ -1417,6 +1587,9 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
           <ul id="notices" class="notices"></ul>
         </section>
       </div>
+      <section class="panel dojo-card" data-panel="dojo" data-title="波形トレード道場（練習アプリ）">
+        <div class="dojo-in"><div><h2>波形トレード道場で練習する</h2><p>ポータルで環境認識をしたら、過去チャートで押し目・戻りの見極めを練習できます。</p></div><a class="btn btn-primary" href="https://mochipoyo.github.io/hakei-dojo/" target="_blank" rel="noopener">道場を開く</a></div>
+      </section>
     </section>
 
     <!-- ===================== 朝刊 ===================== -->
@@ -1459,7 +1632,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
           <div id="symNews"></div>
         </section>
       </div>
-      <section class="panel" data-panel="sym-related" data-title="4銘柄：関連市場のミニチャート（TradingView）">
+      <section class="panel" data-panel="sym-related" data-adv data-title="4銘柄：関連市場のミニチャート（TradingView）">
         <div class="panel-head"><h2>関連する市場</h2><span class="meta">TradingView・直近1カ月・表示のみ</span></div>
         <div class="mkt-grid" id="symRelated"></div>
       </section>
@@ -1491,7 +1664,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <div class="panel-head"><h2>内訳</h2><span class="meta">日足・EMA 20/30/40、MACD 6/13/4、RCI 9/14/26</span></div>
         <div id="flowTable" class="table-wrap"></div>
       </section>
-      <section class="panel" data-panel="flow-live" data-title="ポンドフローのライブチャート（TradingView）">
+      <section class="panel" data-panel="flow-live" data-adv data-title="ポンドフローのライブチャート（TradingView）">
         <div class="panel-head"><h2>ライブチャート</h2><span class="meta">TradingView・日足</span></div>
         <div class="toolbar"><div id="flowTf" class="pills" role="group" aria-label="時間足"></div></div>
         <div id="flowLive" class="flow-live"></div>
@@ -1515,7 +1688,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <div id="mtfGrid" class="mtf-grid"></div>
       </section>
 
-      <section class="panel" data-panel="market-list" data-title="マーケット一覧（ミニチャート）">
+      <section class="panel" data-panel="market-list" data-adv data-title="マーケット一覧（ミニチャート）">
         <div class="panel-head"><h2>マーケット一覧</h2><span class="meta">TradingView・直近1カ月</span></div>
         <div id="marketList"></div>
       </section>
@@ -1537,12 +1710,12 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         </section>
       </div>
       <div class="grid g-2">
-        <section class="panel" data-panel="heatmap" data-title="通貨ヒートマップ（強い通貨・弱い通貨）">
+        <section class="panel" data-panel="heatmap" data-adv data-title="通貨ヒートマップ（強い通貨・弱い通貨）">
           <div class="panel-head"><h2>通貨ヒートマップ</h2><span class="meta">TradingView</span></div>
           <p class="fine">主要通貨の組み合わせごとの変化率を色で示します。強い通貨・弱い通貨をひと目で見比べるときに使えます。</p>
           <div class="tv-box tv-h420" data-tv="heatmap"></div>
         </section>
-        <section class="panel" data-panel="cross" data-title="クロスレート一覧">
+        <section class="panel" data-panel="cross" data-adv data-title="クロスレート一覧">
           <div class="panel-head"><h2>クロスレート</h2><span class="meta">TradingView</span></div>
           <div class="tv-box tv-h420" data-tv="cross"></div>
         </section>
@@ -1590,17 +1763,17 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       </section>
 
       <div class="grid g-2">
-        <section class="panel" data-panel="curve-us" data-src="fred" data-title="米国債の利回り曲線">
+        <section class="panel" data-panel="curve-us" data-adv data-src="fred" data-title="米国債の利回り曲線">
           <div class="panel-head"><h2>米国債の利回り曲線</h2><span id="curveUsMeta" class="meta"></span></div>
           <div id="curveUs"></div>
         </section>
-        <section class="panel" data-panel="curve-jp" data-src="jgb" data-title="日本国債の利回り曲線">
+        <section class="panel" data-panel="curve-jp" data-adv data-src="jgb" data-title="日本国債の利回り曲線">
           <div class="panel-head"><h2>日本国債の利回り曲線</h2><span id="curveJpMeta" class="meta"></span></div>
           <div id="curveJp"></div>
         </section>
       </div>
 
-      <section class="panel" data-panel="world-yields" data-title="主要国の10年債利回り">
+      <section class="panel" data-panel="world-yields" data-adv data-title="主要国の10年債利回り">
         <div class="panel-head"><h2>主要国の10年債利回り</h2><span class="meta">TradingView</span></div>
         <div class="tv-box tv-h460" data-tv="yields"></div>
       </section>
@@ -1614,12 +1787,12 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
         <div id="indList" class="ind-list"></div>
         <p class="fine" id="indNote"></p>
       </section>
-      <section class="panel" data-panel="calendar" data-title="経済指標カレンダー（TradingView・すべての指標）">
+      <section class="panel" data-panel="calendar" data-adv data-title="経済指標カレンダー（TradingView・すべての指標）">
         <div class="panel-head"><h2>経済指標カレンダー（すべての指標）</h2><span class="meta">TradingView・重要度 中以上</span></div>
         <p class="fine">結果（実績・予想・前回）まで見たいときはこちら。指標名は英語のまま表示されることがあります。</p>
         <div class="tv-box tv-h640" data-tv="calendar"></div>
       </section>
-      <section class="panel" data-panel="us-macro" data-src="fred" data-title="米国の主要経済指標（物価・雇用）">
+      <section class="panel" data-panel="us-macro" data-adv data-src="fred" data-title="米国の主要経済指標（物価・雇用）">
         <div class="panel-head"><h2>米国の主要経済指標</h2><span id="macroMeta" class="meta"></span></div>
         <div id="macroTiles" class="tiles"></div>
         <div id="macroDetail" class="macro-detail"></div>
@@ -1668,7 +1841,101 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
           <div id="fixedTimes" class="table-wrap"></div>
         </section>
       </div>
+      <section class="panel" data-panel="session-vol" data-adv data-title="市場別ボラティリティ（重なる時間帯・値幅の統計）">
+        <div class="panel-head"><h2>市場の重なりと値動きの統計</h2><span class="meta">日本時間・夏時間を反映</span></div>
+        <div id="sessionVol"></div>
+      </section>
     </section>
+
+    <!-- ===================== 分析チェック ===================== -->
+    <section class="pane" id="pane-check" role="tabpanel" aria-labelledby="tab-check" hidden>
+      <section class="panel" data-panel="checker" data-title="もちぽよ式 分析チェック（環境認識・監視条件）">
+        <div class="panel-head"><h2>もちぽよ式 分析チェック</h2><span class="meta" id="chkMeta"></span></div>
+        <div class="chk-top">
+          <div class="sym-switch sym-switch-sm" id="chkSym" role="group" aria-label="銘柄"></div>
+          <div class="pills" id="chkDir" role="group" aria-label="見る方向"></div>
+        </div>
+        <p class="fine" id="chkLead"></p>
+        <div id="chkVerdict" class="chk-verdict" role="status"></div>
+        <ul class="chk-list" id="chkList"></ul>
+        <details class="chk-rr"><summary>リスクリワードを入れる（任意）</summary><div class="form-grid" id="chkRR"></div></details>
+        <div class="btn-row"><button type="button" class="btn btn-sm" id="chkClear">手動チェックを外す</button><a class="btn btn-sm" href="#journal" data-go="journal">この内容でシナリオを記録する</a></div>
+        <details class="chk-how"><summary>判定のしかた（設定ファイル analysis-config.js の内容）</summary><div id="chkHow"></div></details>
+      </section>
+    </section>
+
+    <!-- ===================== 資金管理 ===================== -->
+    <section class="pane" id="pane-risk" role="tabpanel" aria-labelledby="tab-risk" hidden>
+      <section class="panel" data-panel="lot-calc" data-title="資金管理ツール（ロット計算機）">
+        <div class="panel-head"><h2>ロット計算機</h2><span class="meta">入力はこのブラウザにだけ保存</span></div>
+        <div class="form-grid" id="riskForm"></div>
+        <p class="fine" id="riskRateNote"></p>
+        <div class="btn-row"><button type="button" class="btn btn-primary" id="riskCalc">計算する</button><button type="button" class="btn" id="riskReset">条件をリセット</button></div>
+        <div class="err-box" id="riskErr" role="alert" hidden></div>
+        <div id="riskOut" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <!-- ===================== 複利シミュレーター ===================== -->
+    <section class="pane" id="pane-sim" role="tabpanel" aria-labelledby="tab-sim" hidden>
+      <section class="panel" data-panel="sim" data-title="FX複利シミュレーター（シンプル複利・実践的な複利・月利年利）">
+        <div class="panel-head"><h2>複利シミュレーター</h2><span class="meta">計算はこのブラウザの中だけで行います</span></div>
+        <div class="mode-switch" id="simModes" role="group" aria-label="計算モード">
+          <button type="button" data-mode="simple" aria-pressed="false">シンプル複利</button>
+          <button type="button" data-mode="practical" aria-pressed="true">実践的な複利</button>
+          <button type="button" data-mode="rate">月利・年利</button>
+        </div>
+        <p class="mode-note" id="simModeNote"></p>
+        <div class="form-grid" id="simForm"></div>
+        <div class="btn-row"><button type="button" class="btn btn-primary" id="simCalc">計算する</button><button type="button" class="btn" id="simReset">条件をリセット</button></div>
+        <div class="err-box" id="simErr" role="alert" hidden></div>
+      </section>
+      <div id="simResult" hidden>
+        <section class="panel" data-panel="sim-result" data-title="複利シミュレーター：計算結果">
+          <div class="panel-head"><h2>計算結果</h2></div>
+          <div class="res-cards" id="simCards" aria-live="polite"></div>
+          <div id="simExtra"></div>
+        </section>
+        <section class="panel" data-panel="sim-chart" data-title="複利シミュレーター：資金推移グラフ">
+          <div class="panel-head"><h2>資金推移</h2><button type="button" class="btn btn-sm" id="simPng">グラフをPNGで保存</button></div>
+          <div id="simChart" class="sim-chart"></div>
+        </section>
+        <section class="panel" data-panel="sim-table" data-title="複利シミュレーター：詳細データ">
+          <div class="panel-head"><h2>詳細データ</h2><span class="btn-row"><span class="pills" id="simGran" role="group" aria-label="表示の単位"><button type="button" class="pill" data-g="day" id="simGranDay">日別</button><button type="button" class="pill" data-g="month">月別</button><button type="button" class="pill" data-g="year">年別</button></span><button type="button" class="btn btn-sm" id="simCsv">CSV出力</button></span></div>
+          <div id="simTable"></div>
+        </section>
+      </div>
+      <section class="panel" data-panel="sim-scen" data-title="複利シミュレーター：シナリオの保存・比較">
+        <div class="panel-head"><h2>シナリオの保存・比較</h2><span class="meta">最大30件・このブラウザにだけ保存</span></div>
+        <div class="scen-save"><label class="fld"><span class="fld-label">シナリオ名</span><span class="fld-in"><input type="text" id="scenName" maxlength="40" placeholder="例：リスク1%・勝率45%"></span></label><button type="button" class="btn" id="scenSave">いまの条件を保存</button></div>
+        <ul class="scen-list" id="scenList"></ul>
+        <div class="btn-row"><button type="button" class="btn btn-sm" id="scenCompare">選んだシナリオ（2〜3件）を比較</button></div>
+        <div id="scenCmp"></div>
+      </section>
+    </section>
+
+    <!-- ===================== トレード記録 ===================== -->
+    <section class="pane" id="pane-journal" role="tabpanel" aria-labelledby="tab-journal" hidden>
+      <section class="panel" data-panel="journal-form" data-title="トレードシナリオの記録">
+        <div class="panel-head"><h2 id="jrTitle">トレードシナリオを記録</h2><span class="meta">このブラウザにだけ保存（消えないよう定期的に書き出してください）</span></div>
+        <div class="form-grid" id="jrForm"></div>
+        <div class="btn-row"><button type="button" class="btn btn-primary" id="jrSave">保存する</button><button type="button" class="btn" id="jrCancel" hidden>編集をやめる</button></div>
+        <div class="err-box" id="jrErr" role="alert" hidden></div>
+      </section>
+      <section class="panel" data-panel="journal-list" data-title="トレードシナリオ一覧（閲覧・編集・削除・結果の記入）">
+        <div class="panel-head"><h2>記録の一覧</h2><span class="btn-row"><button type="button" class="btn btn-sm" id="jrExport">書き出し（JSON）</button><button type="button" class="btn btn-sm" id="jrCsv">CSV出力</button><label class="btn btn-sm">読み込み<input type="file" id="jrImport" accept="application/json,.json" hidden></label></span></div>
+        <div class="pills" id="jrFilter" role="group" aria-label="絞り込み"></div>
+        <ul class="jr-list" id="jrList"></ul>
+      </section>
+      <section class="panel" data-panel="journal-stats" data-title="トレード成績の分析（勝率・期待値・PF・最大DD）">
+        <div class="panel-head"><h2>成績の分析</h2><span class="meta" id="jrStatsMeta"></span></div>
+        <div id="jrStats"></div>
+      </section>
+      <section class="panel dojo-card" data-panel="dojo-journal" data-title="波形トレード道場（練習アプリ）">
+        <div class="dojo-in"><div><h2>波形トレード道場で練習する</h2><p>環境認識を学んだら、過去チャートで「押し目・戻り」の判断を練習できます。</p></div><a class="btn btn-primary" href="https://mochipoyo.github.io/hakei-dojo/" target="_blank" rel="noopener">道場を開く</a></div>
+      </section>
+    </section>
+
   </main>
 
   <footer class="site-foot">
@@ -2152,6 +2419,1373 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
 </script>
 <script>
 /*
+ * fxcalc.js — 資金管理・複利シミュレーション・成績集計・日足の判定（計算だけを担当。画面は tools.js）
+ * ------------------------------------------------------------
+ * ・お金の計算は「口座通貨」で行う。円口座以外も扱えるよう、換算レートは引数で受け取る
+ *   （取得できないレートを勝手に補わない。足りなければ ok:false と理由を返す）
+ * ・レバレッジは「証拠金の制約（持てるロットの上限）」にだけ使い、利益率には掛けない
+ * ・NaN・無限大・ゼロ除算は入力検証で止め、計算途中でも数値以外を出さない
+ * ブラウザでは window.FxCalc、Node（テスト）では module.exports。
+ */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === "object" && module.exports) module.exports = api;
+  else root.FxCalc = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+  "use strict";
+
+  // ============================== 共通 ==============================
+  function isNum(x) { return typeof x === "number" && isFinite(x); }
+  function floorStep(x, step) {
+    if (!(step > 0)) return x;
+    // 浮動小数の誤差（0.3/0.1=2.9999…）で1刻み少なくならないよう、わずかに足してから切り捨てる
+    var n = Math.floor(x / step + 1e-9);
+    return Math.max(0, roundTo(n * step, decimalsOf(step)));
+  }
+  function decimalsOf(step) { var s = String(step); var i = s.indexOf("."); return i < 0 ? 0 : s.length - i - 1; }
+  function roundTo(x, d) { var p = Math.pow(10, d || 0); return Math.round(x * p) / p; }
+  function percentile(sorted, p) {
+    if (!sorted.length) return null;
+    if (sorted.length === 1) return sorted[0];
+    var idx = (sorted.length - 1) * p, lo = Math.floor(idx), hi = Math.ceil(idx);
+    return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+  }
+  // 再現できる乱数（同じシードなら同じ結果）
+  function rng(seed) {
+    var a = (Number(seed) >>> 0) || 1;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  // 円の表示：1,234,567円 ／ 大きい額は「1億2,345万円」を併記
+  function yen(v) { return isNum(v) ? Math.round(v).toLocaleString("ja-JP") + "円" : "—"; }
+  function jpUnit(v) {
+    if (!isNum(v)) return "";
+    var s = v < 0 ? "−" : "", a = Math.abs(Math.round(v));
+    if (a < 10000) return "";
+    var oku = Math.floor(a / 1e8), man = Math.floor((a % 1e8) / 1e4);
+    var t = (oku ? oku.toLocaleString("ja-JP") + "億" : "") + (man ? man.toLocaleString("ja-JP") + "万" : "");
+    return s + t + "円";
+  }
+
+  // ============================== 銘柄の仕様 ==============================
+  // pipSize：1pipの値幅。unitSize：1ロットの数量（通貨単位またはオンス）。quote：利益が発生する通貨
+  var PAIRS = {
+    GBPJPY: { label: "ポンド円", base: "GBP", quote: "JPY", pipSize: 0.01, digits: 3 },
+    USDJPY: { label: "ドル円", base: "USD", quote: "JPY", pipSize: 0.01, digits: 3 },
+    EURJPY: { label: "ユーロ円", base: "EUR", quote: "JPY", pipSize: 0.01, digits: 3 },
+    GBPUSD: { label: "ポンドドル", base: "GBP", quote: "USD", pipSize: 0.0001, digits: 5 },
+    EURUSD: { label: "ユーロドル", base: "EUR", quote: "USD", pipSize: 0.0001, digits: 5 },
+    // 金は業者によって「1ロット＝何オンス」「1pip＝いくらの値幅」が違うため、既定値は目安で、画面で必ず変更できる
+    XAUUSD: { label: "金（ゴールド）", base: "XAU", quote: "USD", pipSize: 0.01, digits: 2, custom: true }
+  };
+  function pairSpec(sym, over) {
+    var p = PAIRS[sym];
+    if (!p) return null;
+    var o = Object.assign({}, p);
+    if (over) {
+      if (isNum(over.pipSize) && over.pipSize > 0) o.pipSize = over.pipSize;
+    }
+    return o;
+  }
+
+  // 1ロット・1pipあたりの損益（口座通貨）
+  //   ctx: { account:"JPY"|"USD", unitSize, quoteToAccount（利益通貨→口座通貨のレート。同じ通貨なら1） }
+  function pipValuePerLot(spec, ctx) {
+    if (!spec || !(ctx.unitSize > 0)) return null;
+    var conv = spec.quote === ctx.account ? 1 : ctx.quoteToAccount;
+    if (!(conv > 0)) return null;
+    return ctx.unitSize * spec.pipSize * conv;
+  }
+  // 1ロットに必要な証拠金（口座通貨）＝ 数量 × 価格（利益通貨建て）× 換算 ÷ レバレッジ
+  function marginPerLot(spec, ctx, price, leverage) {
+    if (!spec || !(ctx.unitSize > 0) || !(price > 0) || !(leverage > 0)) return null;
+    var conv = spec.quote === ctx.account ? 1 : ctx.quoteToAccount;
+    if (!(conv > 0)) return null;
+    return ctx.unitSize * price * conv / leverage;
+  }
+
+  // ============================== ロット計算機 ==============================
+  // 指定したリスク（損切りまでの損失）に収まるロット数を出す。推奨ではなく、条件から逆算した参考値
+  function lotCalc(inp) {
+    var e = [];
+    var spec = pairSpec(inp.symbol, { pipSize: inp.pipSize });
+    if (!spec) e.push("通貨ペアを選んでください。");
+    if (!(inp.balance > 0)) e.push("口座資金は0より大きい数値を入れてください。");
+    if (!(inp.riskPct > 0 && inp.riskPct <= 100)) e.push("許容損失率は0より大きく100以下にしてください。");
+    if (!(inp.entry > 0)) e.push("エントリー価格を入れてください。");
+    if (!(inp.stop > 0)) e.push("損切り価格を入れてください。");
+    if (inp.entry > 0 && inp.entry === inp.stop) e.push("エントリー価格と損切り価格が同じです。");
+    if (!(inp.unitSize > 0)) e.push("1ロットの数量を入れてください。");
+    if (!(inp.lotStep > 0)) e.push("ロットの刻み幅を入れてください。");
+    if (spec && spec.quote !== inp.account && !(inp.quoteToAccount > 0)) e.push(spec.quote + "→" + inp.account + " の換算レートを入れてください（取得できないため手入力です）。");
+    if (inp.target > 0 && inp.entry > 0 && inp.stop > 0) {
+      var longSide = inp.entry > inp.stop;
+      if (longSide ? inp.target <= inp.entry : inp.target >= inp.entry) e.push("利確価格が、損切りと逆側（利益が出る側）にありません。");
+    }
+    if (e.length) return { ok: false, errors: e };
+    var ctx = { account: inp.account, unitSize: inp.unitSize, quoteToAccount: inp.quoteToAccount };
+    var pv = pipValuePerLot(spec, ctx);
+    var side = inp.entry > inp.stop ? "買い" : "売り";
+    var stopPips = Math.abs(inp.entry - inp.stop) / spec.pipSize;
+    var tpPips = inp.target > 0 ? Math.abs(inp.target - inp.entry) / spec.pipSize : null;
+    var spread = Math.max(0, inp.spreadPips || 0), fee = Math.max(0, inp.feePerLot || 0);
+    var riskAmt = inp.balance * inp.riskPct / 100;
+    // 1ロットあたりの損失 ＝ (損切り幅＋スプレッド) × pip価値 ＋ 往復手数料
+    var lossPerLot = (stopPips + spread) * pv + fee;
+    var rawLots = riskAmt / lossPerLot;
+    var lots = floorStep(rawLots, inp.lotStep);
+    var notes = [];
+    if (inp.maxLot > 0 && lots > inp.maxLot) { lots = inp.maxLot; notes.push("ロットの上限で止めています。"); }
+    var mpl = marginPerLot(spec, ctx, inp.entry, inp.leverage);
+    if (mpl) {
+      var byMargin = floorStep(inp.balance / mpl, inp.lotStep);
+      if (lots > byMargin) { lots = byMargin; notes.push("証拠金が足りないため、持てる上限まで減らしています。"); }
+    }
+    var minLot = inp.minLot > 0 ? inp.minLot : inp.lotStep;
+    var tradable = lots >= minLot - 1e-12;
+    if (!tradable) notes.push("条件を満たすロットが最小取引数量（" + minLot + "ロット）に届きません。損切り幅を狭めるか、許容損失率を見直す必要があります。");
+    var lotsUse = tradable ? lots : 0;
+    var maxLoss = lotsUse * lossPerLot;
+    var profit = tpPips === null ? null : lotsUse * ((tpPips - spread) * pv - fee);
+    return {
+      ok: true, side: side, spec: spec, pipValue: pv, lots: lotsUse, rawLots: rawLots, tradable: tradable,
+      stopPips: stopPips, tpPips: tpPips, riskAmount: riskAmt, maxLoss: maxLoss, profit: profit,
+      rr: tpPips === null ? null : tpPips / stopPips,
+      rrNet: profit === null || !(maxLoss > 0) ? null : profit / maxLoss,
+      margin: mpl ? mpl * lotsUse : null, marginPerLot: mpl, units: lotsUse * inp.unitSize, notes: notes
+    };
+  }
+
+  // ============================== シンプル複利（理想化：毎日必ず同じpipsを獲得） ==============================
+  // 定義
+  //  ・1日の獲得pipsは「1日の合計」。スプレッドは「1回あたりpips×1日の回数」、手数料は「1ロット1回あたり（往復）」で毎日差し引く
+  //  ・ロット＝ 証拠金で持てる上限（資金÷1ロットの必要証拠金）を刻み幅で切り捨て。ロット上限があればそこまで（0は上限なし）
+  //  ・入出金は各月の初日、その日の取引の前に反映
+  //  ・単利は、初日に決まったロット数を最後まで変えない（増えた利益を次の取引に使わない）
+  //  ・損失を含まない理想化された計算で、現実の結果を表しません
+  function simpleCompound(inp) {
+    var e = validateSimple(inp);
+    if (e.length) return { ok: false, errors: e };
+    var spec = pairSpec(inp.symbol, { pipSize: inp.pipSize });
+    var ctx = { account: "JPY", unitSize: inp.unitSize, quoteToAccount: inp.quoteToAccount };
+    var pv = pipValuePerLot(spec, ctx), mpl = marginPerLot(spec, ctx, inp.price, inp.leverage);
+    var days = Math.round(inp.months * inp.daysPerMonth);
+    var minLot = inp.minLot > 0 ? inp.minLot : inp.lotStep;
+    function lotsFor(eq) {
+      if (!(eq > 0)) return 0;
+      var l = floorStep(eq / mpl, inp.lotStep);
+      if (inp.lotCap > 0) l = Math.min(l, inp.lotCap);
+      return l >= minLot - 1e-12 ? l : 0;
+    }
+    function dayPL(l) { return l * (inp.pipsPerDay * pv - inp.spreadPips * inp.tradesPerDay * pv - inp.feePerLot * inp.tradesPerDay); }
+    var eq = inp.capital, eqS = inp.capital, fixedLots = null;
+    var rows = [], reach = null, stuck = 0, dep = 0, wd = 0;
+    for (var d = 1; d <= days; d++) {
+      var m = Math.ceil(d / inp.daysPerMonth);
+      if ((d - 1) % inp.daysPerMonth === 0 && d > 1) {
+        eq += inp.monthlyDeposit - inp.monthlyWithdraw; eqS += inp.monthlyDeposit - inp.monthlyWithdraw;
+        dep += inp.monthlyDeposit; wd += inp.monthlyWithdraw;
+        if (eq < 0) eq = 0; if (eqS < 0) eqS = 0;
+      }
+      var l = lotsFor(eq);
+      if (fixedLots === null) fixedLots = l;
+      var lS = Math.min(fixedLots, lotsFor(eqS) || 0) || 0;
+      if (!l) stuck++;
+      var pl = dayPL(l), plS = dayPL(lS);
+      eq = Math.max(0, eq + pl); eqS = Math.max(0, eqS + plS);
+      if (reach === null && inp.target > 0 && eq >= inp.target) reach = d;
+      rows.push({ day: d, month: m, lots: l, pl: pl, equity: eq, simple: eqS });
+    }
+    return {
+      ok: true, rows: rows, final: eq, finalSimple: eqS, pipValue: pv, marginPerLot: mpl, startLots: rows.length ? rows[0].lots : 0,
+      totalDeposit: inp.capital + dep, totalWithdraw: wd, profit: eq - inp.capital - dep + wd, reachDay: reach, untradableDays: stuck, days: days,
+      dayPLPerLot: dayPL(1)
+    };
+  }
+  function validateSimple(i) {
+    var e = [];
+    if (!pairSpec(i.symbol)) e.push("通貨ペアを選んでください。");
+    if (!(i.capital > 0)) e.push("初期資金は0より大きい数値にしてください。");
+    if (!(i.leverage > 0 && i.leverage <= 1000)) e.push("レバレッジは1〜1000の範囲で入れてください。");
+    if (!isNum(i.pipsPerDay)) e.push("1日の獲得pipsを入れてください。");
+    if (!(i.tradesPerDay >= 1 && i.tradesPerDay <= 100)) e.push("1日のトレード回数は1〜100にしてください。");
+    if (!(i.daysPerMonth >= 1 && i.daysPerMonth <= 31)) e.push("月間トレード日数は1〜31にしてください。");
+    if (!(i.months > 0 && i.months <= 600)) e.push("運用期間は50年（600か月）以内にしてください。");
+    if (!(i.unitSize > 0)) e.push("1ロットの数量を入れてください。");
+    if (!(i.lotStep > 0)) e.push("ロットの刻み幅を入れてください。");
+    if (!(i.price > 0)) e.push("証拠金の計算に使うレート（価格）を入れてください。");
+    var sp = pairSpec(i.symbol);
+    if (sp && sp.quote !== "JPY" && !(i.quoteToAccount > 0)) e.push(sp.quote + "→円 の換算レートを入れてください（取得できないため手入力です）。");
+    ["spreadPips", "feePerLot", "monthlyDeposit", "monthlyWithdraw", "lotCap", "target", "minLot"].forEach(function (k) { if (!isNum(i[k]) || i[k] < 0) e.push(LABELS[k] + "は0以上の数値にしてください。"); });
+    return e;
+  }
+  var LABELS = { spreadPips: "スプレッド", feePerLot: "手数料", monthlyDeposit: "毎月の追加入金", monthlyWithdraw: "毎月の出金", lotCap: "ロット上限", target: "目標資金", minLot: "最小取引数量", costR: "取引コスト", floor: "資金の下限", maxLot: "最大ロット" };
+
+  // ============================== 実践的な複利（勝率・RR・モンテカルロ） ==============================
+  // 定義
+  //  ・1回ごとに「その時点の資金 × 許容損失率」を1R（リスク額）とする
+  //  ・勝ち：+RR×R、負け：−R。取引コストは R に対する割合（例 0.05＝5%）で、勝ち負けに関係なく1回につき1度だけ差し引く
+  //  ・ロット制約（任意）：損切り幅と1ロットの1pip価値から、1Rに収まるロットを刻み幅で切り捨て、最大ロットで頭打ち。
+  //    最小数量に届かなければ取引しない（取引不能）。実際のリスク額はロットから計算し直す
+  //  ・入出金は各月の初日（その月の最初の取引の前）に反映
+  //  ・資金の下限（既定は0円）以下になった時点で、それ以降は取引しない（ゼロ未満で取引を続けない）
+  //  ・ドローダウンは「それまでの資金の最高値からの下落率」。入出金も資金に含めて計算
+  //  ・単利の比較：リスク額を「初期資金×許容損失率」に固定し、同じ勝敗の順序で計算
+  function practical(inp) {
+    var e = validatePractical(inp);
+    if (e.length) return { ok: false, errors: e };
+    var N = inp.tradesPerMonth, M = inp.months, T = N * M, runs = inp.runs;
+    var r = inp.riskPct / 100, p = inp.winRate / 100, rr = inp.rr, c = inp.costR;
+    var floor = Math.max(0, inp.floor || 0);
+    var useLot = inp.useLot && inp.stopPips > 0 && inp.pipValue > 0;
+    var R = rng(inp.seed);
+    var finals = [], finalsS = [], dds = [], reachT = 0, reachDD = 0, belowFloor = 0, stoppedRuns = 0, untradable = 0;
+    var monthly = []; for (var mm = 0; mm <= M; mm++) monthly.push([]);
+    var monthlyS = []; for (var ms = 0; ms <= M; ms++) monthlyS.push([]);
+    var R0 = inp.capital * r;
+    function sizedRisk(eq) {
+      var risk = eq * r;
+      if (!useLot) return risk;
+      var lots = floorStep(risk / (inp.stopPips * inp.pipValue), inp.lotStep);
+      if (inp.maxLot > 0) lots = Math.min(lots, inp.maxLot);
+      var minLot = inp.minLot > 0 ? inp.minLot : inp.lotStep;
+      if (lots < minLot - 1e-12) return 0;
+      return lots * inp.stopPips * inp.pipValue;
+    }
+    for (var k = 0; k < runs; k++) {
+      var eq = inp.capital, eqS = inp.capital, peak = eq, maxDD = 0, hitT = false, hitDD = false, stopped = false, peakS = eqS;
+      monthly[0].push(eq); monthlyS[0].push(eqS);
+      for (var m = 1; m <= M; m++) {
+        if (m > 1) {
+          eq = Math.max(0, eq + inp.monthlyDeposit - inp.monthlyWithdraw);
+          eqS = Math.max(0, eqS + inp.monthlyDeposit - inp.monthlyWithdraw);
+          if (eq > peak) peak = eq;
+        }
+        for (var t = 0; t < N; t++) {
+          var win = R() < p;
+          if (!stopped) {
+            if (eq <= floor) { stopped = true; }
+            else {
+              var risk = sizedRisk(eq);
+              if (risk <= 0) { stopped = true; untradable++; }
+              else {
+                eq += (win ? rr * risk : -risk) - c * risk;
+                if (eq < floor) eq = Math.max(eq, 0);
+              }
+            }
+          }
+          // 単利（固定リスク額）
+          if (eqS > floor && eqS >= R0) eqS += (win ? rr * R0 : -R0) - c * R0;
+          if (eqS < 0) eqS = 0;
+          if (eq > peak) peak = eq;
+          var dd = peak > 0 ? (peak - eq) / peak : 0;
+          if (dd > maxDD) maxDD = dd;
+          if (!hitT && inp.target > 0 && eq >= inp.target) hitT = true;
+          if (!hitDD && inp.maxDD > 0 && dd >= inp.maxDD / 100) hitDD = true;
+        }
+        monthly[m].push(eq); monthlyS[m].push(eqS);
+      }
+      if (stopped) stoppedRuns++;
+      if (eq <= floor) belowFloor++;
+      finals.push(eq); finalsS.push(eqS); dds.push(maxDD);
+      if (hitT) reachT++; if (hitDD) reachDD++;
+    }
+    var asc = function (a, b) { return a - b; };
+    finals.sort(asc); finalsS.sort(asc); dds.sort(asc);
+    var band = monthly.map(function (arr) { var s = arr.slice().sort(asc); return { p10: percentile(s, 0.1), p50: percentile(s, 0.5), p90: percentile(s, 0.9) }; });
+    var bandS = monthlyS.map(function (arr) { var s = arr.slice().sort(asc); return percentile(s, 0.5); });
+    var ev = p * rr - (1 - p) - c; // 1回あたりの期待値（R）
+    // 理論値（入出金・下限・ロット制約なしの場合の「平均」）
+    var theoCompound = inp.capital * Math.pow(1 + r * ev, T);
+    var theoSimple = inp.capital + T * ev * R0;
+    // DDの分布（ヒストグラム 10%刻み）
+    var hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    dds.forEach(function (d) { hist[Math.min(9, Math.floor(d * 10))]++; });
+    return {
+      ok: true, runs: runs, trades: T, ev: ev, evYenFirst: ev * R0,
+      median: percentile(finals, 0.5), p10: percentile(finals, 0.1), p90: percentile(finals, 0.9),
+      mean: finals.reduce(function (a, b) { return a + b; }, 0) / runs,
+      medianSimple: percentile(finalsS, 0.5),
+      ddMedian: percentile(dds, 0.5), ddP90: percentile(dds, 0.9), ddHist: hist,
+      reachTarget: reachT / runs, reachDD: reachDD / runs, belowFloor: belowFloor / runs, stoppedRate: stoppedRuns / runs, untradableRuns: untradable,
+      theoCompound: theoCompound, theoSimple: theoSimple, band: band, bandSimple: bandS
+    };
+  }
+  var MAX_WORK = 5e6; // 試行回数×取引回数の上限（ブラウザが固まらないように）
+  function validatePractical(i) {
+    var e = [];
+    if (!(i.capital > 0)) e.push("初期資金は0より大きい数値にしてください。");
+    if (!(i.riskPct > 0 && i.riskPct <= 100)) e.push("1トレードの許容損失率は0より大きく100以下にしてください。");
+    if (!(i.winRate >= 0 && i.winRate <= 100)) e.push("勝率は0〜100%で入れてください。");
+    if (!(i.rr > 0 && i.rr <= 100)) e.push("平均リスクリワードは0より大きい数値にしてください。");
+    if (!(i.tradesPerMonth >= 1 && i.tradesPerMonth <= 2000 && Math.floor(i.tradesPerMonth) === i.tradesPerMonth)) e.push("1か月のトレード回数は1〜2000の整数にしてください。");
+    if (!(i.months >= 1 && i.months <= 600 && Math.floor(i.months) === i.months)) e.push("運用期間は1〜600か月の整数にしてください。");
+    if (!(i.runs >= 1 && i.runs <= 10000 && Math.floor(i.runs) === i.runs)) e.push("試行回数は1〜10,000の整数にしてください。");
+    if (i.runs * i.tradesPerMonth * i.months > MAX_WORK) e.push("試行回数×取引回数が多すぎます（" + MAX_WORK.toLocaleString("ja-JP") + "回以内）。試行回数か期間を減らしてください。");
+    if (!(i.costR >= 0 && i.costR < 1)) e.push("取引コストはRに対する割合で0以上1未満にしてください（例：0.05＝5%）。");
+    if (!(i.maxDD >= 0 && i.maxDD <= 100)) e.push("最大許容ドローダウンは0〜100%にしてください。");
+    ["monthlyDeposit", "monthlyWithdraw", "target", "floor", "maxLot"].forEach(function (k) { if (!isNum(i[k]) || i[k] < 0) e.push(LABELS[k] + "は0以上の数値にしてください。"); });
+    if (!isNum(i.seed)) e.push("乱数シードは数値にしてください。");
+    if (i.useLot) {
+      if (!(i.stopPips > 0)) e.push("ロット制約を使う場合は、平均の損切り幅（pips）を入れてください。");
+      if (!(i.pipValue > 0)) e.push("ロット制約を使う場合は、1ロットあたりの1pipの価値（円）を入れてください。");
+      if (!(i.lotStep > 0)) e.push("ロットの刻み幅を入れてください。");
+    }
+    return e;
+  }
+
+  // ============================== 月利・年利 ==============================
+  // 定義：毎月、①その月の利息を加える → ②月末に積立・出金を反映（初月から）
+  //  ・年利入力の複利は、月利＝(1+年利)^(1/12)−1 に換算（年複利と一致させる）。単利は年利÷12
+  //  ・単利の利息は「元本（初期資金＋積立累計−出金累計）」に対してのみ付き、利息は再投資しない
+  function rateSim(inp) {
+    var e = [];
+    if (!(inp.capital >= 0)) e.push("初期資金は0以上にしてください。");
+    if (!(inp.rate > -100 && inp.rate <= 1000)) e.push("利回りは−100%より大きく1000%以下にしてください。");
+    if (!(inp.months >= 1 && inp.months <= 1200 && Math.floor(inp.months) === inp.months)) e.push("運用期間は1〜1200か月の整数にしてください。");
+    ["monthlyDeposit", "monthlyWithdraw", "target"].forEach(function (k) { if (!isNum(inp[k]) || inp[k] < 0) e.push(LABELS[k] + "は0以上の数値にしてください。"); });
+    if (e.length) return { ok: false, errors: e };
+    var mr = inp.basis === "year" ? Math.pow(1 + inp.rate / 100, 1 / 12) - 1 : inp.rate / 100;
+    var mrS = inp.basis === "year" ? inp.rate / 100 / 12 : inp.rate / 100;
+    var eq = inp.capital, prin = inp.capital, simpleInt = 0, rows = [], reach = null, shortfall = false;
+    for (var m = 1; m <= inp.months; m++) {
+      eq = eq * (1 + mr);
+      simpleInt += prin * mrS;
+      eq += inp.monthlyDeposit - inp.monthlyWithdraw;
+      prin += inp.monthlyDeposit - inp.monthlyWithdraw;
+      if (eq < 0) { eq = 0; shortfall = true; }
+      if (prin < 0) prin = 0;
+      var simple = prin + simpleInt;
+      if (reach === null && inp.target > 0 && eq >= inp.target) reach = m;
+      rows.push({ month: m, equity: eq, principal: prin, simple: simple });
+    }
+    var principalTotal = inp.capital + inp.monthlyDeposit * inp.months - inp.monthlyWithdraw * inp.months;
+    return { ok: true, rows: rows, final: eq, principalTotal: principalTotal, gain: eq - principalTotal, finalSimple: rows[rows.length - 1].simple, reachMonth: reach, monthlyRate: mr, shortfall: shortfall };
+  }
+
+  // ============================== 成績の集計 ==============================
+  // trades: [{ symbol, type, openedAt(ISO), pnl(口座通貨), r(R倍数), status:"win"|"loss"|"be" }]（決済済みのみ）
+  function stats(trades) {
+    var t = trades.filter(function (x) { return isNum(x.pnl) || isNum(x.r); });
+    var n = t.length;
+    var out = { n: n, enough: n >= 30 };
+    if (!n) return out;
+    var wins = t.filter(function (x) { return (isNum(x.pnl) ? x.pnl : x.r) > 0; });
+    var losses = t.filter(function (x) { return (isNum(x.pnl) ? x.pnl : x.r) < 0; });
+    var sum = function (arr, k) { return arr.reduce(function (a, b) { return a + (isNum(b[k]) ? b[k] : 0); }, 0); };
+    var cnt = function (arr, k) { return arr.filter(function (b) { return isNum(b[k]); }).length; };
+    out.winRate = wins.length / n;
+    out.avgWin = cnt(wins, "pnl") ? sum(wins, "pnl") / cnt(wins, "pnl") : null;
+    out.avgLoss = cnt(losses, "pnl") ? sum(losses, "pnl") / cnt(losses, "pnl") : null;
+    out.avgWinR = cnt(wins, "r") ? sum(wins, "r") / cnt(wins, "r") : null;
+    out.avgLossR = cnt(losses, "r") ? sum(losses, "r") / cnt(losses, "r") : null;
+    out.expectancy = cnt(t, "pnl") ? sum(t, "pnl") / cnt(t, "pnl") : null;
+    out.expectancyR = cnt(t, "r") ? sum(t, "r") / cnt(t, "r") : null;
+    out.avgRR = out.avgWinR !== null && out.avgLossR ? out.avgWinR / Math.abs(out.avgLossR) : null;
+    var gp = sum(wins, "pnl"), gl = Math.abs(sum(losses, "pnl"));
+    out.profitFactor = gl > 0 ? gp / gl : (gp > 0 ? Infinity : null);
+    out.total = sum(t, "pnl"); out.totalR = sum(t, "r");
+    // 最大ドローダウン（決済順の累積損益の、最高値からの下落額）
+    var sorted = t.slice().sort(function (a, b) { return String(a.closedAt || a.openedAt) < String(b.closedAt || b.openedAt) ? -1 : 1; });
+    var cum = 0, peak = 0, mdd = 0, cumR = 0, peakR = 0, mddR = 0;
+    sorted.forEach(function (x) {
+      cum += isNum(x.pnl) ? x.pnl : 0; peak = Math.max(peak, cum); mdd = Math.max(mdd, peak - cum);
+      cumR += isNum(x.r) ? x.r : 0; peakR = Math.max(peakR, cumR); mddR = Math.max(mddR, peakR - cumR);
+    });
+    out.maxDD = mdd; out.maxDDR = mddR;
+    return out;
+  }
+  // グループ別（銘柄・手法・曜日・時間帯）
+  var DOW = ["日", "月", "火", "水", "木", "金", "土"];
+  function jstParts(iso) {
+    var t = Date.parse(iso);
+    if (!isFinite(t)) return null;
+    var d = new Date(t + 9 * 3600000);
+    return { dow: d.getUTCDay(), hour: d.getUTCHours() };
+  }
+  function groupStats(trades, key) {
+    var g = {};
+    trades.forEach(function (x) {
+      var k;
+      if (key === "dow") { var p = jstParts(x.openedAt); k = p ? DOW[p.dow] + "曜" : "不明"; }
+      else if (key === "hour") { var q = jstParts(x.openedAt); k = q ? (q.hour < 10 ? "0" : "") + q.hour + "時台" : "不明"; }
+      else k = x[key] || "不明";
+      (g[k] = g[k] || []).push(x);
+    });
+    return Object.keys(g).sort().map(function (k) { var s = stats(g[k]); s.key = k; return s; });
+  }
+
+  // ============================== 日足の判定（もちぽよ手法・終値ベース） ==============================
+  // 添付スキャナー（Pine）の考え方を、終値だけの日次データ用に移植したもの。
+  // 高値・安値が無いため、ピボットは終値で取る（TradingView上の表示とは一致しない場合があります）
+  function ema(v, n) {
+    var out = new Array(v.length).fill(null);
+    if (v.length < n) return out;
+    var a = 2 / (n + 1), s = 0;
+    for (var i = 0; i < n; i++) s += v[i];
+    out[n - 1] = s / n;
+    for (var j = n; j < v.length; j++) out[j] = v[j] * a + out[j - 1] * (1 - a);
+    return out;
+  }
+  // RCI（Pineの f_rci と同じ式：高い値ほど順位が上、同値は同順位）
+  function rci(v, end, n) {
+    if (end + 1 < n) return null;
+    var d = 0;
+    for (var i = 0; i < n; i++) {
+      var rnk = 1;
+      for (var j = 0; j < n; j++) if (v[end - j] > v[end - i]) rnk++;
+      var diff = (i + 1) - rnk;
+      d += diff * diff;
+    }
+    return (1 - 6 * d / (n * (n * n - 1))) * 100;
+  }
+  function analyzeDaily(closes, cfg) {
+    cfg = cfg || {};
+    var C = Object.assign({ rciTh: 70, rciLook: 3, pivL: 3, pivR: 3, divValid: 8, denseTh: 0.06, slopeLen: 10, slopeTh: 0.03, trendLen: 30, trendMin: 15 }, cfg);
+    var v = closes, n = v.length;
+    if (n < 80) return null;
+    var e20 = ema(v, 20), e30 = ema(v, 30), e40 = ema(v, 40);
+    var f = ema(v, 6), s = ema(v, 13);
+    var macd = v.map(function (_, i) { return f[i] !== null && s[i] !== null ? f[i] - s[i] : null; });
+    var L = n - 1;
+    var up = function (i) { return e20[i] > e30[i] && e30[i] > e40[i]; };
+    var dn = function (i) { return e20[i] < e30[i] && e30[i] < e40[i]; };
+    var width = (Math.max(e20[L], e30[L], e40[L]) - Math.min(e20[L], e30[L], e40[L])) / v[L] * 100;
+    var dense = width < C.denseTh;
+    var slope = (e40[L] - e40[L - C.slopeLen]) / v[L] * 100;
+    var upBars = 0, dnBars = 0;
+    for (var i = L - C.trendLen + 1; i <= L; i++) { if (up(i)) upBars++; if (dn(i)) dnBars++; }
+    var trendUp = slope > C.slopeTh && (up(L) || upBars >= C.trendMin) && !dense;
+    var trendDn = slope < -C.slopeTh && (dn(L) || dnBars >= C.trendMin) && !dense;
+    var r = function (k) { return rci(v, k, 9); };
+    var rNow = r(L);
+    function zoneLow(k) { for (var q = 0; q < C.rciLook; q++) if (r(k - q) <= -C.rciTh) return true; return false; }
+    function zoneHigh(k) { for (var q = 0; q < C.rciLook; q++) if (r(k - q) >= C.rciTh) return true; return false; }
+    var turnUpAt = function (k) { return zoneLow(k) && r(k) > r(k - 1); };
+    var turnDnAt = function (k) { return zoneHigh(k) && r(k) < r(k - 1); };
+    var rciTurnUp = turnUpAt(L) || turnUpAt(L - 1), rciTurnDn = turnDnAt(L) || turnDnAt(L - 1);
+    // ピボット（終値）とMACDのダイバージェンス
+    var pl = [], ph = [];
+    for (var c = C.pivL; c <= L - C.pivR; c++) {
+      var isL = true, isH = true;
+      for (var a = c - C.pivL; a <= c + C.pivR; a++) { if (a === c) continue; if (v[a] <= v[c]) isL = false; if (v[a] >= v[c]) isH = false; }
+      if (isL && macd[c] !== null) pl.push({ i: c, p: v[c], m: macd[c] });
+      if (isH && macd[c] !== null) ph.push({ i: c, p: v[c], m: macd[c] });
+    }
+    function div(list, low) {
+      if (list.length < 2) return { div: false, hid: false };
+      var last = list[list.length - 1], prev = list[list.length - 2];
+      var fresh = (L - (last.i + C.pivR)) <= C.divValid;
+      if (!fresh) return { div: false, hid: false, last: last };
+      return low
+        ? { div: last.p < prev.p && last.m > prev.m, hid: last.p > prev.p && last.m < prev.m, last: last, prev: prev }
+        : { div: last.p > prev.p && last.m < prev.m, hid: last.p < prev.p && last.m > prev.m, last: last, prev: prev };
+    }
+    var bull = div(pl, true), bear = div(ph, false);
+    var bullSig = bull.div || bull.hid, bearSig = bear.div || bear.hid;
+    var state = 0;
+    if (trendUp && rciTurnUp && bullSig) state = 5; else if (trendDn && rciTurnDn && bearSig) state = -5;
+    else if (trendUp && rciTurnUp) state = 4; else if (trendDn && rciTurnDn) state = -4;
+    else if (rciTurnUp && bullSig) state = 3; else if (rciTurnDn && bearSig) state = -3;
+    else if (trendUp && zoneLow(L)) state = 2; else if (trendDn && zoneHigh(L)) state = -2;
+    else if (trendUp) state = 1; else if (trendDn) state = -1;
+    // 直近のスイング高値・安値（終値ピボット）
+    var swingHigh = ph.length ? ph[ph.length - 1] : null, swingLow = pl.length ? pl[pl.length - 1] : null;
+    return {
+      last: v[L], e20: e20[L], e30: e30[L], e40: e40[L], emaOrder: up(L) ? 1 : dn(L) ? -1 : 0, dense: dense, slope: slope,
+      trendUp: trendUp, trendDn: trendDn, rci: rNow, rciTurnUp: rciTurnUp, rciTurnDn: rciTurnDn, rciLowZone: zoneLow(L), rciHighZone: zoneHigh(L),
+      bullDiv: bull.div, bullHid: bull.hid, bearDiv: bear.div, bearHid: bear.hid, state: state,
+      swingHigh: swingHigh ? { price: swingHigh.p, ago: L - swingHigh.i } : null, swingLow: swingLow ? { price: swingLow.p, ago: L - swingLow.i } : null
+    };
+  }
+  var STATE_TXT = { 5: "ロング側 ◎（トレンド＋RCI反転＋Div）", 4: "ロング側 ○（トレンド＋RCI反転・Div待ち）", 3: "ロング側 △（反転初動）", 2: "押し目ゾーン（反転待ち）", 1: "上昇（押し目待ち）", 0: "見送り／レンジ", "-1": "下降（戻り待ち）", "-2": "戻り売りゾーン（反転待ち）", "-3": "ショート側 △（反転初動）", "-4": "ショート側 ○（トレンド＋RCI反転・Div待ち）", "-5": "ショート側 ◎（トレンド＋RCI反転＋Div）" };
+
+  return {
+    isNum: isNum, floorStep: floorStep, percentile: percentile, rng: rng, yen: yen, jpUnit: jpUnit,
+    PAIRS: PAIRS, pairSpec: pairSpec, pipValuePerLot: pipValuePerLot, marginPerLot: marginPerLot,
+    lotCalc: lotCalc, simpleCompound: simpleCompound, practical: practical, rateSim: rateSim, MAX_WORK: MAX_WORK,
+    stats: stats, groupStats: groupStats, ema: ema, rci: rci, analyzeDaily: analyzeDaily, STATE_TXT: STATE_TXT
+  };
+});
+
+</script>
+<script>
+/*
+ * analysis-config.js — もちぽよ式 分析チェックの判定基準（ここを書き換えると判定と説明が変わります）
+ * ------------------------------------------------------------
+ * ・params … 日足の自動判定に使う数値（添付スキャナー ver.2 の初期値と同じ）
+ * ・criteria … チェック項目。auto が "daily" の項目は ECB 参考レート（日次・終値のみ）から自動判定し、
+ *              下位足（4時間足・1時間足・15分足）は自動判定できないため手動チェックにします。
+ *              auto が "rr" / "event" は入力値や指標予定から、null は手動のみ。
+ *   required … true の項目がすべて「条件成立」になったら「監視条件成立」と表示します。
+ * ・この判定は過去データに基づく状態の表示で、売買の推奨や将来の予測ではありません。
+ */
+window.PORTAL_ANALYSIS = {
+  version: "2026-10-17",
+  params: {
+    rciTh: 70,      // RCI(9) のしきい値（±）
+    rciLook: 3,     // しきい値への到達を何本前まで遡って認めるか
+    pivL: 3,        // ピボット（スイング）左側の本数
+    pivR: 3,        // ピボット右側の本数（確定までの遅れ）
+    divValid: 8,    // ピボット確定後、ダイバージェンスを有効とみなす本数
+    denseTh: 0.06,  // EMA20/30/40 の幅が価格のこの%未満なら「密集」
+    slopeLen: 10,   // EMA40 の傾きを測る本数
+    slopeTh: 0.03,  // EMA40 の傾きのしきい値（価格に対する%）
+    trendLen: 30,   // EMAの並びを数える本数
+    trendMin: 15,   // そのうち何本以上並んでいればトレンドとみなすか
+    minRR: 1.5,     // リスクリワードの最低ライン
+    eventHours: 2   // この時間以内に重要指標・中銀発表があれば「指標リスクあり」
+  },
+  // 下位足の手動チェックに使う時間足
+  manualTfs: [["240", "4時間足"], ["60", "1時間足"], ["15", "15分足"]],
+  criteria: [
+    { id: "htf", label: "上位足（日足）のトレンド方向が、見る方向と同じ", auto: "daily", required: true,
+      how: "EMA40の傾きが価格の±0.03%を超え、かつ直近30本のうち15本以上でEMA20/30/40が同じ向きに並んでいること（EMAが密集していればトレンドなし）。押し目でEMA20が一時的に沈んでもトレンドとみなします。" },
+    { id: "ema", label: "EMA20・30・40の並びが見る方向にそろっている（日足）", auto: "daily", required: false,
+      how: "買い：EMA20＞EMA30＞EMA40、売り：その逆。押し目・戻りの途中では崩れることがあるため必須にはしていません。" },
+    { id: "pos", label: "価格がEMA40の見る方向側にある（日足）", auto: "daily", required: false,
+      how: "買い：終値がEMA40より上、売り：下。大きく割り込んでいる場合は調整が深い可能性があります。" },
+    { id: "wave", label: "いまは推進波ではなく調整波（押し目・戻り）の中にいる", auto: null, required: true, tfs: true,
+      how: "波形の分類（推進波・調整波・レンジ）は自動判定していません。チャートを見て手動でチェックしてください。" },
+    { id: "rci", label: "RCI(9)が±70付近から反転した", auto: "daily", required: true, tfs: true,
+      how: "買い：直近3本以内にRCIが−70以下に到達し、その後上向いた。売り：+70以上から下向いた（日足は自動、下位足は手動）。" },
+    { id: "div", label: "MACD(6,13,4)の通常ダイバージェンスがある", auto: "daily", required: false, tfs: true,
+      how: "買い：安値が切り下がる一方でMACDが切り上がる。売り：その逆。ピボットは左右3本で確定（確定まで3本遅れ）、確定後8本以内を有効。日足の自動判定は終値のみで行うため、高値・安値を使うTradingView上の表示と一致しないことがあります。" },
+    { id: "hid", label: "MACDのヒドゥンダイバージェンスがある", auto: "daily", required: false, tfs: true,
+      how: "買い：安値が切り上がる一方でMACDが切り下がる（押し目買い型）。売り：その逆。通常ダイバージェンスかヒドゥンのどちらかがあれば、スキャナーの◎の条件になります。" },
+    { id: "swing", label: "重要な高値・安値を抜けていない（押し目買いなら直近の安値を割っていない）", auto: null, required: true, tfs: true,
+      how: "日足の直近スイング高値・安値（終値）は参考に表示します。判断は手動でチェックしてください。" },
+    { id: "rr", label: "リスクリワードが基準以上（損切りまでと利確までの比）", auto: "rr", required: true,
+      how: "エントリー・損切り・利確を入力すると計算します。基準は params.minRR（初期値 1.5）。未入力なら「データ待ち」です。" },
+    { id: "event", label: "近くに重要指標・中央銀行の発表がない", auto: "event", required: true,
+      how: "登録している主要指標（重要度3）と中央銀行の発表が、この先 params.eventHours 時間以内（初期値 2時間）に、その銘柄の通貨（金は米ドル）で予定されていないこと。" }
+  ]
+};
+
+</script>
+<script>
+/*
+ * tools.js — 資金管理（ロット計算）・複利シミュレーター・分析チェック・トレード記録の画面
+ * 計算は assets/fxcalc.js（window.FxCalc）、判定基準は assets/analysis-config.js（window.PORTAL_ANALYSIS）。
+ * 入力した資金・記録は、このブラウザの中（localStorage）にだけ保存し、外部には送りません。
+ */
+(function () {
+  "use strict";
+  var F = window.FxCalc;
+  var CTX = {}; // app.js から受け取る（共通データと小道具）
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(s) { return String(s === undefined || s === null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  var LS = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+  // 全角数字・カンマ入りも数値として読む。空欄は null
+  function num(v) {
+    if (v === undefined || v === null) return null;
+    var s = String(v).replace(/[０-９．－]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).replace(/[,，\s円]/g, "");
+    if (s === "") return null;
+    var x = Number(s);
+    return isFinite(x) ? x : NaN;
+  }
+  function fmt(v, d) { return F.isNum(v) ? Number(v).toLocaleString("ja-JP", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }) : "—"; }
+  function yenU(v) { if (!F.isNum(v)) return "—"; var u = F.jpUnit(v); return F.yen(v) + (u ? '<small class="unit">（' + esc(u) + "）</small>" : ""); }
+  function pctS(v, d) { return F.isNum(v) ? (v * 100).toFixed(d === undefined ? 1 : d) + "%" : "—"; }
+  function download(name, text, type) {
+    var blob = text instanceof Blob ? text : new Blob([text], { type: type || "text/plain;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  function csvOf(rows) {
+    return "﻿" + rows.map(function (r) { return r.map(function (c) { var s = String(c === null || c === undefined ? "" : c); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(","); }).join("\r\n");
+  }
+
+  // ============================== 入力欄の部品 ==============================
+  // def: { k, label, unit, help, type:"number"|"select"|"check", options:[[値,表示]], step, wide, show:fn(values) }
+  function fieldHtml(def, val, idp) {
+    var id = idp + "-" + def.k;
+    var help = def.help ? '<span class="fld-help" id="' + id + '-h">' + esc(def.help) + "</span>" : "";
+    var desc = def.help ? ' aria-describedby="' + id + '-h"' : "";
+    var inner;
+    if (def.type === "select") {
+      inner = '<select id="' + id + '" data-k="' + def.k + '"' + desc + ">" + def.options.map(function (o) { return '<option value="' + esc(o[0]) + '"' + (String(o[0]) === String(val) ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("") + "</select>";
+    } else if (def.type === "check") {
+      return '<label class="fld fld-check' + (def.wide ? " wide" : "") + '" data-f="' + def.k + '"><input type="checkbox" id="' + id + '" data-k="' + def.k + '"' + (val ? " checked" : "") + desc + "><span>" + esc(def.label) + "</span>" + help + "</label>";
+    } else {
+      inner = '<span class="fld-in"><input id="' + id + '" data-k="' + def.k + '" type="text" inputmode="decimal" autocomplete="off" value="' + esc(val === null || val === undefined ? "" : val) + '"' + desc + ">" + (def.unit ? '<span class="fld-unit">' + esc(def.unit) + "</span>" : "") + "</span>";
+    }
+    return '<label class="fld' + (def.wide ? " wide" : "") + '" data-f="' + def.k + '" for="' + id + '"><span class="fld-label">' + esc(def.label) + "</span>" + inner + help + "</label>";
+  }
+  function renderForm(box, defs, values, idp) {
+    box.innerHTML = defs.map(function (d) {
+      if (d.group) return '<p class="fld-group">' + esc(d.group) + "</p>";
+      return fieldHtml(d, values[d.k], idp);
+    }).join("");
+    applyShow(box, defs);
+  }
+  function readForm(box, defs) {
+    var out = {};
+    defs.forEach(function (d) {
+      if (d.group) return;
+      var el = $('[data-k="' + d.k + '"]', box);
+      if (!el) return;
+      if (d.type === "check") out[d.k] = el.checked;
+      else if (d.type === "select") out[d.k] = el.value;
+      else out[d.k] = num(el.value);
+    });
+    return out;
+  }
+  function applyShow(box, defs) {
+    var v = readForm(box, defs);
+    defs.forEach(function (d) { if (d.show) { var f = $('[data-f="' + d.k + '"]', box); if (f) f.hidden = !d.show(v); } });
+  }
+  function showErrors(box, errs) {
+    box.hidden = !errs.length;
+    box.innerHTML = errs.length ? "<b>入力を確認してください</b><ul>" + errs.map(function (e) { return "<li>" + esc(e) + "</li>"; }).join("") + "</ul>" : "";
+  }
+
+  // ECBの参考レート（日次）で為替の初期値を入れる。リアルタイムではないので日付と出典を必ず表示し、上書きできる
+  function ecbRef(base, quote) {
+    var e = CTX.D && CTX.D.ecb;
+    if (!e || !e.rates || !e.rates.length || !CTX.pairSeries) return null;
+    var s = CTX.pairSeries(e, base, quote);
+    var last = s[s.length - 1];
+    return last ? { v: Math.round(last[1] * 1000) / 1000, date: last[0] } : null;
+  }
+  function refNote(r) { return r ? "初期値はECB参考レート（" + r.date + "・日次。リアルタイムではありません）。取引会社のレートに書き換えてください。" : "参考レートを取得できていないため、手入力してください。"; }
+
+  var PAIR_OPTS = Object.keys(F.PAIRS).map(function (k) { return [k, F.PAIRS[k].label + "（" + k + "）"]; });
+
+  // ============================== 資金管理（ロット計算機） ==============================
+  var RISK_DEFS = [
+    { group: "口座" },
+    { k: "account", label: "口座通貨", type: "select", options: [["JPY", "円"], ["USD", "米ドル"]] },
+    { k: "balance", label: "口座資金", unit: "口座通貨" },
+    { k: "riskPct", label: "許容損失率", unit: "%", help: "1回の取引で失ってもよい資金の割合" },
+    { k: "leverage", label: "レバレッジ", unit: "倍", help: "必要証拠金の計算に使います（利益には掛けません）" },
+    { group: "取引" },
+    { k: "symbol", label: "通貨ペア", type: "select", options: PAIR_OPTS },
+    { k: "entry", label: "エントリー価格" },
+    { k: "stop", label: "損切り価格" },
+    { k: "target", label: "利確価格（任意）" },
+    { k: "spreadPips", label: "スプレッド", unit: "pips" },
+    { k: "feePerLot", label: "手数料（1ロット・往復）", unit: "口座通貨" },
+    { group: "取引会社の仕様" },
+    { k: "unitSize", label: "1ロットの数量", unit: "通貨／オンス", help: "国内FXは1万通貨、海外FXは10万通貨が多い。金は業者ごとに確認" },
+    { k: "lotStep", label: "ロットの刻み幅", unit: "ロット" },
+    { k: "minLot", label: "最小取引数量", unit: "ロット" },
+    { k: "maxLot", label: "ロット上限（0＝なし）", unit: "ロット" },
+    { k: "pipSize", label: "1pipの値幅（金）", help: "金は業者によって0.01や0.1など定義が違います", show: function (v) { return v.symbol === "XAUUSD"; } },
+    { k: "quoteToAccount", label: "換算レート", unit: "", show: function (v) { var s = F.PAIRS[v.symbol]; return s && s.quote !== v.account; } }
+  ];
+  var RISK_DEFAULT = { account: "JPY", balance: 1000000, riskPct: 1, leverage: 25, symbol: "GBPJPY", entry: null, stop: null, target: null, spreadPips: 0, feePerLot: 0, unitSize: 10000, lotStep: 0.01, minLot: 0.01, maxLot: 0, pipSize: 0.01, quoteToAccount: null };
+  function initRisk() {
+    var pane = $("#pane-risk");
+    var saved = LS.get("mp_risk_v1", null) || {};
+    var vals = Object.assign({}, RISK_DEFAULT, saved);
+    var form = $("#riskForm"), errBox = $("#riskErr"), out = $("#riskOut");
+    function convLabel() {
+      var v = readForm(form, RISK_DEFS), s = F.PAIRS[v.symbol];
+      var lab = $('[data-f="quoteToAccount"] .fld-label', form);
+      if (s && lab) lab.textContent = s.quote + "→" + (v.account === "JPY" ? "円" : "ドル") + " の換算レート";
+      var r = s && s.quote === "USD" && v.account === "JPY" ? ecbRef("USD", "JPY") : s && s.quote === "JPY" && v.account === "USD" ? ecbRef("JPY", "USD") : null;
+      $("#riskRateNote").textContent = s && s.quote !== v.account ? refNote(r) : "";
+      return r;
+    }
+    renderForm(form, RISK_DEFS, vals, "rk");
+    if (vals.quoteToAccount === null) { var r0 = convLabel(); if (r0) $('[data-k="quoteToAccount"]', form).value = r0.v; }
+    convLabel();
+    form.addEventListener("change", function () { applyShow(form, RISK_DEFS); var r = convLabel(); var q = $('[data-k="quoteToAccount"]', form); if (q && !q.value && r) q.value = r.v; });
+    function calc() {
+      var v = readForm(form, RISK_DEFS);
+      LS.set("mp_risk_v1", v);
+      var res = F.lotCalc(v);
+      showErrors(errBox, res.ok ? [] : res.errors);
+      if (!res.ok) { out.innerHTML = ""; return; }
+      var cur = v.account === "JPY" ? function (x) { return yenU(x); } : function (x) { return F.isNum(x) ? "$" + fmt(x, 2) : "—"; };
+      var curP = v.account === "JPY" ? function (x) { return F.yen(x); } : function (x) { return F.isNum(x) ? "$" + fmt(x, 2) : "—"; };
+      var dg = res.spec.quote === "JPY" ? 1 : 1;
+      out.innerHTML = '<div class="res-cards">' +
+        card("参考ロット数（指定リスクから逆算）", '<b class="big">' + fmt(res.lots, 2) + "</b> ロット", fmt(res.units) + (v.symbol === "XAUUSD" ? " オンス" : " 通貨") + "・" + res.side + (res.tradable ? "" : "・取引できません")) +
+        card("最大想定損失", cur(res.maxLoss), "許容額 " + curP(res.riskAmount) + "（スプレッド・手数料込み）") +
+        card("想定利益", res.profit === null ? "—" : cur(res.profit), res.profit === null ? "利確価格が未入力" : "スプレッド・手数料を差し引いた額") +
+        card("損切り幅／利確幅", fmt(res.stopPips, dg) + " pips ／ " + (res.tpPips === null ? "—" : fmt(res.tpPips, dg) + " pips"), "1ロット・1pipの価値 " + curP(res.pipValue)) +
+        card("リスクリワード", res.rr === null ? "—" : "1 : " + res.rr.toFixed(2), res.rrNet === null ? "" : "コスト込みでは 1 : " + res.rrNet.toFixed(2)) +
+        card("必要証拠金の概算", res.margin === null ? "—" : cur(res.margin), "エントリー価格・レバレッジ" + fmt(v.leverage) + "倍で計算。業者の計算方法で変わります") +
+        "</div>" + (res.notes.length ? '<ul class="res-notes">' + res.notes.map(function (n) { return "<li>" + esc(n) + "</li>"; }).join("") + "</ul>" : "") +
+        '<p class="fine">ロット数は、入力した損切り幅と許容損失率から逆算した参考値で、推奨ではありません。実際の約定価格・スリッページ・業者の仕様により損益は変わります。</p>';
+    }
+    $("#riskCalc").addEventListener("click", calc);
+    $("#riskReset").addEventListener("click", function () { LS.set("mp_risk_v1", null); renderForm(form, RISK_DEFS, RISK_DEFAULT, "rk"); convLabel(); out.innerHTML = ""; showErrors(errBox, []); });
+    form.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); calc(); } });
+  }
+  function card(label, value, sub) { return '<div class="res-card"><span class="res-label">' + esc(label) + '</span><span class="res-value">' + value + "</span>" + (sub ? '<span class="res-sub">' + esc(sub) + "</span>" : "") + "</div>"; }
+
+  // ============================== 複利シミュレーター ==============================
+  var PERIOD_UNITS = { simple: [["day", "日（取引日）"], ["month", "か月"], ["year", "年"]], other: [["month", "か月"], ["year", "年"]] };
+  var SIM_DEFS = {
+    simple: [
+      { group: "資金と通貨ペア" },
+      { k: "capital", label: "初期資金", unit: "円" },
+      { k: "symbol", label: "通貨ペア", type: "select", options: PAIR_OPTS },
+      { k: "price", label: "レート（証拠金の計算用）", help: "証拠金と持てるロット数の計算に使います" },
+      { k: "quoteToAccount", label: "ドル円レート（円換算用）", show: function (v) { var s = F.PAIRS[v.symbol]; return s && s.quote !== "JPY"; } },
+      { k: "leverage", label: "レバレッジ", unit: "倍", help: "持てるロットの上限（証拠金の制約）にだけ使い、利益率には掛けません" },
+      { group: "取引の条件" },
+      { k: "pipsPerDay", label: "1日の獲得pips（合計）", unit: "pips" },
+      { k: "tradesPerDay", label: "1日のトレード回数", unit: "回", help: "スプレッド・手数料を回数分差し引きます" },
+      { k: "daysPerMonth", label: "月間トレード日数", unit: "日" },
+      { k: "period", label: "運用期間" },
+      { k: "periodUnit", label: "期間の単位", type: "select", options: PERIOD_UNITS.simple },
+      { k: "spreadPips", label: "スプレッド（1回）", unit: "pips" },
+      { k: "feePerLot", label: "手数料（1ロット・1回）", unit: "円" },
+      { group: "ロットの仕様" },
+      { k: "unitSize", label: "取引通貨単位（1ロット）", type: "select", options: [["1000", "1,000通貨"], ["10000", "10,000通貨"], ["100000", "100,000通貨"], ["100", "100オンス（金）"], ["1", "1オンス（金）"]] },
+      { k: "lotStep", label: "ロットの刻み幅", unit: "ロット" },
+      { k: "minLot", label: "最小取引数量", unit: "ロット" },
+      { k: "lotCap", label: "ロット上限（0＝上限なし）", unit: "ロット", help: "0でも証拠金・レバレッジの制約は必ずかかります" },
+      { k: "pipSize", label: "1pipの値幅（金）", show: function (v) { return v.symbol === "XAUUSD"; } },
+      { group: "目標と入出金" },
+      { k: "target", label: "目標資金（0＝なし）", unit: "円" },
+      { k: "monthlyDeposit", label: "毎月の追加入金", unit: "円", help: "2か月目以降の各月初日、その日の取引前に反映" },
+      { k: "monthlyWithdraw", label: "毎月の出金", unit: "円" }
+    ],
+    practical: [
+      { group: "資金とリスク" },
+      { k: "capital", label: "初期資金", unit: "円" },
+      { k: "riskPct", label: "1トレードの許容損失率", unit: "%", help: "その時点の資金に対する割合（1R）" },
+      { k: "winRate", label: "勝率", unit: "%" },
+      { k: "rr", label: "平均リスクリワード", unit: "倍", help: "勝ちトレードの利益が1Rの何倍か" },
+      { k: "costR", label: "取引コスト（1回・Rに対する%）", unit: "%", help: "スプレッド・手数料を1Rに対する割合で。勝ち負けに関係なく1回1度だけ差し引きます" },
+      { group: "期間" },
+      { k: "tradesPerMonth", label: "1か月のトレード回数", unit: "回" },
+      { k: "period", label: "運用期間" },
+      { k: "periodUnit", label: "期間の単位", type: "select", options: PERIOD_UNITS.other },
+      { group: "目標・下限・入出金" },
+      { k: "target", label: "目標金額（0＝なし）", unit: "円" },
+      { k: "maxDD", label: "最大許容ドローダウン", unit: "%", help: "到達した試行の割合を集計します" },
+      { k: "floor", label: "資金の下限（ここ以下で取引停止）", unit: "円", help: "0なら資金が尽きるまで。下回った時点でその試行は以後取引しません" },
+      { k: "monthlyDeposit", label: "毎月の追加入金", unit: "円", help: "2か月目以降の各月初日に反映" },
+      { k: "monthlyWithdraw", label: "毎月の出金", unit: "円" },
+      { group: "ロットの制約（任意）" },
+      { k: "useLot", label: "ロット数の制約を反映する", type: "check", wide: true, help: "最大ロット・最小数量で、1Rどおりに取引できない場合を再現します" },
+      { k: "stopPips", label: "平均の損切り幅", unit: "pips", show: function (v) { return v.useLot; } },
+      { k: "pipValue", label: "1ロット・1pipの価値", unit: "円", help: "例：ポンド円1万通貨＝100円", show: function (v) { return v.useLot; } },
+      { k: "lotStep", label: "ロットの刻み幅", unit: "ロット", show: function (v) { return v.useLot; } },
+      { k: "minLot", label: "最小取引数量", unit: "ロット", show: function (v) { return v.useLot; } },
+      { k: "maxLot", label: "最大ロット（0＝なし）", unit: "ロット", show: function (v) { return v.useLot; } },
+      { group: "モンテカルロ" },
+      { k: "runs", label: "試行回数", unit: "回", help: "上限10,000回（取引回数との積は500万回まで）" },
+      { k: "seed", label: "乱数シード", help: "同じ数字なら同じ結果になります" }
+    ],
+    rate: [
+      { k: "capital", label: "初期資金", unit: "円" },
+      { k: "basis", label: "利回りの種類", type: "select", options: [["month", "月利"], ["year", "年利"]] },
+      { k: "rate", label: "利回り", unit: "%" },
+      { k: "period", label: "運用期間" },
+      { k: "periodUnit", label: "期間の単位", type: "select", options: PERIOD_UNITS.other },
+      { k: "monthlyDeposit", label: "毎月の積立額", unit: "円", help: "毎月、利息を付けたあと月末に反映（初月から）" },
+      { k: "monthlyWithdraw", label: "毎月の出金額", unit: "円" },
+      { k: "target", label: "目標資金（0＝なし）", unit: "円" }
+    ]
+  };
+  var SIM_DEFAULT = {
+    simple: { capital: 1000000, symbol: "GBPJPY", price: null, quoteToAccount: null, leverage: 25, pipsPerDay: 10, tradesPerDay: 1, daysPerMonth: 20, period: 12, periodUnit: "month", spreadPips: 0, feePerLot: 0, unitSize: "10000", lotStep: 0.01, minLot: 0.01, lotCap: 0, pipSize: 0.01, target: 0, monthlyDeposit: 0, monthlyWithdraw: 0 },
+    practical: { capital: 1000000, riskPct: 1, winRate: 50, rr: 2, costR: 5, tradesPerMonth: 20, period: 12, periodUnit: "month", target: 2000000, maxDD: 20, floor: 0, monthlyDeposit: 0, monthlyWithdraw: 0, useLot: false, stopPips: 30, pipValue: 100, lotStep: 0.01, minLot: 0.01, maxLot: 0, runs: 1000, seed: 12345 },
+    rate: { capital: 1000000, basis: "month", rate: 1, period: 12, periodUnit: "month", monthlyDeposit: 0, monthlyWithdraw: 0, target: 0 }
+  };
+  var MODE_JA = { simple: "シンプル複利", practical: "実践的な複利", rate: "月利・年利" };
+  var simState = { mode: "practical", last: null, gran: "month" };
+
+  function toMonths(v, mode) {
+    var p = v.period;
+    if (!F.isNum(p)) return NaN;
+    if (v.periodUnit === "year") return p * 12;
+    if (v.periodUnit === "day") return p / (v.daysPerMonth || 1);
+    return p;
+  }
+  function runSim(mode, v) {
+    if (mode === "simple") {
+      var spec = F.PAIRS[v.symbol];
+      var inp = Object.assign({}, v, { unitSize: Number(v.unitSize), months: toMonths(v, mode), quoteToAccount: spec && spec.quote === "JPY" ? 1 : v.quoteToAccount });
+      if (v.symbol !== "XAUUSD") inp.pipSize = undefined;
+      ["spreadPips", "feePerLot", "monthlyDeposit", "monthlyWithdraw", "lotCap", "target", "minLot"].forEach(function (k) { if (inp[k] === null) inp[k] = 0; });
+      return F.simpleCompound(inp);
+    }
+    if (mode === "practical") {
+      var ip = Object.assign({}, v, { months: Math.round(toMonths(v, mode)), costR: F.isNum(v.costR) ? v.costR / 100 : v.costR });
+      ["monthlyDeposit", "monthlyWithdraw", "target", "floor", "maxLot", "maxDD"].forEach(function (k) { if (ip[k] === null) ip[k] = 0; });
+      return F.practical(ip);
+    }
+    var ir = Object.assign({}, v, { months: Math.round(toMonths(v, mode)) });
+    ["monthlyDeposit", "monthlyWithdraw", "target"].forEach(function (k) { if (ir[k] === null) ir[k] = 0; });
+    return F.rateSim(ir);
+  }
+  // 結果の要約（カード・シナリオ比較・CSVで共通に使う）
+  function summary(mode, v, r) {
+    if (mode === "simple") return [
+      ["最終資金（複利）", r.final, "yen"], ["最終資金（単利）", r.finalSimple, "yen"], ["運用益", r.profit, "yen"],
+      ["入金の合計（初期資金込み）", r.totalDeposit, "yen"], ["出金の合計", r.totalWithdraw, "yen"],
+      ["開始時のロット", r.startLots, "lot"], ["目標到達", r.reachDay ? r.reachDay + "取引日目（約" + Math.ceil(r.reachDay / v.daysPerMonth) + "か月目）" : (v.target > 0 ? "期間内に未到達" : "—"), "text"],
+      ["取引できなかった日数", r.untradableDays, "int"]];
+    if (mode === "practical") return [
+      ["期待値（1回あたり）", r.ev.toFixed(3) + "R（初回の金額で約" + F.yen(r.evYenFirst) + "）", "text"],
+      ["最終資金の中央値", r.median, "yen"], ["最終資金の下位10%", r.p10, "yen"], ["最終資金の上位10%", r.p90, "yen"],
+      ["理論上の平均（複利・制約なし）", r.theoCompound, "yen"], ["単利（固定リスク）の中央値", r.medianSimple, "yen"],
+      ["最大ドローダウンの中央値", pctS(r.ddMedian), "text"], ["最大ドローダウン（悪い方から10%）", pctS(r.ddP90), "text"],
+      ["目標資金への到達率", v.target > 0 ? pctS(r.reachTarget) : "—", "text"], ["指定ドローダウンへの到達率", v.maxDD > 0 ? pctS(r.reachDD) : "—", "text"],
+      ["資金の下限以下で終わる確率", pctS(r.belowFloor), "text"], ["取引停止（下限・最小数量）になった試行", pctS(r.stoppedRate), "text"]];
+    return [
+      ["最終資金（複利）", r.final, "yen"], ["元本の合計", r.principalTotal, "yen"], ["総運用益", r.gain, "yen"],
+      ["最終資金（単利）", r.finalSimple, "yen"], ["月利に換算", (r.monthlyRate * 100).toFixed(4) + "%", "text"],
+      ["目標資金への到達", r.reachMonth ? r.reachMonth + "か月目（" + Math.floor((r.reachMonth - 1) / 12 + 1) + "年目）" : (v.target > 0 ? "期間内に未到達" : "—"), "text"]];
+  }
+  function sumVal(x) { return x[2] === "yen" ? yenU(x[1]) : x[2] === "lot" ? fmt(x[1], 2) + " ロット" : x[2] === "int" ? fmt(x[1]) + " 日" : esc(x[1]); }
+  function sumPlain(x) { return x[2] === "yen" ? (F.isNum(x[1]) ? Math.round(x[1]) : "") : x[1]; }
+
+  function initSim() {
+    var pane = $("#pane-sim"), form = $("#simForm"), errBox = $("#simErr");
+    var store = LS.get("mp_sim_v1", null) || {};
+    simState.mode = store.mode || "practical";
+    function vals(mode) { return Object.assign({}, SIM_DEFAULT[mode], (store.inputs || {})[mode] || {}); }
+    function drawForm() {
+      $$("#simModes [data-mode]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-mode") === simState.mode)); });
+      var v = vals(simState.mode);
+      if (simState.mode === "simple") {
+        var sp = F.PAIRS[v.symbol];
+        if (v.price === null) { var r = sp && sp.base !== "XAU" ? ecbRef(sp.base, sp.quote) : null; v.price = r ? r.v : null; }
+        if (v.quoteToAccount === null) { var u = ecbRef("USD", "JPY"); v.quoteToAccount = u ? u.v : null; }
+      }
+      renderForm(form, SIM_DEFS[simState.mode], v, "sm");
+      $("#simModeNote").innerHTML = simState.mode === "simple"
+        ? "<b>損失を含まない理想化されたシミュレーションです。</b>毎日必ず同じpipsを獲得する前提は現実的ではありません。" + esc(refNote(ecbRef("USD", "JPY"))).replace("初期値", "レートの初期値")
+        : simState.mode === "practical" ? "勝率とリスクリワードから、勝ち負けの順番をランダムに入れ替えて何通りも計算します（モンテカルロ法）。<b>理論上の期待値と、試算の結果（中央値など）は別のものです。</b>"
+          : "利回りが毎月一定と仮定した計算です。毎月の積立・出金は、その月の利息を付けたあと月末に反映します。";
+      $("#simGranDay").hidden = simState.mode !== "simple";
+      if (simState.mode !== "simple" && simState.gran === "day") simState.gran = "month";
+      refreshScen();
+    }
+    function persist(v) { store.mode = simState.mode; store.inputs = store.inputs || {}; store.inputs[simState.mode] = v; LS.set("mp_sim_v1", store); }
+    function calc() {
+      var v = readForm(form, SIM_DEFS[simState.mode]);
+      persist(v);
+      var btn = $("#simCalc"); btn.disabled = true; btn.textContent = "計算中…";
+      setTimeout(function () {
+        var t0 = Date.now(), r;
+        try { r = runSim(simState.mode, v); } catch (e) { r = { ok: false, errors: ["計算できませんでした（" + e.message + "）。入力を見直してください。"] }; }
+        btn.disabled = false; btn.textContent = "計算する";
+        showErrors(errBox, r.ok ? [] : r.errors);
+        if (!r.ok) { $("#simResult").hidden = true; return; }
+        simState.last = { mode: simState.mode, v: v, r: r, ms: Date.now() - t0 };
+        renderResult();
+      }, 20);
+    }
+    $("#simModes").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-mode]"); if (!b) return;
+      persist(readForm(form, SIM_DEFS[simState.mode]));
+      simState.mode = b.getAttribute("data-mode"); store.mode = simState.mode; LS.set("mp_sim_v1", store);
+      $("#simResult").hidden = true; showErrors(errBox, []); drawForm();
+    });
+    form.addEventListener("change", function (e) {
+      applyShow(form, SIM_DEFS[simState.mode]);
+      if (simState.mode === "simple" && e.target.getAttribute("data-k") === "symbol") {
+        var sp = F.PAIRS[e.target.value], pr = $('[data-k="price"]', form);
+        var r = sp && sp.base !== "XAU" ? ecbRef(sp.base, sp.quote) : null;
+        pr.value = r ? r.v : "";
+        var us = $('[data-k="unitSize"]', form);
+        if (sp && sp.base === "XAU" && Number(us.value) >= 1000) us.value = "100";
+        if (sp && sp.base !== "XAU" && Number(us.value) < 1000) us.value = "10000";
+      }
+    });
+    form.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); calc(); } });
+    $("#simCalc").addEventListener("click", calc);
+    $("#simReset").addEventListener("click", function () { if (store.inputs) delete store.inputs[simState.mode]; LS.set("mp_sim_v1", store); showErrors(errBox, []); $("#simResult").hidden = true; drawForm(); });
+    $("#simGran").addEventListener("click", function (e) { var b = e.target.closest("[data-g]"); if (!b) return; simState.gran = b.getAttribute("data-g"); renderTable(); });
+    $("#simCsv").addEventListener("click", exportCsv);
+    $("#simPng").addEventListener("click", function () { exportPng($("#simChart svg"), "mochipoyo_compound_" + simState.mode + "_" + new Date().toISOString().slice(0, 10) + ".png"); });
+    // シナリオ
+    $("#scenSave").addEventListener("click", function () {
+      if (!simState.last) { alert("先に「計算する」を押してください。"); return; }
+      var name = ($("#scenName").value || "").trim() || MODE_JA[simState.last.mode] + " " + new Date().toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" });
+      var list = LS.get("mp_sim_scen_v1", []);
+      list.unshift({ id: Date.now().toString(36), name: name.slice(0, 40), mode: simState.last.mode, inputs: simState.last.v, savedAt: new Date().toISOString() });
+      if (list.length > 30) list.length = 30;
+      if (!LS.set("mp_sim_scen_v1", list)) alert("保存できませんでした（ブラウザの保存領域が使えません）。");
+      $("#scenName").value = ""; refreshScen();
+    });
+    $("#scenList").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-act]"); if (!b) return;
+      var id = b.closest("[data-id]").getAttribute("data-id"), list = LS.get("mp_sim_scen_v1", []);
+      var it = list.filter(function (x) { return x.id === id; })[0]; if (!it) return;
+      if (b.getAttribute("data-act") === "load") {
+        simState.mode = it.mode; store.mode = it.mode; store.inputs = store.inputs || {}; store.inputs[it.mode] = it.inputs; LS.set("mp_sim_v1", store);
+        drawForm(); calc();
+      } else if (b.getAttribute("data-act") === "del") {
+        if (!confirm("「" + it.name + "」を削除しますか？")) return;
+        LS.set("mp_sim_scen_v1", list.filter(function (x) { return x.id !== id; })); refreshScen();
+      }
+    });
+    $("#scenCompare").addEventListener("click", function () {
+      var ids = $$("#scenList input[type=checkbox]:checked").map(function (c) { return c.closest("[data-id]").getAttribute("data-id"); });
+      if (ids.length < 2 || ids.length > 3) { alert("比較するシナリオを2〜3件選んでください。"); return; }
+      var list = LS.get("mp_sim_scen_v1", []).filter(function (x) { return ids.indexOf(x.id) >= 0; });
+      var cols = list.map(function (s) { var r = runSim(s.mode, s.inputs); return { s: s, r: r, sum: r.ok ? summary(s.mode, s.inputs, r) : null }; });
+      var keys = []; cols.forEach(function (c) { (c.sum || []).forEach(function (x) { if (keys.indexOf(x[0]) < 0) keys.push(x[0]); }); });
+      $("#scenCmp").innerHTML = '<div class="tbl-wrap"><table class="tbl cmp-tbl"><thead><tr><th scope="col">項目</th>' + cols.map(function (c) { return '<th scope="col">' + esc(c.s.name) + "<small>" + esc(MODE_JA[c.s.mode]) + "</small></th>"; }).join("") + "</tr></thead><tbody>" +
+        keys.map(function (k) { return '<tr><th scope="row">' + esc(k) + "</th>" + cols.map(function (c) { var x = (c.sum || []).filter(function (y) { return y[0] === k; })[0]; return "<td>" + (x ? sumVal(x) : (c.r.ok ? "—" : "計算不可")) + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>" +
+        '<p class="fine">実践モードは、保存した乱数シードで計算し直しています。</p>';
+    });
+    function refreshScen() {
+      var list = LS.get("mp_sim_scen_v1", []);
+      $("#scenList").innerHTML = list.length ? list.map(function (s) {
+        return '<li data-id="' + esc(s.id) + '"><label class="scen-pick"><input type="checkbox" aria-label="比較に入れる"><span><b>' + esc(s.name) + "</b><small>" + esc(MODE_JA[s.mode]) + "・" + esc(new Date(s.savedAt).toLocaleString("ja-JP")) + "</small></span></label>" +
+          '<span class="scen-act"><button type="button" class="btn btn-sm" data-act="load">読み込む</button><button type="button" class="btn btn-sm" data-act="del" aria-label="削除">削除</button></span></li>';
+      }).join("") : '<li class="empty">保存したシナリオはまだありません。</li>';
+    }
+    drawForm();
+  }
+
+  function renderResult() {
+    var L = simState.last, mode = L.mode, r = L.r, v = L.v;
+    $("#simResult").hidden = false;
+    var s = summary(mode, v, r);
+    $("#simCards").innerHTML = s.map(function (x, i) { return '<div class="res-card' + (i === 0 || (mode === "practical" && i === 1) ? " key" : "") + '"><span class="res-label">' + esc(x[0]) + '</span><span class="res-value">' + sumVal(x) + "</span></div>"; }).join("");
+    var extra = "";
+    if (mode === "practical") {
+      var max = Math.max.apply(null, r.ddHist) || 1;
+      extra = '<h3 class="sub-h">最大ドローダウンの分布（' + fmt(r.runs) + "回の試算）</h3><ul class=\"dd-hist\">" + r.ddHist.map(function (c, i) {
+        return '<li><span class="dd-lab">' + i * 10 + "〜" + (i + 1) * 10 + '%</span><span class="dd-bar"><i style="width:' + (c / max * 100).toFixed(1) + '%"></i></span><span class="dd-n">' + pctS(c / r.runs) + "</span></li>";
+      }).join("") + "</ul>" +
+        '<p class="fine">期待値は「勝率×RR −（1−勝率）− コスト」です。理論上の平均は入出金・下限・ロット制約がない場合の計算値で、試算の中央値は通常それより小さくなります（大きく増える一部の試行が平均を押し上げるため）。資金の下限＝' + esc(F.yen(v.floor || 0)) + "以下になった試行は、その時点で以後の取引を止めています。ドローダウンは入出金を含む資金の最高値からの下落率です。計算時間 " + L.ms + "ミリ秒。</p>";
+    } else if (mode === "simple") {
+      extra = '<p class="fine">1ロット・1日あたりの損益 ' + esc(F.yen(r.dayPLPerLot)) + "（スプレッド・手数料込み）、1ロットの必要証拠金 " + esc(F.yen(r.marginPerLot)) + "。ロットは毎日「資金÷1ロットの必要証拠金」を刻み幅で切り捨てて決めています（ロット上限があればそこまで）。単利は初日のロット数を最後まで使う計算です。</p>";
+    } else {
+      extra = r.shortfall ? '<p class="warn-note">出金が資金を上回った月があり、資金を0円で止めています。</p>' : "";
+    }
+    $("#simExtra").innerHTML = extra + '<p class="fine"><b>この試算は将来の利益を保証するものではありません。</b>実際の取引では、約定のずれ・スプレッドの拡大・税金・業者の仕様などで結果が変わります。</p>';
+    drawSimChart();
+    renderTable();
+  }
+
+  // 月ごとの点（グラフ・表で共通）
+  function monthlySeries() {
+    var L = simState.last, r = L.r, out = [];
+    if (L.mode === "simple") {
+      var byM = {}; r.rows.forEach(function (x) { byM[x.month] = x; });
+      out.push({ m: 0, eq: L.v.capital, simple: L.v.capital });
+      Object.keys(byM).forEach(function (k) { out.push({ m: Number(k), eq: byM[k].equity, simple: byM[k].simple }); });
+    } else if (L.mode === "practical") {
+      r.band.forEach(function (b, i) { out.push({ m: i, eq: b.p50, lo: b.p10, hi: b.p90, simple: r.bandSimple[i] }); });
+    } else {
+      out.push({ m: 0, eq: L.v.capital, simple: L.v.capital });
+      r.rows.forEach(function (x) { out.push({ m: x.month, eq: x.equity, simple: x.simple }); });
+    }
+    return out;
+  }
+  function drawSimChart() {
+    var L = simState.last, pts = monthlySeries(), box = $("#simChart");
+    var names = L.mode === "practical" ? ["資金の中央値（複利）", "下位10%〜上位10%", "単利（固定リスク）の中央値"] : ["複利", "", "単利"];
+    lineChart(box, {
+      x: pts.map(function (p) { return p.m; }), xLabel: function (m) { return m === 0 ? "開始" : m + "か月"; },
+      main: pts.map(function (p) { return p.eq; }), lo: L.mode === "practical" ? pts.map(function (p) { return p.lo; }) : null, hi: L.mode === "practical" ? pts.map(function (p) { return p.hi; }) : null,
+      alt: pts.map(function (p) { return p.simple; }), target: L.v.target > 0 ? L.v.target : null, names: names
+    });
+  }
+  function rowsFor(gran) {
+    var L = simState.last, r = L.r;
+    if (L.mode === "simple" && gran === "day") return { head: ["取引日", "月", "ロット", "その日の損益", "資金（複利）", "資金（単利）"], rows: r.rows.map(function (x) { return [x.day, x.month, x.lots, Math.round(x.pl), Math.round(x.equity), Math.round(x.simple)]; }) };
+    var pts = monthlySeries();
+    if (gran === "year") pts = pts.filter(function (p) { return p.m % 12 === 0 || p.m === pts[pts.length - 1].m; });
+    if (L.mode === "practical") return { head: ["経過", "中央値", "下位10%", "上位10%", "単利の中央値"], rows: pts.map(function (p) { return [p.m === 0 ? "開始" : p.m + "か月", Math.round(p.eq), Math.round(p.lo), Math.round(p.hi), Math.round(p.simple)]; }) };
+    return { head: ["経過", "資金（複利）", "資金（単利）"], rows: pts.map(function (p) { return [p.m === 0 ? "開始" : p.m + "か月", Math.round(p.eq), Math.round(p.simple)]; }) };
+  }
+  function renderTable() {
+    $$("#simGran [data-g]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-g") === simState.gran)); });
+    var t = rowsFor(simState.gran), max = 400;
+    $("#simTable").innerHTML = '<div class="tbl-wrap tbl-scroll"><table class="tbl num-tbl"><thead><tr>' + t.head.map(function (h) { return '<th scope="col">' + esc(h) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      t.rows.slice(0, max).map(function (r) { return "<tr>" + r.map(function (c, i) { return i === 0 ? '<th scope="row">' + esc(c) + "</th>" : "<td>" + (typeof c === "number" ? fmt(c, Number.isInteger(c) ? 0 : 2) : esc(c)) + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>" +
+      (t.rows.length > max ? '<p class="fine">表示は先頭' + max + "行までです。すべての行はCSVで出力できます。</p>" : "");
+  }
+  function exportCsv() {
+    if (!simState.last) return;
+    var L = simState.last, t = rowsFor(L.mode === "simple" ? "day" : "month");
+    var meta = [["もちぽよ マーケットポータル 複利シミュレーション", MODE_JA[L.mode]], ["出力日時", new Date().toLocaleString("ja-JP")], ["注意", "将来の利益を保証するものではありません"], []];
+    Object.keys(L.v).forEach(function (k) { meta.push(["入力:" + k, L.v[k]]); });
+    meta.push([]);
+    summary(L.mode, L.v, L.r).forEach(function (x) { meta.push([x[0], sumPlain(x)]); });
+    meta.push([]);
+    download("mochipoyo_compound_" + L.mode + "_" + new Date().toISOString().slice(0, 10) + ".csv", csvOf(meta.concat([t.head], t.rows)), "text/csv;charset=utf-8");
+  }
+
+  // ============================== グラフ（SVG・ツールチップ・PNG保存） ==============================
+  function cssVar(name, fb) { var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim(); return v || fb; }
+  function lineChart(box, o) {
+    // 画面幅に合わせて描く（スマホで文字が小さくなりすぎないように）
+    var W = Math.round(Math.max(320, Math.min(760, box.clientWidth || 760))), H = W < 520 ? 260 : 320, pl = W < 520 ? 58 : 78, pr = 12, pt = 18, pb = 30;
+    var vals = o.main.concat(o.alt || [], o.lo || [], o.hi || [], o.target ? [o.target] : []).filter(F.isNum);
+    var lo = Math.min.apply(null, vals.concat([0])), hi = Math.max.apply(null, vals);
+    if (!(hi > lo)) hi = lo + 1;
+    var n = o.x.length, xmax = o.x[n - 1] || 1;
+    var X = function (i) { return pl + (o.x[i] / xmax) * (W - pl - pr); };
+    var Y = function (v) { return pt + (1 - (v - lo) / (hi - lo)) * (H - pt - pb); };
+    var c1 = cssVar("--series-1", "#3987e5"), c2 = cssVar("--series-2", "#d95926"), grid = cssVar("--grid", "#dfe4ee"), ink = cssVar("--ink-3", "#5f6a84"), bg = cssVar("--surface", "#fff"), tgt = cssVar("--wave", "#e3a008");
+    var path = function (arr) { var d = ""; arr.forEach(function (v, i) { if (F.isNum(v)) d += (d ? "L" : "M") + X(i).toFixed(1) + "," + Y(v).toFixed(1); }); return d; };
+    var ticks = 5, g = "";
+    for (var t = 0; t <= ticks; t++) {
+      var tv = lo + (hi - lo) * t / ticks, y = Y(tv);
+      g += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + y.toFixed(1) + '" y2="' + y.toFixed(1) + '" stroke="' + grid + '" stroke-width="1"/>' +
+        '<text x="' + (pl - 8) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="' + ink + '">' + esc(shortYen(tv)) + "</text>";
+    }
+    var xt = ""; var step = Math.max(1, Math.ceil(n / (W < 520 ? 5 : 8)));
+    for (var i = 0; i < n; i += step) {
+      if (i !== n - 1 && n - 1 - i < step * 0.6) continue; // 最後のラベルと重ならないように
+      xt += '<text x="' + X(i).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="' + (i === 0 ? "start" : "middle") + '" font-size="11" fill="' + ink + '">' + esc(o.xLabel(o.x[i])) + "</text>";
+    }
+    if ((n - 1) % step !== 0 || n === 1) xt += '<text x="' + X(n - 1).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="end" font-size="11" fill="' + ink + '">' + esc(o.xLabel(o.x[n - 1])) + "</text>";
+    else xt = xt.replace(/text-anchor="middle"([^<]*<\/text>)$/, 'text-anchor="end"$1');
+    var band = "";
+    if (o.lo && o.hi) {
+      var up = "", dn = "";
+      o.hi.forEach(function (v, k) { up += (up ? "L" : "M") + X(k).toFixed(1) + "," + Y(v).toFixed(1); });
+      for (var k2 = n - 1; k2 >= 0; k2--) dn += "L" + X(k2).toFixed(1) + "," + Y(o.lo[k2]).toFixed(1);
+      band = '<path d="' + up + dn + 'Z" fill="' + c1 + '" fill-opacity="0.16" stroke="none"/>';
+    }
+    var tl = o.target ? '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + Y(o.target).toFixed(1) + '" y2="' + Y(o.target).toFixed(1) + '" stroke="' + tgt + '" stroke-width="1.5" stroke-dasharray="2 4"/><text x="' + (W - pr - 4) + '" y="' + (Y(o.target) - 6).toFixed(1) + '" text-anchor="end" font-size="11" fill="' + tgt + '">目標 ' + esc(shortYen(o.target)) + "</text>" : "";
+    var svg = '<svg viewBox="0 0 ' + W + " " + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="資金推移のグラフ" xmlns="http://www.w3.org/2000/svg" font-family="BIZ UDPGothic, sans-serif"><rect width="' + W + '" height="' + H + '" fill="' + bg + '"/>' + g + xt + band +
+      (o.alt ? '<path d="' + path(o.alt) + '" fill="none" stroke="' + c2 + '" stroke-width="2" stroke-dasharray="6 4"/>' : "") +
+      '<path d="' + path(o.main) + '" fill="none" stroke="' + c1 + '" stroke-width="2.5"/>' + tl +
+      '<line class="hair" x1="0" x2="0" y1="' + pt + '" y2="' + (H - pb) + '" stroke="' + ink + '" stroke-width="1" visibility="hidden"/></svg>';
+    var legend = '<div class="ch-legend"><span><i style="background:' + c1 + '"></i>' + esc(o.names[0]) + "</span>" + (o.lo ? '<span><i class="band" style="background:' + c1 + '"></i>' + esc(o.names[1]) + "</span>" : "") + (o.alt ? '<span><i class="dash" style="border-color:' + c2 + '"></i>' + esc(o.names[2]) + "</span>" : "") + (o.target ? '<span><i class="dot" style="border-color:' + tgt + '"></i>目標資金</span>' : "") + "</div>";
+    box.innerHTML = legend + '<div class="ch-wrap">' + svg + '<div class="ch-tip" hidden></div></div>';
+    var wrap = $(".ch-wrap", box), s = $("svg", box), tip = $(".ch-tip", box), hair = $(".hair", box);
+    function show(ev) {
+      var rect = s.getBoundingClientRect(), x = (ev.clientX - rect.left) / rect.width * W;
+      var best = 0; for (var q = 1; q < n; q++) if (Math.abs(X(q) - x) < Math.abs(X(best) - x)) best = q;
+      hair.setAttribute("x1", X(best)); hair.setAttribute("x2", X(best)); hair.setAttribute("visibility", "visible");
+      tip.hidden = false;
+      tip.innerHTML = "<b>" + esc(o.xLabel(o.x[best])) + "</b><br>" + esc(o.names[0]) + "：" + esc(F.yen(o.main[best])) + (o.lo ? "<br>範囲：" + esc(F.yen(o.lo[best])) + "〜" + esc(F.yen(o.hi[best])) : "") + (o.alt ? "<br>" + esc(o.names[2]) + "：" + esc(F.yen(o.alt[best])) : "");
+      var px = X(best) / W * rect.width;
+      tip.style.left = Math.min(rect.width - 190, Math.max(0, px + 10)) + "px";
+    }
+    wrap.addEventListener("pointermove", show);
+    wrap.addEventListener("pointerdown", show);
+    wrap.addEventListener("pointerleave", function () { tip.hidden = true; hair.setAttribute("visibility", "hidden"); });
+  }
+  function shortYen(v) { var a = Math.abs(v); return (v < 0 ? "−" : "") + (a >= 1e8 ? (a / 1e8).toFixed(a >= 1e9 ? 0 : 1) + "億" : a >= 1e4 ? Math.round(a / 1e4).toLocaleString("ja-JP") + "万" : Math.round(a).toLocaleString("ja-JP")) + "円"; }
+  function exportPng(svg, name) {
+    if (!svg) return;
+    var xml = new XMLSerializer().serializeToString(svg).replace(/visibility="visible"/, 'visibility="hidden"');
+    var img = new Image(), scale = 2;
+    img.onload = function () {
+      var w = Number(svg.getAttribute("width")) || 760, h = Number(svg.getAttribute("height")) || 320;
+      var c = document.createElement("canvas"); c.width = w * scale; c.height = h * scale;
+      var x = c.getContext("2d"); x.scale(scale, scale); x.drawImage(img, 0, 0, w, h);
+      c.toBlob(function (b) { if (b) download(name, b); });
+    };
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(xml);
+  }
+
+
+  // ============================== 分析チェック ==============================
+  var CHK_SYMS = { GBPJPY: ["GBP", "JPY", "ポンド円"], GBPUSD: ["GBP", "USD", "ポンドドル"], USDJPY: ["USD", "JPY", "ドル円"], XAUUSD: [null, "USD", "金（ゴールド）"] };
+  var ST = {
+    ok: ["条件成立", "✓", "ok"], ng: ["条件未成立", "✕", "ng"], na: ["判定不可", "−", "na"], wait: ["データ更新待ち", "…", "wait"], manual: ["手動で確認", "？", "na"]
+  };
+  var chk = { sym: "GBPJPY", dir: "long" };
+  function chkKey() { return chk.sym + "|" + chk.dir + "|" + (CTX.today ? CTX.today() : new Date().toISOString().slice(0, 10)); }
+  function chkStore() { return LS.get("mp_chk_v1", {}); }
+  function dailyAuto() {
+    var pair = CHK_SYMS[chk.sym], e = CTX.D && CTX.D.ecb;
+    if (!pair[0]) return { status: "na", reason: "金はECBの参考レートがないため、日足の自動判定はできません（チャートで手動確認）。" };
+    if (!e || !e.rates || !e.rates.length) return { status: "wait", reason: "為替の参考レート（ECB）の取得待ちです。" };
+    var s = CTX.pairSeries(e, pair[0], pair[1]);
+    var a = F.analyzeDaily(s.map(function (x) { return x[1]; }), (window.PORTAL_ANALYSIS || {}).params);
+    if (!a) return { status: "wait", reason: "判定に必要な本数（80日分）がまだありません。" };
+    a.date = s[s.length - 1][0];
+    return { status: "ok", a: a };
+  }
+  function evalAuto(c, d, rrv) {
+    var L = chk.dir === "long";
+    if (c.auto === "daily") {
+      if (d.status !== "ok") return d.status;
+      var a = d.a;
+      if (c.id === "htf") return (L ? a.trendUp : a.trendDn) ? "ok" : "ng";
+      if (c.id === "ema") return a.emaOrder === (L ? 1 : -1) ? "ok" : "ng";
+      if (c.id === "pos") return (L ? a.last > a.e40 : a.last < a.e40) ? "ok" : "ng";
+      if (c.id === "rci") return (L ? a.rciTurnUp : a.rciTurnDn) ? "ok" : "ng";
+      if (c.id === "div") return (L ? a.bullDiv : a.bearDiv) ? "ok" : "ng";
+      if (c.id === "hid") return (L ? a.bullHid : a.bearHid) ? "ok" : "ng";
+    }
+    if (c.auto === "rr") return rrv === null ? "wait" : rrv.bad ? "ng" : rrv.rr >= ((window.PORTAL_ANALYSIS || {}).params.minRR || 1.5) ? "ok" : "ng";
+    if (c.auto === "event") return eventRisk().status;
+    return "manual";
+  }
+  function eventRisk() {
+    if (!CTX.collectEvents || !CTX.D || !CTX.D.ind) return { status: "wait", list: [] };
+    var hrs = (window.PORTAL_ANALYSIS || {}).params.eventHours || 2, now = Date.now();
+    var ccy = CHK_SYMS[chk.sym].filter(function (x, i) { return i < 2 && x; });
+    var ctry = { USD: ["米", "FRB"], JPY: ["日", "日銀"], GBP: ["英", "BOE"] };
+    var hit = CTX.collectEvents(now, now + hrs * 3600000).filter(function (e) {
+      return ccy.some(function (c) { var t = ctry[c]; return t && ((e.kind === "ind" && e.it.importance >= 3 && e.it.country === t[0]) || (e.kind === "cb" && e.short === t[1])); });
+    });
+    return { status: hit.length ? "ng" : "ok", list: hit };
+  }
+  function rrValue() {
+    var v = readForm($("#chkRR"), CHK_RR_DEFS);
+    if (!(v.entry > 0 && v.stop > 0 && v.target > 0)) return null;
+    var L = chk.dir === "long";
+    var risk = L ? v.entry - v.stop : v.stop - v.entry, reward = L ? v.target - v.entry : v.entry - v.target;
+    if (!(risk > 0 && reward > 0)) return { bad: true, rr: null };
+    return { rr: reward / risk };
+  }
+  var CHK_RR_DEFS = [{ k: "entry", label: "エントリー予定価格" }, { k: "stop", label: "損切り予定価格" }, { k: "target", label: "利確予定価格" }];
+  function initCheck() {
+    var cfg = window.PORTAL_ANALYSIS;
+    if (!cfg) { $("#chkList").innerHTML = '<li class="empty">判定基準の設定ファイル（analysis-config.js）を読み込めませんでした。</li>'; return; }
+    var saved = LS.get("mp_chk_sel_v1", null); if (saved) { chk.sym = saved.sym; chk.dir = saved.dir; }
+    renderForm($("#chkRR"), CHK_RR_DEFS, LS.get("mp_chk_rr_v1", {}), "ck");
+    $("#chkHow").innerHTML = '<dl class="how-list">' + cfg.criteria.map(function (c) { return "<dt>" + esc(c.label) + (c.required ? '<span class="req">必須</span>' : "") + "</dt><dd>" + esc(c.how) + (c.tfs ? "（日足の自動判定か、下位足のどれかに手動チェックが入っていれば成立）" : "") + "</dd>"; }).join("") + "</dl><p class=\"fine\">設定の版：" + esc(cfg.version) + "</p>";
+    $("#pane-check").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-csym]"); if (b) { chk.sym = b.getAttribute("data-csym"); saveSel(); renderCheck(); return; }
+      var d = e.target.closest("[data-cdir]"); if (d) { chk.dir = d.getAttribute("data-cdir"); saveSel(); renderCheck(); return; }
+      var g = e.target.closest("[data-go]"); if (g) { e.preventDefault(); prefillJournal(); CTX.go && CTX.go(g.getAttribute("data-go")); }
+    });
+    $("#chkList").addEventListener("change", function (e) {
+      var cb = e.target.closest("input[data-man]"); if (!cb) return;
+      var all = chkStore(), k = chkKey(), id = cb.getAttribute("data-man"), tf = cb.getAttribute("data-tf");
+      all[k] = all[k] || {}; all[k][id] = all[k][id] || {}; all[k][id][tf] = cb.checked;
+      // 古い日付のチェックは60日で整理
+      Object.keys(all).forEach(function (x) { var d = x.split("|")[2]; if (d && Date.parse(d) < Date.now() - 60 * 86400000) delete all[x]; });
+      LS.set("mp_chk_v1", all); renderCheck();
+    });
+    $("#chkRR").addEventListener("input", function () { LS.set("mp_chk_rr_v1", readForm($("#chkRR"), CHK_RR_DEFS)); renderCheck(); });
+    $("#chkClear").addEventListener("click", function () { var all = chkStore(); delete all[chkKey()]; LS.set("mp_chk_v1", all); renderCheck(); });
+    renderCheck();
+  }
+  function saveSel() { LS.set("mp_chk_sel_v1", { sym: chk.sym, dir: chk.dir }); }
+  // ほかの画面（ホームの4銘柄カードなど）からも使う：必須条件のうちいくつ成立しているか
+  function checkSummary(sym, dir) {
+    var keep = { sym: chk.sym, dir: chk.dir };
+    chk.sym = sym; chk.dir = dir;
+    var cfg = window.PORTAL_ANALYSIS, d = dailyAuto(), man = chkStore()[chkKey()] || {}, rrv = null;
+    try { rrv = $("#chkRR") && $("#chkRR").children.length ? rrValue() : null; } catch (e) { rrv = null; }
+    var req = 0, ok = 0;
+    cfg.criteria.forEach(function (c) { if (!c.required) return; req++; if (critStatus(c, d, man, rrv) === "ok") ok++; });
+    chk.sym = keep.sym; chk.dir = keep.dir;
+    return { ok: ok, req: req, daily: d };
+  }
+  function critStatus(c, d, man, rrv) {
+    var st = evalAuto(c, d, rrv), m = man[c.id] || {};
+    var anyMan = Object.keys(m).some(function (k) { return m[k]; });
+    if ((c.tfs || st === "na") && anyMan) return "ok";
+    if (st === "manual") return anyMan ? "ok" : "manual";
+    if (c.tfs && st !== "ok") return st === "na" || st === "wait" ? st : "ng";
+    return st;
+  }
+  function renderCheck() {
+    var cfg = window.PORTAL_ANALYSIS;
+    $("#chkSym").innerHTML = Object.keys(CHK_SYMS).map(function (k) { return '<button type="button" class="sym-btn" data-csym="' + k + '" aria-pressed="' + (k === chk.sym) + '"><b>' + esc(CHK_SYMS[k][2]) + "</b><span>" + k + "</span></button>"; }).join("");
+    $("#chkDir").innerHTML = [["long", "買い目線（押し目買い）"], ["short", "売り目線（戻り売り）"]].map(function (x) { return '<button type="button" class="pill" data-cdir="' + x[0] + '" aria-pressed="' + (x[0] === chk.dir) + '">' + x[1] + "</button>"; }).join("");
+    var d = dailyAuto(), man = chkStore()[chkKey()] || {}, rrv = rrValue();
+    $("#chkMeta").textContent = d.status === "ok" ? "日足：" + d.a.date + " のECB参考レートで自動判定" : "";
+    $("#chkLead").innerHTML = d.status === "ok"
+      ? "日足のスキャナー状態：<b>" + esc(F.STATE_TXT[d.a.state]) + "</b>　RCI(9) " + d.a.rci.toFixed(0) + (d.a.swingHigh ? "　直近スイング高値 " + fmt(d.a.swingHigh.price, 3) + "（" + d.a.swingHigh.ago + "本前）" : "") + (d.a.swingLow ? "　直近スイング安値 " + fmt(d.a.swingLow.price, 3) + "（" + d.a.swingLow.ago + "本前）" : "") + "<br>日足はECBの1日1回の参考レート（終値のみ）で計算しています。4時間足・1時間足・15分足は自動判定できないため、チャートを見て手動でチェックしてください。"
+      : esc(d.reason || "");
+    var req = 0, ok = 0, rows = cfg.criteria.map(function (c) {
+      var st = critStatus(c, d, man, rrv), info = ST[st], m = man[c.id] || {};
+      if (c.required) { req++; if (st === "ok") ok++; }
+      var auto = c.auto === "daily" ? evalAuto(c, d, rrv) : null;
+      var tfs = (c.tfs || c.auto === null) ? (c.auto === null && !c.tfs ? [["D", "確認した"]] : (c.auto === null ? [["D", "日足"]] : []).concat(cfg.manualTfs)) : [];
+      // 日足を自動判定できない銘柄（金）は、日足も手動でチェックできるようにする
+      if (c.auto === "daily" && d.status === "na") tfs = [["D", "日足（手動）"]].concat(c.tfs ? cfg.manualTfs : []);
+      var extra = "";
+      if (c.auto === "rr") extra = rrv === null ? "エントリー・損切り・利確を下の欄に入れると計算します。" : rrv.bad ? "価格の並びが見る方向と合っていません。" : "リスクリワード 1 : " + rrv.rr.toFixed(2) + "（基準 " + cfg.params.minRR + " 以上）";
+      if (c.auto === "event") { var ev = eventRisk(); extra = ev.status === "wait" ? "指標予定の読み込み待ち" : ev.list.length ? "予定：" + ev.list.map(function (x) { return x.label; }).join("、") : cfg.params.eventHours + "時間以内に該当する予定はありません（登録している主要指標のみ）。"; }
+      return '<li class="chk-item st-' + info[2] + '"><span class="chk-st" aria-label="' + esc(info[0]) + '"><i aria-hidden="true">' + info[1] + "</i>" + esc(info[0]) + '</span><span class="chk-body"><b>' + esc(c.label) + "</b>" + (c.required ? '<span class="req">必須</span>' : "") +
+        (auto ? '<small>日足（自動）：' + esc(ST[auto][0]) + "</small>" : "") + (extra ? "<small>" + esc(extra) + "</small>" : "") +
+        (tfs.length ? '<span class="chk-tfs">' + tfs.map(function (t) { return '<label><input type="checkbox" data-man="' + c.id + '" data-tf="' + t[0] + '"' + (m[t[0]] ? " checked" : "") + ">" + esc(t[1]) + "</label>"; }).join("") + "</span>" : "") + "</span></li>";
+    });
+    $("#chkList").innerHTML = rows.join("");
+    var all = ok === req;
+    $("#chkVerdict").className = "chk-verdict" + (all ? " on" : "");
+    $("#chkVerdict").innerHTML = all ? "<b>監視条件成立</b>（必須条件 " + ok + "/" + req + "）。最終判断は波形・リスクリワード・資金管理を目視で確認してください。" : "<b>監視条件 未成立</b>（必須条件 " + ok + "/" + req + "）";
+  }
+  function prefillJournal() {
+    var v = readForm($("#chkRR"), CHK_RR_DEFS);
+    LS.set("mp_jr_prefill", { symbol: chk.sym, htfDir: chk.dir === "long" ? "上昇" : "下降", type: chk.dir === "long" ? "押し目買い" : "戻り売り", entry: v.entry, stop: v.stop, target: v.target });
+  }
+
+  // ============================== トレード記録・成績 ==============================
+  var JR_TYPES = ["押し目買い", "戻り売り", "レンジ", "トレンド転換", "通常ダイバージェンス", "ヒドゥンダイバージェンス"];
+  var JR_STATUS = [["plan", "計画中"], ["open", "保有中"], ["closed", "決済済み"], ["skip", "見送り"]];
+  var JR_DEFS = [
+    { k: "symbol", label: "銘柄", type: "select", options: [["GBPJPY", "ポンド円"], ["GBPUSD", "ポンドドル"], ["USDJPY", "ドル円"], ["XAUUSD", "金（ゴールド）"], ["OTHER", "その他"]] },
+    { k: "at", label: "日時（日本時間）", type: "datetime" },
+    { k: "htfDir", label: "上位足の方向", type: "select", options: [["上昇", "上昇"], ["下降", "下降"], ["レンジ", "レンジ"], ["不明", "不明"]] },
+    { k: "type", label: "トレードの種類", type: "select", options: JR_TYPES.map(function (t) { return [t, t]; }) },
+    { k: "status", label: "状態", type: "select", options: JR_STATUS },
+    { k: "entryCond", label: "エントリー条件", type: "textarea", wide: true },
+    { k: "entry", label: "エントリー予定価格" }, { k: "stop", label: "損切り予定価格" }, { k: "target", label: "利確予定価格" },
+    { k: "memo", label: "自由メモ", type: "textarea", wide: true },
+    { group: "結果（決済後に記入）" },
+    { k: "exit", label: "決済価格", show: function (v) { return v.status === "closed"; } },
+    { k: "closedAt", label: "決済日時", type: "datetime", show: function (v) { return v.status === "closed"; } },
+    { k: "pnl", label: "損益（円）", help: "マイナスは損失", show: function (v) { return v.status === "closed"; } },
+    { k: "r", label: "損益（R）", help: "空欄なら価格から自動計算", show: function (v) { return v.status === "closed"; } },
+    { k: "review", label: "結果と反省点", type: "textarea", wide: true, show: function (v) { return v.status === "closed"; } }
+  ];
+  var jr = { editId: null, filter: "all" };
+  function jrLoad() { var d = LS.get("mp_journal_v1", null); return d && Array.isArray(d.items) ? d : { schema: 1, items: [] }; }
+  function jrSave(d) { d.schema = 1; d.updated = new Date().toISOString(); return LS.set("mp_journal_v1", d); }
+  function localDT(iso) { if (!iso) return ""; var t = Date.parse(iso); if (!isFinite(t)) return ""; return new Date(t + 9 * 3600000).toISOString().slice(0, 16); }
+  function fromLocalDT(s) { if (!s) return null; var t = Date.parse(s + ":00+09:00"); return isFinite(t) ? new Date(t).toISOString() : null; }
+  function calcR(it) {
+    if (!(it.entry > 0 && it.stop > 0 && it.exit > 0) || it.entry === it.stop) return null;
+    var L = it.entry > it.stop;
+    return L ? (it.exit - it.entry) / (it.entry - it.stop) : (it.entry - it.exit) / (it.stop - it.entry);
+  }
+  function planRR(it) {
+    if (!(it.entry > 0 && it.stop > 0 && it.target > 0) || it.entry === it.stop) return null;
+    var L = it.entry > it.stop, rr = L ? (it.target - it.entry) / (it.entry - it.stop) : (it.entry - it.target) / (it.stop - it.entry);
+    return rr > 0 ? rr : null;
+  }
+  function jrFormHtml(box, vals) {
+    box.innerHTML = JR_DEFS.map(function (d) {
+      if (d.group) return '<p class="fld-group">' + esc(d.group) + "</p>";
+      var id = "jr-" + d.k, v = vals[d.k];
+      if (d.type === "textarea") return '<label class="fld wide" data-f="' + d.k + '" for="' + id + '"><span class="fld-label">' + esc(d.label) + '</span><textarea id="' + id + '" data-k="' + d.k + '" rows="3" maxlength="2000">' + esc(v || "") + "</textarea></label>";
+      if (d.type === "datetime") return '<label class="fld" data-f="' + d.k + '" for="' + id + '"><span class="fld-label">' + esc(d.label) + '</span><span class="fld-in"><input type="datetime-local" id="' + id + '" data-k="' + d.k + '" value="' + esc(localDT(v)) + '"></span></label>';
+      return fieldHtml(d, v, "jr");
+    }).join("");
+    applyShow(box, JR_DEFS);
+  }
+  function jrRead(box) {
+    var o = {};
+    JR_DEFS.forEach(function (d) {
+      if (d.group) return;
+      var el = $('[data-k="' + d.k + '"]', box); if (!el) return;
+      if (d.type === "textarea") o[d.k] = el.value.trim();
+      else if (d.type === "datetime") o[d.k] = fromLocalDT(el.value);
+      else if (d.type === "select") o[d.k] = el.value;
+      else o[d.k] = num(el.value);
+    });
+    return o;
+  }
+  function initJournal() {
+    var form = $("#jrForm");
+    function blank() {
+      var pre = LS.get("mp_jr_prefill", null); LS.set("mp_jr_prefill", null);
+      return Object.assign({ symbol: "GBPJPY", at: new Date().toISOString(), htfDir: "上昇", type: "押し目買い", status: "plan" }, pre || {});
+    }
+    jrFormHtml(form, blank());
+    form.addEventListener("change", function () { applyShow(form, JR_DEFS); });
+    $("#jrSave").addEventListener("click", function () {
+      var v = jrRead(form), e = [];
+      ["entry", "stop", "target", "exit", "pnl", "r"].forEach(function (k) { if (F.isNum(v[k]) === false && v[k] !== null) e.push(k + " の値が数値ではありません。"); });
+      if (!v.at) e.push("日時を入れてください。");
+      if (v.entry > 0 && v.stop > 0 && v.entry === v.stop) e.push("エントリーと損切りが同じ価格です。");
+      showErrors($("#jrErr"), e);
+      if (e.length) return;
+      if (v.status === "closed" && v.r === null) v.r = calcR(v);
+      if (v.status === "closed" && !v.closedAt) v.closedAt = new Date().toISOString();
+      var d = jrLoad();
+      if (jr.editId) { d.items = d.items.map(function (x) { return x.id === jr.editId ? Object.assign({}, x, v, { updatedAt: new Date().toISOString() }) : x; }); }
+      else d.items.unshift(Object.assign({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), createdAt: new Date().toISOString() }, v));
+      if (!jrSave(d)) { showErrors($("#jrErr"), ["保存できませんでした（ブラウザの保存領域が使えない状態です）。"]); return; }
+      jr.editId = null; $("#jrCancel").hidden = true; $("#jrTitle").textContent = "トレードシナリオを記録";
+      jrFormHtml(form, blank()); renderJournal();
+    });
+    $("#jrCancel").addEventListener("click", function () { jr.editId = null; $("#jrCancel").hidden = true; $("#jrTitle").textContent = "トレードシナリオを記録"; jrFormHtml(form, blank()); });
+    $("#jrList").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-act]"); if (!b) return;
+      var id = b.closest("[data-id]").getAttribute("data-id"), d = jrLoad(), it = d.items.filter(function (x) { return x.id === id; })[0];
+      if (!it) return;
+      var act = b.getAttribute("data-act");
+      if (act === "del") { if (!confirm("この記録を削除しますか？（元に戻せません）")) return; d.items = d.items.filter(function (x) { return x.id !== id; }); jrSave(d); renderJournal(); return; }
+      jr.editId = id; $("#jrCancel").hidden = false; $("#jrTitle").textContent = act === "close" ? "結果を記入" : "記録を編集";
+      jrFormHtml(form, act === "close" ? Object.assign({}, it, { status: "closed" }) : it);
+      form.closest(".panel").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    $("#jrFilter").addEventListener("click", function (e) { var b = e.target.closest("[data-flt]"); if (!b) return; jr.filter = b.getAttribute("data-flt"); renderJournal(); });
+    $("#jrExport").addEventListener("click", function () { download("mochipoyo_trade_journal_" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(jrLoad(), null, 2), "application/json"); });
+    $("#jrCsv").addEventListener("click", function () {
+      var head = ["日時", "銘柄", "種類", "上位足", "状態", "エントリー", "損切り", "利確", "予定RR", "決済価格", "損益(円)", "損益(R)", "エントリー条件", "メモ", "反省点"];
+      var rows = jrLoad().items.map(function (x) { return [localDT(x.at).replace("T", " "), x.symbol, x.type, x.htfDir, (JR_STATUS.filter(function (s) { return s[0] === x.status; })[0] || [])[1], x.entry, x.stop, x.target, planRR(x) ? planRR(x).toFixed(2) : "", x.exit, x.pnl, F.isNum(x.r) ? x.r.toFixed(2) : "", x.entryCond, x.memo, x.review]; });
+      download("mochipoyo_trade_journal_" + new Date().toISOString().slice(0, 10) + ".csv", csvOf([head].concat(rows)), "text/csv;charset=utf-8");
+    });
+    $("#jrImport").addEventListener("change", function (e) {
+      var f = e.target.files && e.target.files[0]; if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        try {
+          var inc = JSON.parse(rd.result);
+          if (!inc || !Array.isArray(inc.items)) throw new Error("形式が違います");
+          var d = jrLoad(), ids = {}; d.items.forEach(function (x) { ids[x.id] = 1; });
+          var add = inc.items.filter(function (x) { return x && x.id && !ids[x.id]; });
+          d.items = add.concat(d.items); jrSave(d); renderJournal();
+          alert(add.length + "件を読み込みました（同じ記録は重複させていません）。");
+        } catch (err) { alert("読み込めませんでした：" + err.message); }
+        e.target.value = "";
+      };
+      rd.readAsText(f);
+    });
+    renderJournal();
+  }
+  function renderJournal() {
+    var d = jrLoad(), items = d.items;
+    var counts = { all: items.length }; JR_STATUS.forEach(function (s) { counts[s[0]] = items.filter(function (x) { return x.status === s[0]; }).length; });
+    $("#jrFilter").innerHTML = [["all", "すべて"]].concat(JR_STATUS).map(function (s) { return '<button type="button" class="pill" data-flt="' + s[0] + '" aria-pressed="' + (s[0] === jr.filter) + '">' + s[1] + "（" + (counts[s[0]] || 0) + "）</button>"; }).join("");
+    var list = items.filter(function (x) { return jr.filter === "all" || x.status === jr.filter; });
+    $("#jrList").innerHTML = list.length ? list.slice(0, 200).map(function (x) {
+      var rr = planRR(x), st = (JR_STATUS.filter(function (s) { return s[0] === x.status; })[0] || ["", ""])[1];
+      var res = x.status === "closed" ? '<span class="jr-res ' + ((x.pnl || x.r || 0) > 0 ? "up" : (x.pnl || x.r || 0) < 0 ? "down" : "") + '">' + (F.isNum(x.pnl) ? (x.pnl > 0 ? "+" : "") + F.yen(x.pnl) : "") + (F.isNum(x.r) ? "（" + (x.r > 0 ? "+" : "") + x.r.toFixed(2) + "R）" : "") + "</span>" : "";
+      return '<li data-id="' + esc(x.id) + '"><div class="jr-head"><b>' + esc(x.symbol) + "</b><span class=\"tag\">" + esc(x.type) + '</span><span class="jr-st">' + esc(st) + "</span>" + res + '<time>' + esc(localDT(x.at).replace("T", " ")) + "</time></div>" +
+        '<div class="jr-body">上位足：' + esc(x.htfDir) + "　エントリー " + esc(x.entry || "—") + " ／ 損切り " + esc(x.stop || "—") + " ／ 利確 " + esc(x.target || "—") + (rr ? "　予定RR 1:" + rr.toFixed(2) : "") +
+        (x.entryCond ? "<p>" + esc(x.entryCond) + "</p>" : "") + (x.review ? '<p class="jr-review">反省：' + esc(x.review) + "</p>" : "") + "</div>" +
+        '<div class="jr-act"><button type="button" class="btn btn-sm" data-act="edit">編集</button>' + (x.status !== "closed" ? '<button type="button" class="btn btn-sm" data-act="close">結果を記入</button>' : "") + '<button type="button" class="btn btn-sm" data-act="del">削除</button></div></li>';
+    }).join("") : '<li class="empty">記録はまだありません。上のフォームから追加できます。</li>';
+    renderStats(items.filter(function (x) { return x.status === "closed"; }).map(function (x) { return { symbol: x.symbol, type: x.type, openedAt: x.at, closedAt: x.closedAt || x.at, pnl: x.pnl, r: x.r }; }));
+  }
+  function renderStats(trades) {
+    var s = F.stats(trades);
+    $("#jrStatsMeta").textContent = "決済済み " + s.n + "件";
+    if (!s.n) { $("#jrStats").innerHTML = '<p class="empty">決済済みの記録（損益が入ったもの）がありません。</p>'; return; }
+    var warn = s.enough ? "" : '<p class="warn-note">記録が' + s.n + "件で、30件未満のため統計的に判断できる量ではありません。参考としてご覧ください。</p>";
+    var r2 = function (x) { return F.isNum(x) ? (x > 0 ? "+" : "") + x.toFixed(2) + "R" : "—"; };
+    var cardsH = '<div class="res-cards">' +
+      card("勝率", pctS(s.winRate), s.n + "件中") + card("期待値（1回あたり）", (F.isNum(s.expectancy) ? F.yen(s.expectancy) : "—") + " ／ " + r2(s.expectancyR)) +
+      card("平均利益／平均損失", (F.isNum(s.avgWin) ? F.yen(s.avgWin) : "—") + " ／ " + (F.isNum(s.avgLoss) ? F.yen(s.avgLoss) : "—"), r2(s.avgWinR) + " ／ " + r2(s.avgLossR)) +
+      card("平均RR（実現）", F.isNum(s.avgRR) ? "1 : " + s.avgRR.toFixed(2) : "—") +
+      card("プロフィットファクター", s.profitFactor === Infinity ? "負けなし" : F.isNum(s.profitFactor) ? s.profitFactor.toFixed(2) : "—") +
+      card("最大ドローダウン", F.yen(s.maxDD) + " ／ " + s.maxDDR.toFixed(2) + "R", "決済順の累積損益で計算") +
+      card("合計損益", F.yen(s.total) + " ／ " + r2(s.totalR)) + "</div>";
+    var grp = function (key, title) {
+      var g = F.groupStats(trades, key);
+      return '<h3 class="sub-h">' + esc(title) + '</h3><div class="tbl-wrap"><table class="tbl num-tbl"><thead><tr><th scope="col">' + esc(title.replace("別", "")) + '</th><th scope="col">件数</th><th scope="col">勝率</th><th scope="col">期待値（円）</th><th scope="col">期待値（R）</th><th scope="col">PF</th></tr></thead><tbody>' +
+        g.map(function (x) { return '<tr><th scope="row">' + esc(x.key) + "</th><td>" + x.n + (x.n < 10 ? "<small>（少数）</small>" : "") + "</td><td>" + pctS(x.winRate) + "</td><td>" + (F.isNum(x.expectancy) ? F.yen(x.expectancy) : "—") + "</td><td>" + r2(x.expectancyR) + "</td><td>" + (x.profitFactor === Infinity ? "負けなし" : F.isNum(x.profitFactor) ? x.profitFactor.toFixed(2) : "—") + "</td></tr>"; }).join("") + "</tbody></table></div>";
+    };
+    $("#jrStats").innerHTML = warn + cardsH + grp("symbol", "銘柄別") + grp("type", "手法別") + grp("dow", "曜日別（エントリー時刻・日本時間）") + grp("hour", "時間帯別（エントリー時刻・日本時間）") +
+      '<p class="fine">過去の記録の集計で、将来の成績や手法の優位性を示すものではありません。件数の少ない区分の数字は偶然に大きく左右されます。</p>';
+  }
+
+  // 公開（app.js から呼ぶ）
+  window.PortalTools = {
+    setContext: function (c) { CTX = c; },
+    initRisk: initRisk, initSim: initSim, initCheck: initCheck, initJournal: initJournal, checkSummary: checkSummary,
+    _internals: { num: num, runSim: runSim, toMonths: toMonths, summary: summary, calcR: calcR, planRR: planRR }
+  };
+})();
+
+</script>
+<script>
+/*
  * app.js — もちぽよ マーケットポータル 本体
  * 構成: 小道具 → 時刻計算 → データ読み込み → TradingView → タブ → 各タブの表示 → 起動
  */
@@ -2376,7 +4010,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   }
 
   // ============================== タブ ==============================
-  var TABS = ["home", "sym", "paper", "flow", "chart", "strength", "rates", "macro", "news", "hours"];
+  var TABS = ["home", "sym", "paper", "flow", "chart", "strength", "rates", "macro", "news", "hours", "check", "risk", "sim", "journal"];
   var inited = {};
   var INIT = {};
   function showTab(id, focusPanel) {
@@ -3837,9 +5471,9 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     renderSymRates(key, now);
     // CFTC
     renderSymCot(key);
-    // テクニカル（未対応の明示）
-    $("#symTech").innerHTML = '<p class="empty-note"><b>未実装（価格データの契約が必要です）</b><br>ATR14・ADR20・当日／前日の高値安値・日足〜5分足のEMA20/30/40・MACD(6,13,4)・RCI9 を自動で計算するには、会員サイトでの表示が認められた価格データ（ローソク足）が必要です。TradingViewのチャートから数値を取り出すことは規約上できないため、契約前は表示しません。</p>' +
-      '<div class="btn-row"><button type="button" class="btn btn-sm" data-mtf-open="' + esc(def.tv) + '">この銘柄を4つの時間足で見る（表示のみ）</button>' + (def.base === "GBP" ? '<a class="btn btn-sm" href="#flow" data-go="flow">ポンドフロー（日次の参考判定）</a>' : "") + "</div>";
+    // テクニカルの数値（ATR・ADR・高値安値）：データが無ければ「データ未取得」
+    $("#symTech").innerHTML = techBlock(key) +
+      '<div class="btn-row"><button type="button" class="btn btn-sm" data-mtf-open="' + esc(def.tv) + '">この銘柄を4つの時間足で見る（表示のみ）</button><a class="btn btn-sm" href="#check" data-go="check">分析チェックを開く</a>' + (def.base === "GBP" ? '<a class="btn btn-sm" href="#flow" data-go="flow">ポンドフロー（日次の参考判定）</a>' : "") + "</div>";
     // 公式発表
     renderSymNews(key);
     // 関連市場
@@ -3958,12 +5592,22 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       var nx = symEvents(k, now, now + 3 * DAY).filter(function (e) { return !e.allDay && (e.kind === "cb" || (e.kind === "ind" && e.it.importance >= 3)); })[0];
       var refHtml = def.gold ? '<span class="na">日次の参考値なし</span>' : ref ? '<span class="sc-val">' + esc(ref.last[1].toFixed(def.dig)) + "</span>" + pctSpan(ref.d1) + '<small>' + esc(jaMD(ref.last[0])) + " ECB</small>" : '<span class="na">未取得</span>';
       var nxHtml = nx ? "<small>次の注目</small>" + esc(dayWord(jstDate(nx.at), today) + " " + jstTime(nx.at)) + " " + esc(nx.short || nx.label) + '<span class="left">' + esc(fmtLeft(Math.max(0, nx.at - now))) + "</span>" : "<small>次の注目</small>3日以内の登録なし";
-      return '<a class="sym-card" href="#sym/' + k + '" data-symlink="' + k + '"><span class="sc-name"><b>' + esc(def.t) + "</b>" + k + '</span><span class="sc-ref">' + refHtml + '</span><span class="sc-next">' + nxHtml + "</span></a>";
+      // 日足のトレンド（ECB参考レート・終値ベース）と、分析チェックの必須条件の成立数
+      var trHtml = '<span class="sc-trend na">中期（日足EMA）：判定不可</span>', dir = null;
+      if (!def.gold && ecbReady(D.ecb) && window.FxCalc) {
+        var an = window.FxCalc.analyzeDaily(pairSeries(D.ecb, def.base, def.quote).map(function (p) { return p[1]; }), (window.PORTAL_ANALYSIS || {}).params);
+        if (an) { dir = an.trendUp ? "long" : an.trendDn ? "short" : null; trHtml = '<span class="sc-trend ' + (dir === "long" ? "up" : dir === "short" ? "down" : "") + '" title="日足のEMA20/30/40の並びとEMA40の傾きで判定（中期）。上の「きょうの市況」は直近5日の値動きなので、向きが違うことがあります">中期（日足EMA）：' + (dir === "long" ? "▲ 上昇" : dir === "short" ? "▼ 下降" : "◆ 方向感なし") + "</span>"; }
+      }
+      var ck = "";
+      if (dir && window.PortalTools && window.PortalTools.checkSummary) {
+        try { var cs = window.PortalTools.checkSummary(k, dir); ck = '<span class="sc-check" title="分析チェックの必須条件のうち成立している数（' + (dir === "long" ? "買い目線" : "売り目線") + '）">監視条件 ' + cs.ok + "/" + cs.req + "・" + (dir === "long" ? "買い" : "売り") + "目線</span>"; } catch (err) { ck = ""; }
+      }
+      return '<a class="sym-card" href="#sym/' + k + '" data-symlink="' + k + '"><span class="sc-name"><b>' + esc(def.t) + "</b>" + k + '</span><span class="sc-ref">' + refHtml + "</span>" + trHtml + ck + '<span class="sc-next">' + nxHtml + "</span></a>";
     }).join("");
   }
 
   // ============================== 検索 ==============================
-  var TAB_JA = { home: "きょう", sym: "4銘柄", paper: "朝刊", flow: "ポンドフロー", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
+  var TAB_JA = { check: "分析チェック", risk: "資金管理", sim: "複利シミュレーター", journal: "トレード記録", home: "きょう", sym: "4銘柄", paper: "朝刊", flow: "ポンドフロー", chart: "チャート", strength: "通貨の強弱", rates: "金利・中銀", macro: "経済指標", news: "ニュース", hours: "休場・時間" };
   function initSearch() {
     var dlg = $("#searchDlg"), input = $("#searchInput"), list = $("#searchList");
     var index = $$("[data-panel]").map(function (el) {
@@ -4117,10 +5761,210 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     $("#clockTime").textContent = new Date(now + 9 * HOUR).toISOString().slice(11, 19);
   }
 
+  // ============================== ホーム：次の重要イベント・注意事項・通知 ==============================
+  var ALERT_CCY = { "米": "USD", "英": "GBP", "日": "JPY" }, ALERT_CB = ["FRB", "日銀", "BOE"];
+  function keyEvents(from, to) {
+    return collectEvents(from, to).filter(function (e) {
+      return (e.kind === "ind" && e.it.importance >= 3 && ALERT_CCY[e.it.country]) || (e.kind === "cb" && ALERT_CB.indexOf(e.short) >= 0);
+    });
+  }
+  function stageOf(left) {
+    if (left < -5 * MIN) return null;
+    if (left <= 0) return ["発表直後", "now"];
+    if (left <= 5 * MIN) return ["まもなく発表（5分前）", "s5"];
+    if (left <= 15 * MIN) return ["15分前", "s15"];
+    if (left <= 30 * MIN) return ["30分前", "s30"];
+    return null;
+  }
+  function renderAlert() {
+    var box = $("#alertNext");
+    if (!box || !CAL.ready) return;
+    var now = Date.now(), today = jstDate(now);
+    var ev = keyEvents(now - 5 * MIN, now + 72 * HOUR);
+    if (!ev.length) box.innerHTML = '<p class="empty">72時間以内に、登録している重要指標・中央銀行の発表はありません。</p>';
+    else {
+      var e = ev[0], left = e.at - now, st = stageOf(left);
+      box.className = "alert-next" + (st ? " stage-" + st[1] : "");
+      box.innerHTML = '<div class="an-main">' + (st ? '<span class="an-stage">' + esc(st[0]) + "</span>" : "") + '<span class="an-when">' + esc(dayWord(jstDate(e.at), today) + " " + (e.kind === "cb" && e.sub.indexOf("決まっていません") >= 0 ? "時刻未定" : jstTime(e.at))) + '</span><b class="an-name">' + esc(e.label) + '</b><span class="an-left">' + (left > 0 ? esc(fmtLeft(left)) : "発表時刻を過ぎました") + "</span></div>" +
+        (ev.length > 1 ? '<ul class="an-more">' + ev.slice(1, 4).map(function (x) { return "<li>" + esc(dayWord(jstDate(x.at), today) + " " + jstTime(x.at)) + "　" + esc(x.label) + "</li>"; }).join("") + "</ul>" : "");
+    }
+    $("#alertNotes").innerHTML = tradeNotes(now).map(function (n) { return '<li class="note-' + n[0] + '"><span class="nt-tag">' + esc(n[1]) + "</span>" + esc(n[2]) + "</li>"; }).join("");
+    notifyTick(ev, now);
+  }
+  // 流動性・休場などの注意（「〜の可能性」の表現にとどめる）
+  function tradeNotes(now) {
+    var out = [], jd = jstDate(now), md = jd.slice(5);
+    if (weekClosed(now)) {
+      var nx = nextWeekOpen(now);
+      out.push(["warn", "週末", "為替市場は週末の休みです" + (nx ? "（再開の目安：" + jaMD(jstDate(nx)) + " " + jstTime(nx) + "・日本時間。取引会社により異なります）" : "") + "。"]);
+    } else {
+      var p = partsIn(now, "America/New_York"), w = new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay(), hm = p.h * 60 + p.mi;
+      if (w === 0 && hm >= 17 * 60 && hm < 19 * 60) out.push(["warn", "週明け", "週明け直後は参加者が少なく、窓開けやスプレッドの拡大が起きやすい時間帯です。"]);
+      if (hm >= 16 * 60 + 40 && hm < 17 * 60 + 20) out.push(["warn", "NYクローズ", "NYクローズ（日付の変わり目）の前後は、スプレッドが広がりやすい時間帯です。"]);
+      var jh = Number(jstTime(now).slice(0, 2));
+      if (jh >= 5 && jh < 8 && !(hm >= 16 * 60 + 40 && hm < 17 * 60 + 20)) out.push(["info", "早朝", "日本時間の早朝は参加者が少なく、値が飛びやすいことがあります。"]);
+    }
+    var hj = CAL.jp[jd], hu = CAL.uk[localDate(now, "Europe/London")], hus = CAL.us[localDate(now, "America/New_York")];
+    if (hj) out.push(["info", "休場", "日本は祝日（" + hj + "）で、東京市場の参加者が少ない可能性があります。"]);
+    if (hu) out.push(["info", "休場", "英国は祝日（" + hu + "）で、ロンドン市場の参加者が少ない可能性があります。"]);
+    if (hus) out.push(["info", "休場", "米国：" + hus.name + "（" + hus.note + "）。"]);
+    if (md >= "12-24" || md <= "01-03") out.push(["warn", "年末年始", "年末年始は流動性が下がり、値動きが不規則になりやすい時期です。"]);
+    var soon = keyEvents(now, now + 30 * MIN);
+    if (soon.length) out.push(["warn", "指標", "30分以内に重要な発表があります（" + soon.map(function (x) { return x.label; }).join("、") + "）。発表前後は値動きとスプレッドが大きくなる可能性があります。"]);
+    if (FRESH && FRESH.level !== "ok") out.push(["warn", "データ", "一部のデータが古いか、取得に失敗しています（右上のランプで確認できます）。"]);
+    out.push(["base", "基本", "損切りの位置と、1回の取引で許容する損失を先に決めてから入る（資金管理タブで計算できます）。"]);
+    out.push(["base", "基本", "ここでの判定は日次データにもとづく参考で、売買の推奨ではありません。最終判断はチャートで確認してください。"]);
+    return out;
+  }
+  // ブラウザ通知（利用者が許可した場合だけ。ページを開いている間のみ）
+  function notifySupported() { return "Notification" in window; }
+  function initNotify() {
+    var btn = $("#notifyBtn"), note = $("#notifyNote");
+    if (!btn) return;
+    function label() {
+      if (!notifySupported()) { btn.disabled = true; note.textContent = "このブラウザは通知に対応していません。"; return; }
+      var on = store.get("mp_notify", "0") === "1" && Notification.permission === "granted";
+      btn.textContent = on ? "ブラウザ通知：オン（押すとオフ）" : "発表30・15・5分前にブラウザで知らせる";
+      btn.setAttribute("aria-pressed", String(on));
+      note.textContent = Notification.permission === "denied" ? "ブラウザの設定で通知がブロックされています。" : "このページを開いている間だけ通知します（閉じている間の通知はサーバー側の仕組みが必要で、未対応です）。";
+    }
+    btn.addEventListener("click", function () {
+      if (!notifySupported()) return;
+      if (store.get("mp_notify", "0") === "1") { store.set("mp_notify", "0"); label(); return; }
+      Notification.requestPermission().then(function (p) { if (p === "granted") store.set("mp_notify", "1"); label(); });
+    });
+    label();
+  }
+  function notifyTick(ev, now) {
+    if (!notifySupported() || Notification.permission !== "granted" || store.get("mp_notify", "0") !== "1") return;
+    var sent; try { sent = JSON.parse(sessionStorage.getItem("mp_notified") || "{}"); } catch (e) { sent = {}; }
+    ev.forEach(function (e) {
+      [30, 15, 5].forEach(function (m) {
+        var left = e.at - now, key = e.label + "|" + e.at + "|" + m;
+        if (left <= m * MIN && left > (m * MIN - 2 * MIN) && !sent[key]) {
+          sent[key] = 1;
+          try { new Notification("あと" + m + "分：" + e.label, { body: jaMD(jstDate(e.at)) + " " + jstTime(e.at) + "（日本時間）発表予定。発表前後は値動き・スプレッドの変化にご注意ください。", tag: key }); } catch (err) {}
+        }
+      });
+    });
+    try { sessionStorage.setItem("mp_notified", JSON.stringify(sent)); } catch (e) {}
+  }
+
+  // ============================== ホーム：ルールベースの解説 ==============================
+  function renderCommentary() {
+    var box = $("#commentary");
+    if (!box) return;
+    var now = Date.now(), today = jstDate(now), facts = [], impacts = [], checks = [], e = D.ecb;
+    if (ecbReady(e)) {
+      [["GBP", "JPY", "ポンド円", 3], ["GBP", "USD", "ポンドドル", 5], ["USD", "JPY", "ドル円", 3]].forEach(function (x) {
+        var s = pairSeries(e, x[0], x[1]), n = s.length;
+        if (n < 25) return;
+        var d1 = (s[n - 1][1] / s[n - 2][1] - 1) * 100, d5 = (s[n - 1][1] / s[n - 6][1] - 1) * 100;
+        facts.push([x[2] + "は " + s[n - 1][1].toFixed(x[3]) + "（前日比 " + (d1 >= 0 ? "+" : "") + d1.toFixed(2) + "%、1週間 " + (d5 >= 0 ? "+" : "") + d5.toFixed(2) + "%）", "ECB参考レート・" + jaMD(s[n - 1][0]) + "（日次）"]);
+        var rg = pairRange(e, ["", x[2], x[0], x[1]]);
+        if (rg && Math.abs(d5 / 100 * s[n - 1][1]) > 2 * rg.sd * Math.sqrt(5)) impacts.push(x[2] + "は直近1週間の動きが、過去20日の平均的な振れ幅より大きめです。値幅が出やすい状態が続く可能性がありますが、方向を示すものではありません。");
+      });
+      var st = ccyStrength(e, 5);
+      if (st.length) facts.push(["1週間の通貨の強弱：最も強い " + CCY_JA[st[0].ccy] + "（" + (st[0].pct >= 0 ? "+" : "") + st[0].pct.toFixed(2) + "%）、最も弱い " + CCY_JA[st[st.length - 1].ccy] + "（" + st[st.length - 1].pct.toFixed(2) + "%）", "ECB参考レートから計算・" + jaMD(e.latest)]);
+    } else checks.push("為替の参考レート（ECB）が未取得のため、レートに関する事実は載せていません。");
+    var ev = keyEvents(now, now + 24 * HOUR);
+    if (ev.length) {
+      facts.push(["24時間以内の重要な発表：" + ev.map(function (x) { return dayWord(jstDate(x.at), today) + jstTime(x.at) + " " + x.label; }).join("、"), "各国統計機関・中央銀行の公表予定（手動登録）"]);
+      impacts.push("重要な発表の時刻前後は、値動きとスプレッドが大きくなる可能性があります。結果が予想と違った場合、関係する通貨が大きく動くことがあります。");
+    }
+    var pol = resolvePolicy(now).filter(function (r) { return r.nextAt && r.nextAt - now < 7 * DAY && r.nextAt > now && ["fed", "boj", "boe"].indexOf(r.b.id) >= 0; });
+    pol.forEach(function (r) {
+      facts.push([r.b.short + "の次の発表は " + jaMD(jstDate(r.nextAt)) + (r.b.time ? " " + jstTime(r.nextAt) : "（時刻未定）") + "。現在の政策金利 " + r.display, "中央銀行の公式日程・" + r.src]);
+      impacts.push(r.b.short + "の決定や声明で金利の見通しが変わると、" + r.b.ccy + "が動く可能性があります。");
+      if (!r.b.time) checks.push(r.b.short + "の結果公表の時刻は事前に決まっていません。当日の公式発表を確認してください。");
+    });
+    var c = D.cot;
+    if (c && c.currencies) ["GBP", "JPY"].forEach(function (k) {
+      var x = c.currencies.filter(function (y) { return y.ccy === k; })[0];
+      if (!x || x.rows.length < 2) return;
+      var r = x.rows[x.rows.length - 1], p = x.rows[x.rows.length - 2], net = r[2] - r[3], pnet = p[2] - p[3];
+      facts.push(["投機筋の" + COT_JA[k] + "ポジション：" + (net >= 0 ? "買い越し " : "売り越し ") + fmtNum(Math.abs(net)) + "枚（前週から " + signed(net - pnet, 0, "枚") + "）", "CFTC建玉明細・" + jaMD(r[0]) + "（火曜）時点・週次"]);
+      var vals = x.rows.map(function (q) { return q[2] - q[3]; }), lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+      var idx = hi > lo ? (net - lo) / (hi - lo) : 0.5;
+      if (idx >= 0.9 || idx <= 0.1) impacts.push(COT_JA[k] + "の投機筋ポジションが過去2年で偏った水準にあります。偏りの解消で反対方向に動いた例もありますが、必ずそうなるわけではありません。");
+    });
+    var us = D.usRates;
+    if (us && us.series && us.series.DGS10 && us.series.DGS10.length > 6) {
+      var t = us.series.DGS10, a = t[t.length - 1], b = t[t.length - 6];
+      facts.push(["米10年債利回り " + a[1].toFixed(2) + "%（5営業日前から " + ((a[1] - b[1]) >= 0 ? "+" : "") + (a[1] - b[1]).toFixed(2) + "%）", "FRB（FRED経由）・" + jaMD(a[0])]);
+    }
+    if (FRESH) FRESH.list.forEach(function (x) { if (x.critical && x.state !== "ok") checks.push(x.label + "：" + x.text); });
+    if (D.ind && D.ind.checked && (now - Date.parse(D.ind.checked)) > 30 * DAY) checks.push("経済指標の予定表は最終確認から30日以上たっています（" + D.ind.checked + "）。公式の予定表で確認してください。");
+    checks.push("為替の数値はECBの1日1回の参考レートです。いまのレートはチャートで確認してください。");
+    if (!impacts.length) impacts.push("目立った予定や大きな値動きは、登録データの範囲では見当たりません。");
+    box.innerHTML = '<div class="cm-sec"><h3><span class="cm-n">1</span>確認できた事実</h3><ul>' + facts.map(function (f) { return "<li>" + esc(f[0]) + '<small>出典：' + esc(f[1]) + "</small></li>"; }).join("") + (facts.length ? "" : "<li>表示できる事実がまだありません。</li>") + "</ul></div>" +
+      '<div class="cm-sec"><h3><span class="cm-n">2</span>考えられる市場への影響</h3><ul>' + impacts.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>" +
+      '<div class="cm-sec"><h3><span class="cm-n">3</span>追加で確認が必要な点</h3><ul>' + checks.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>" +
+      '<p class="fine">登録されたデータから決まった文型で作る解説で、ニュース本文は使っていません。買い・売りの判断や将来の予測ではありません。作成：' + esc(jstStamp(new Date(now).toISOString())) + "（日本時間）</p>";
+  }
+
+  // ============================== シンプル表示／詳細表示 ==============================
+  function initView() {
+    var btn = $("#viewBtn");
+    function apply(v) {
+      document.body.classList.toggle("view-simple", v === "simple");
+      btn.textContent = v === "simple" ? "シンプル表示" : "詳細表示";
+      btn.setAttribute("aria-pressed", String(v === "simple"));
+      btn.setAttribute("aria-label", "表示の切り替え（いまは" + btn.textContent + "）");
+    }
+    apply(store.get("mp_view", "detail"));
+    btn.addEventListener("click", function () {
+      var v = store.get("mp_view", "detail") === "simple" ? "detail" : "simple";
+      store.set("mp_view", v); apply(v);
+    });
+  }
+
+  // ============================== 市場の重なり・値幅の統計 ==============================
+  function renderSessionVol() {
+    var box = $("#sessionVol");
+    if (!box) return;
+    var now = Date.now(), d = jstDate(now), from = jstMidnight(d), to = from + DAY + 12 * HOUR;
+    var inst = {};
+    SESSIONS.forEach(function (s) { inst[s.id] = sessionInstances(s, from, to); });
+    function overlap(a, b) {
+      var out = [];
+      (inst[a] || []).forEach(function (x) { (inst[b] || []).forEach(function (y) { var s = Math.max(x.start, y.start), e = Math.min(x.end, y.end); if (e > s) out.push([s, e]); }); });
+      return out[0] || null;
+    }
+    var rows = [["tky", "ldn", "東京とロンドン"], ["ldn", "ny", "ロンドンとニューヨーク"]].map(function (p) {
+      var o = overlap(p[0], p[1]);
+      return "<tr><th scope=\"row\">" + p[2] + "</th><td>" + (o ? jstTime(o[0]) + "〜" + jstTime(o[1]) + "（" + Math.round((o[1] - o[0]) / HOUR * 10) / 10 + "時間）" : "きょうは重なりなし") + "</td></tr>";
+    }).join("");
+    var dst = dstChanges(now, now + 120 * DAY).slice(0, 2).map(function (c) { return "<li>" + esc(c.label) + "（" + esc(jaMD(c.date)) + "）" + (c.note ? "：" + esc(c.note) : "") + "</li>"; }).join("");
+    box.innerHTML = '<div class="tbl-wrap"><table class="tbl"><thead><tr><th scope="col">重なる市場</th><th scope="col">きょうの時間（日本時間）</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
+      (dst ? '<h3 class="sub-h">近い夏時間・冬時間の切り替え</h3><ul class="plain-list">' + dst + "</ul>" : "") +
+      '<h3 class="sub-h">市場別・時間帯別の平均値幅</h3><p class="empty-note"><b>データ未取得</b>　時間帯ごとの値幅の統計には、1時間足などのローソク足（高値・安値）が必要です。会員サイトでの表示が認められた価格データを契約した後に、集計期間と出典を明記して表示します。それまでは数値を出しません。</p>' +
+      '<p class="fine">市場の時間は各市場の目安（現地8時〜17時、東京は9時〜15時）で、取引会社の取引時間とは異なります。</p>';
+  }
+
+  // ============================== ATR・ADR・値幅（4銘柄ページ） ==============================
+  // 価格データ（高値・安値を含むローソク足）が用意できたときだけ計算する。無ければ「データ未取得」
+  function techBlock(key) {
+    var o = D.ohlc && D.ohlc[key];
+    var items = ["ATR(14)", "ADR(20)", "当日の値幅", "過去20日の平均値幅", "ADRに対する当日の値幅", "直近の高値・安値", "前日の高値・安値", "前週の高値・安値"];
+    if (!o) {
+      return '<div class="tbl-wrap"><table class="tbl tech-tbl"><tbody>' + items.map(function (n) { return '<tr><th scope="row">' + esc(n) + '</th><td><span class="na">データ未取得</span></td></tr>'; }).join("") + "</tbody></table></div>" +
+        '<p class="empty-note"><b>未実装（価格データの契約が必要です）</b><br>ATR・ADR・高値安値は、高値・安値を含むローソク足が必要です。いま使っているECBの参考レートは1日1回の値だけなので、正しく計算できません。TradingViewのチャートから数値を取り出すことは規約上できないため、会員サイトでの表示が認められた価格データを契約した後に表示します。ADRを超えたことは反転の合図ではなく、値幅が広がっている参考情報として扱います。</p>';
+    }
+    return "";
+  }
+
   // ============================== タブごとの初期化 ==============================
   INIT.sym = initSym;
+  // ツール（assets/tools.js）
+  function tools() { return window.PortalTools; }
+  function goTab(id) { history.replaceState(null, "", "#" + id); showTab(id); }
+  INIT.check = function () { tools() && tools().initCheck(); };
+  INIT.risk = function () { tools() && tools().initRisk(); };
+  INIT.sim = function () { tools() && tools().initSim(); };
+  INIT.journal = function () { tools() && tools().initJournal(); };
   INIT.home = function () {
-    renderSymStrip();
+    renderSymStrip(); renderAlert(); initNotify(); renderCommentary();
     renderMood(); renderHero(); renderUpcoming(); renderPolicyMini(); initChecklist();
     loadJson("manual/notices.json").then(renderNotices);
   };
@@ -4142,7 +5986,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   };
   INIT.macro = function () { initIndicators(); renderMacro(store.get("mp_macro", "") || null); };
   INIT.news = renderNewsJp;
-  INIT.hours = function () { renderHolidays(); renderDst(); renderSessionTable(); renderFixedTimes(); };
+  INIT.hours = function () { renderHolidays(); renderDst(); renderSessionTable(); renderFixedTimes(); renderSessionVol(); };
 
   // ============================== 起動 ==============================
   function applyNames() {
@@ -4188,7 +6032,8 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     if (window.PORTAL_PREVIEW) { var pb = $("#previewBar"); pb.hidden = false; pb.textContent = window.PORTAL_PREVIEW; }
     tickClock();
     setInterval(tickClock, 1000);
-    initTabs(); initTheme(); initDialogs(); initSearch(); initShare();
+    initTabs(); initTheme(); initDialogs(); initSearch(); initShare(); initView();
+    if (window.PortalTools) window.PortalTools.setContext({ D: D, pairSeries: pairSeries, collectEvents: collectEvents, go: goTab, today: function () { return jstDate(Date.now()); } });
     // ティッカー
     tvMount($("#tape"), "ticker-tape", function (t) {
       return { symbols: (CFG.ticker || []).map(function (x) { return { proName: x.s, title: x.t }; }), showSymbolLogo: false, isTransparent: true, displayMode: "adaptive", colorTheme: t, locale: "ja" };
@@ -4212,7 +6057,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       });
     });
     // 相場時計は30秒ごと、データは30分ごとに更新
-    setInterval(function () { if (inited.home && !document.hidden) { renderHero(); renderUpcoming(); } }, 30000);
+    setInterval(function () { if (inited.home && !document.hidden) { renderHero(); renderUpcoming(); renderAlert(); } else if (inited.home) { renderAlert(); } }, 30000);
     setInterval(function () {
       if (document.hidden) return;
       loadJson("meta.json", true).then(function (m) {
