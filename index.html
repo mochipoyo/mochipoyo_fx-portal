@@ -1013,6 +1013,8 @@ window.PORTAL_CONFIG = {
   },
 
   // ── ヘッダー下に流れるレート（TradingView） ─────────────
+  // ウィジェットで表示できるのは、TradingViewの対応一覧にある提供元（FX・OANDAなど）の銘柄だけです。
+  // TVC（ドル指数・各国の国債利回り・VIXなど）は一覧に無いため入れていません。
   ticker: [
     { s: "FX:GBPJPY", t: "ポンド円" },
     { s: "FX:USDJPY", t: "ドル円" },
@@ -1020,9 +1022,6 @@ window.PORTAL_CONFIG = {
     { s: "FX:AUDJPY", t: "豪ドル円" },
     { s: "FX:GBPUSD", t: "ポンドドル" },
     { s: "FX:EURUSD", t: "ユーロドル" },
-    { s: "TVC:DXY", t: "ドル指数" },
-    { s: "TVC:US10Y", t: "米10年債" },
-    { s: "TVC:JP10Y", t: "日本10年債" },
     { s: "OANDA:XAUUSD", t: "金" },
     { s: "OANDA:JP225USD", t: "日経225" },
     { s: "OANDA:SPX500USD", t: "S&P500" }
@@ -1920,8 +1919,8 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
       <section class="panel" data-panel="sim" data-title="FX複利シミュレーター（シンプル複利・実践的な複利・月利年利）">
         <div class="panel-head"><h2>複利シミュレーター</h2><span class="meta">計算はこのブラウザの中だけで行います</span></div>
         <div class="mode-switch" id="simModes" role="group" aria-label="計算モード">
-          <button type="button" data-mode="simple" aria-pressed="false">シンプル複利</button>
-          <button type="button" data-mode="practical" aria-pressed="true">実践的な複利</button>
+          <button type="button" data-mode="simple" aria-pressed="true">複利運用（pips）</button>
+          <button type="button" data-mode="practical" aria-pressed="false">実践的な複利</button>
           <button type="button" data-mode="rate">月利・年利</button>
         </div>
         <p class="mode-note" id="simModeNote"></p>
@@ -2519,6 +2518,17 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     EURJPY: { label: "ユーロ円", base: "EUR", quote: "JPY", pipSize: 0.01, digits: 3 },
     GBPUSD: { label: "ポンドドル", base: "GBP", quote: "USD", pipSize: 0.0001, digits: 5 },
     EURUSD: { label: "ユーロドル", base: "EUR", quote: "USD", pipSize: 0.0001, digits: 5 },
+    AUDJPY: { label: "豪ドル円", base: "AUD", quote: "JPY", pipSize: 0.01, digits: 3 },
+    NZDJPY: { label: "NZドル円", base: "NZD", quote: "JPY", pipSize: 0.01, digits: 3 },
+    CHFJPY: { label: "スイスフラン円", base: "CHF", quote: "JPY", pipSize: 0.01, digits: 3 },
+    TRYJPY: { label: "トルコリラ円", base: "TRY", quote: "JPY", pipSize: 0.01, digits: 3 },
+    RUBJPY: { label: "ロシアルーブル円", base: "RUB", quote: "JPY", pipSize: 0.01, digits: 3 },
+    AUDUSD: { label: "豪ドル米ドル", base: "AUD", quote: "USD", pipSize: 0.0001, digits: 5 },
+    NZDUSD: { label: "NZドル米ドル", base: "NZD", quote: "USD", pipSize: 0.0001, digits: 5 },
+    EURGBP: { label: "ユーロポンド", base: "EUR", quote: "GBP", pipSize: 0.0001, digits: 5 },
+    USDCHF: { label: "ドルスイスフラン", base: "USD", quote: "CHF", pipSize: 0.0001, digits: 5 },
+    EURCHF: { label: "ユーロスイスフラン", base: "EUR", quote: "CHF", pipSize: 0.0001, digits: 5 },
+    GBPCHF: { label: "ポンドスイスフラン", base: "GBP", quote: "CHF", pipSize: 0.0001, digits: 5 },
     // 金は業者によって「1ロット＝何オンス」「1pip＝いくらの値幅」が違うため、既定値は目安で、画面で必ず変更できる
     XAUUSD: { label: "金（ゴールド）", base: "XAU", quote: "USD", pipSize: 0.01, digits: 2, custom: true }
   };
@@ -2664,6 +2674,51 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
     return e;
   }
   var LABELS = { spreadPips: "スプレッド", feePerLot: "手数料", monthlyDeposit: "毎月の追加入金", monthlyWithdraw: "毎月の出金", lotCap: "ロット上限", target: "目標資金", minLot: "最小取引数量", costR: "取引コスト", floor: "資金の下限", maxLot: "最大ロット" };
+
+  // ============================== 日次pips複利（FX複利運用計算シミュレータと同じ入力項目） ==============================
+  // 入力：通貨ペア・当初資金（円）・レバレッジ・1日の獲得pips（マイナス可）・枚数上限（0＝上限なし）・通貨単位（万／千）
+  // 計算（このサイトの定義。参考サイトの内部計算式は公開されていないため、公開情報から再現したもの）
+  //  ・毎日、その日の初めの資金で「持てる最大の枚数」＝ 資金 × レバレッジ ÷（1万通貨の円建ての金額）を求める
+  //      万：1万通貨単位で切り捨て（整数の枚数）
+  //      千：1千通貨単位で切り捨て。枚数は1万通貨＝1枚で表示（例：2.5枚＝2万5千通貨）
+  //  ・枚数上限が0より大きければ、その枚数で頭打ち
+  //  ・1日の損益 ＝ 枚数 × 1万通貨 × 獲得pips × 1pipの値幅 × 決済通貨の円レート
+  //  ・枚数が0になる日は「証拠金不足」（その日は損益0）。資金が0以下になったら以後は取引しない
+  //  ・300日分を計算
+  function messiCompound(inp) {
+    var e = [];
+    var spec = pairSpec(inp.symbol);
+    if (!spec) e.push("通貨ペアを選んでください。");
+    if (!(inp.capital > 0)) e.push("当初資金は0より大きい数値にしてください。");
+    if (!(inp.leverage > 0 && inp.leverage <= 1000)) e.push("レバレッジは0より大きく1000以下にしてください。");
+    if (!isNum(inp.pips) || Math.abs(inp.pips) > 100000) e.push("1日の獲得pipsを数値で入れてください（マイナスも可）。");
+    if (!isNum(inp.lotCap) || inp.lotCap < 0) e.push("枚数上限は0以上にしてください（0は上限なし）。");
+    if (inp.unit !== "man" && inp.unit !== "sen") e.push("通貨単位を選んでください。");
+    if (!(inp.price > 0)) e.push("通貨ペアのレートを入れてください（参考レートが無い通貨ペアは手入力です）。");
+    if (spec && spec.quote !== "JPY" && !(inp.quoteToJPY > 0)) e.push(spec.quote + "/円 のレートを入れてください（損益を円に直すために使います）。");
+    var days = inp.days > 0 ? Math.min(3650, Math.floor(inp.days)) : 300;
+    if (e.length) return { ok: false, errors: e };
+    var qj = spec.quote === "JPY" ? 1 : inp.quoteToJPY;
+    var yenPer10k = inp.price * qj * 10000;          // 1万通貨（1枚）の円建ての金額
+    var plPerLot = 10000 * inp.pips * spec.pipSize * qj; // 1枚・1日の損益（円）
+    function lotsFor(eq) {
+      if (!(eq > 0)) return 0;
+      var raw = eq * inp.leverage / yenPer10k;
+      var l = inp.unit === "man" ? Math.floor(raw + 1e-9) : Math.floor(raw * 10 + 1e-9) / 10;
+      if (inp.lotCap > 0) l = Math.min(l, inp.lotCap);
+      return l;
+    }
+    var eq = inp.capital, rows = [], shortDays = 0, broke = null;
+    for (var d = 1; d <= days; d++) {
+      var start = eq, l = broke ? 0 : lotsFor(eq);
+      var pl = l * plPerLot;
+      if (!l) shortDays++;
+      eq = start + pl;
+      if (eq <= 0 && broke === null) { eq = 0; broke = d; }
+      rows.push({ day: d, start: start, lots: l, short: !l, pips: l ? inp.pips : 0, pl: pl, equity: eq });
+    }
+    return { ok: true, rows: rows, final: eq, days: days, plPerLot: plPerLot, yenPer10k: yenPer10k, marginPerLot: yenPer10k / inp.leverage, startLots: rows[0].lots, shortDays: shortDays, brokeDay: broke };
+  }
 
   // ============================== 実践的な複利（勝率・RR・モンテカルロ） ==============================
   // 定義
@@ -2947,7 +3002,7 @@ window.PORTAL_DATA = {"holidays_jp.json": {"updated": "2026-10-03T00:00:00.000Z"
   return {
     isNum: isNum, floorStep: floorStep, percentile: percentile, rng: rng, yen: yen, jpUnit: jpUnit,
     PAIRS: PAIRS, pairSpec: pairSpec, pipValuePerLot: pipValuePerLot, marginPerLot: marginPerLot,
-    lotCalc: lotCalc, simpleCompound: simpleCompound, practical: practical, rateSim: rateSim, MAX_WORK: MAX_WORK,
+    lotCalc: lotCalc, simpleCompound: simpleCompound, messiCompound: messiCompound, practical: practical, rateSim: rateSim, MAX_WORK: MAX_WORK,
     stats: stats, groupStats: groupStats, ema: ema, rci: rci, analyzeDaily: analyzeDaily, STATE_TXT: STATE_TXT
   };
 });
@@ -3101,6 +3156,8 @@ window.PORTAL_ANALYSIS = {
   function refNote(r) { return r ? "初期値はECB参考レート（" + r.date + "・日次。リアルタイムではありません）。取引会社のレートに書き換えてください。" : "参考レートを取得できていないため、手入力してください。"; }
 
   var PAIR_OPTS = Object.keys(F.PAIRS).map(function (k) { return [k, F.PAIRS[k].label + "（" + k + "）"]; });
+  // 参考サイト（FX複利運用計算シミュレータ）と同じ16通貨ペア
+  var MESSI_OPTS = ["USDJPY", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CHFJPY", "TRYJPY", "RUBJPY", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "EURGBP", "USDCHF", "EURCHF", "GBPCHF"].map(function (k) { return [k, k]; });
 
   // ============================== 資金管理（ロット計算機） ==============================
   var RISK_DEFS = [
@@ -3171,30 +3228,14 @@ window.PORTAL_ANALYSIS = {
   var PERIOD_UNITS = { simple: [["day", "日（取引日）"], ["month", "か月"], ["year", "年"]], other: [["month", "か月"], ["year", "年"]] };
   var SIM_DEFS = {
     simple: [
-      { group: "資金と通貨ペア" },
-      { k: "capital", label: "初期資金", unit: "円" },
-      { k: "symbol", label: "通貨ペア", type: "select", options: PAIR_OPTS },
-      { k: "price", label: "レート（証拠金の計算用）", help: "証拠金と持てるロット数の計算に使います" },
-      { k: "quoteToAccount", label: "ドル円レート（円換算用）", show: function (v) { var s = F.PAIRS[v.symbol]; return s && s.quote !== "JPY"; } },
-      { k: "leverage", label: "レバレッジ", unit: "倍", help: "持てるロットの上限（証拠金の制約）にだけ使い、利益率には掛けません" },
-      { group: "取引の条件" },
-      { k: "pipsPerDay", label: "1日の獲得pips（合計）", unit: "pips" },
-      { k: "tradesPerDay", label: "1日のトレード回数", unit: "回", help: "スプレッド・手数料を回数分差し引きます" },
-      { k: "daysPerMonth", label: "月間トレード日数", unit: "日" },
-      { k: "period", label: "運用期間" },
-      { k: "periodUnit", label: "期間の単位", type: "select", options: PERIOD_UNITS.simple },
-      { k: "spreadPips", label: "スプレッド（1回）", unit: "pips" },
-      { k: "feePerLot", label: "手数料（1ロット・1回）", unit: "円" },
-      { group: "ロットの仕様" },
-      { k: "unitSize", label: "取引通貨単位（1ロット）", type: "select", options: [["1000", "1,000通貨"], ["10000", "10,000通貨"], ["100000", "100,000通貨"], ["100", "100オンス（金）"], ["1", "1オンス（金）"]] },
-      { k: "lotStep", label: "ロットの刻み幅", unit: "ロット" },
-      { k: "minLot", label: "最小取引数量", unit: "ロット" },
-      { k: "lotCap", label: "ロット上限（0＝上限なし）", unit: "ロット", help: "0でも証拠金・レバレッジの制約は必ずかかります" },
-      { k: "pipSize", label: "1pipの値幅（金）", show: function (v) { return v.symbol === "XAUUSD"; } },
-      { group: "目標と入出金" },
-      { k: "target", label: "目標資金（0＝なし）", unit: "円" },
-      { k: "monthlyDeposit", label: "毎月の追加入金", unit: "円", help: "2か月目以降の各月初日、その日の取引前に反映" },
-      { k: "monthlyWithdraw", label: "毎月の出金", unit: "円" }
+      { k: "symbol", label: "通貨ペア", type: "select", options: MESSI_OPTS },
+      { k: "capital", label: "当初資金", unit: "円" },
+      { k: "leverage", label: "レバレッジ", unit: "倍" },
+      { k: "pips", label: "1日の獲得", unit: "pips", help: "マイナスも入力できます" },
+      { k: "lotCap", label: "枚数上限", unit: "枚", help: "0なら上限なしで計算します" },
+      { k: "unit", label: "通貨単位", type: "select", options: [["man", "万"], ["sen", "千"]], help: "1枚＝1万通貨。千を選ぶと1千通貨単位で計算（例：2.5枚＝2万5千通貨）" },
+      { k: "price", label: "レート（計算に使う通貨ペアの価格）", help: "" },
+      { k: "quoteToJPY", label: "決済通貨の円レート", show: function (v) { var x = F.PAIRS[v.symbol]; return x && x.quote !== "JPY"; } }
     ],
     practical: [
       { group: "資金とリスク" },
@@ -3236,12 +3277,12 @@ window.PORTAL_ANALYSIS = {
     ]
   };
   var SIM_DEFAULT = {
-    simple: { capital: 1000000, symbol: "GBPJPY", price: null, quoteToAccount: null, leverage: 25, pipsPerDay: 10, tradesPerDay: 1, daysPerMonth: 20, period: 12, periodUnit: "month", spreadPips: 0, feePerLot: 0, unitSize: "10000", lotStep: 0.01, minLot: 0.01, lotCap: 0, pipSize: 0.01, target: 0, monthlyDeposit: 0, monthlyWithdraw: 0 },
+    simple: { symbol: "USDJPY", capital: 100000, leverage: 25, pips: 10, lotCap: 10000, unit: "man", price: null, quoteToJPY: null },
     practical: { capital: 1000000, riskPct: 1, winRate: 50, rr: 2, costR: 5, tradesPerMonth: 20, period: 12, periodUnit: "month", target: 2000000, maxDD: 20, floor: 0, monthlyDeposit: 0, monthlyWithdraw: 0, useLot: false, stopPips: 30, pipValue: 100, lotStep: 0.01, minLot: 0.01, maxLot: 0, runs: 1000, seed: 12345 },
     rate: { capital: 1000000, basis: "month", rate: 1, period: 12, periodUnit: "month", monthlyDeposit: 0, monthlyWithdraw: 0, target: 0 }
   };
-  var MODE_JA = { simple: "シンプル複利", practical: "実践的な複利", rate: "月利・年利" };
-  var simState = { mode: "practical", last: null, gran: "month" };
+  var MODE_JA = { simple: "FX複利運用（日次pips）", practical: "実践的な複利", rate: "月利・年利" };
+  var simState = { mode: "simple", last: null, gran: "day" };
 
   function toMonths(v, mode) {
     var p = v.period;
@@ -3252,11 +3293,9 @@ window.PORTAL_ANALYSIS = {
   }
   function runSim(mode, v) {
     if (mode === "simple") {
-      var spec = F.PAIRS[v.symbol];
-      var inp = Object.assign({}, v, { unitSize: Number(v.unitSize), months: toMonths(v, mode), quoteToAccount: spec && spec.quote === "JPY" ? 1 : v.quoteToAccount });
-      if (v.symbol !== "XAUUSD") inp.pipSize = undefined;
-      ["spreadPips", "feePerLot", "monthlyDeposit", "monthlyWithdraw", "lotCap", "target", "minLot"].forEach(function (k) { if (inp[k] === null) inp[k] = 0; });
-      return F.simpleCompound(inp);
+      var inp = Object.assign({}, v);
+      if (inp.lotCap === null) inp.lotCap = 0;
+      return F.messiCompound(inp);
     }
     if (mode === "practical") {
       var ip = Object.assign({}, v, { months: Math.round(toMonths(v, mode)), costR: F.isNum(v.costR) ? v.costR / 100 : v.costR });
@@ -3269,11 +3308,15 @@ window.PORTAL_ANALYSIS = {
   }
   // 結果の要約（カード・シナリオ比較・CSVで共通に使う）
   function summary(mode, v, r) {
-    if (mode === "simple") return [
-      ["最終資金（複利）", r.final, "yen"], ["最終資金（単利）", r.finalSimple, "yen"], ["運用益", r.profit, "yen"],
-      ["入金の合計（初期資金込み）", r.totalDeposit, "yen"], ["出金の合計", r.totalWithdraw, "yen"],
-      ["開始時のロット", r.startLots, "lot"], ["目標到達", r.reachDay ? r.reachDay + "取引日目（約" + Math.ceil(r.reachDay / v.daysPerMonth) + "か月目）" : (v.target > 0 ? "期間内に未到達" : "—"), "text"],
-      ["取引できなかった日数", r.untradableDays, "int"]];
+    if (mode === "simple") {
+      var at = function (d) { var x = r.rows[d - 1]; return x ? x.equity : null; };
+      var dbl = null; for (var i = 0; i < r.rows.length; i++) if (r.rows[i].equity >= v.capital * 2) { dbl = r.rows[i].day; break; }
+      return [["300日後の資金", r.final, "yen"], ["30日後", at(30), "yen"], ["100日後", at(100), "yen"], ["200日後", at(200), "yen"],
+        ["初日の取引枚数", r.startLots > 0 ? r.startLots : "証拠金不足", r.startLots > 0 ? "lot" : "text"],
+        ["1枚・1日の損益", r.plPerLot, "yen"], ["1枚に必要な証拠金", r.marginPerLot, "yen"],
+        ["資金が2倍になる日", dbl ? dbl + "日目" : "300日以内に到達しません", "text"],
+        ["証拠金不足の日数", r.shortDays + "日", "text"]].concat(r.brokeDay ? [["資金がなくなった日", r.brokeDay + "日目", "text"]] : []);
+    }
     if (mode === "practical") return [
       ["期待値（1回あたり）", r.ev.toFixed(3) + "R（初回の金額で約" + F.yen(r.evYenFirst) + "）", "text"],
       ["最終資金の中央値", r.median, "yen"], ["最終資金の下位10%", r.p10, "yen"], ["最終資金の上位10%", r.p90, "yen"],
@@ -3286,29 +3329,40 @@ window.PORTAL_ANALYSIS = {
       ["最終資金（単利）", r.finalSimple, "yen"], ["月利に換算", (r.monthlyRate * 100).toFixed(4) + "%", "text"],
       ["目標資金への到達", r.reachMonth ? r.reachMonth + "か月目（" + Math.floor((r.reachMonth - 1) / 12 + 1) + "年目）" : (v.target > 0 ? "期間内に未到達" : "—"), "text"]];
   }
-  function sumVal(x) { return x[2] === "yen" ? yenU(x[1]) : x[2] === "lot" ? fmt(x[1], 2) + " ロット" : x[2] === "int" ? fmt(x[1]) + " 日" : esc(x[1]); }
+  function sumVal(x) { return x[2] === "yen" ? yenU(x[1]) : x[2] === "lot" ? fmt(x[1], Number.isInteger(x[1]) ? 0 : 1) + " 枚" : x[2] === "int" ? fmt(x[1]) + " 日" : esc(x[1]); }
   function sumPlain(x) { return x[2] === "yen" ? (F.isNum(x[1]) ? Math.round(x[1]) : "") : x[1]; }
 
+  // レートの初期値：ECB参考レート（日次）から作れる通貨ペアだけ。トルコリラ・ルーブルは参考レートが無いので手入力
+  function fillRates(v) {
+    var sp = F.PAIRS[v.symbol]; if (!sp) return;
+    if (v.price === null || v.price === undefined) { var r = ecbRef(sp.base, sp.quote); v.price = r ? r.v : null; v._ref = r; }
+    if (sp.quote !== "JPY" && (v.quoteToJPY === null || v.quoteToJPY === undefined)) { var q = ecbRef(sp.quote, "JPY"); v.quoteToJPY = q ? q.v : null; }
+  }
+  function rateNote(v) {
+    var el = $("#simRateNote"); if (!el) return;
+    var sp = F.PAIRS[v.symbol], r = sp ? ecbRef(sp.base, sp.quote) : null;
+    el.textContent = r ? "レートの初期値は ECB 参考レート（" + r.date + "・1日1回）から計算しています。取引会社のレートに書き換えられます。" : (sp ? sp.base + "/" + sp.quote + " の参考レートを取得できないため、レートを手入力してください（現在のレートを確認して入力）。" : "");
+  }
   function initSim() {
     var pane = $("#pane-sim"), form = $("#simForm"), errBox = $("#simErr");
     var store = LS.get("mp_sim_v1", null) || {};
-    simState.mode = store.mode || "practical";
+    simState.mode = store.mode || "simple";
     function vals(mode) { return Object.assign({}, SIM_DEFAULT[mode], (store.inputs || {})[mode] || {}); }
     function drawForm() {
       $$("#simModes [data-mode]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-mode") === simState.mode)); });
       var v = vals(simState.mode);
-      if (simState.mode === "simple") {
-        var sp = F.PAIRS[v.symbol];
-        if (v.price === null) { var r = sp && sp.base !== "XAU" ? ecbRef(sp.base, sp.quote) : null; v.price = r ? r.v : null; }
-        if (v.quoteToAccount === null) { var u = ecbRef("USD", "JPY"); v.quoteToAccount = u ? u.v : null; }
-      }
+      if (simState.mode === "simple") fillRates(v);
       renderForm(form, SIM_DEFS[simState.mode], v, "sm");
+      if (simState.mode === "simple") { var spq = F.PAIRS[v.symbol], lq = $('[data-f="quoteToJPY"] .fld-label', form); if (spq && lq) lq.textContent = spq.quote + "/円 のレート（損益の円換算用）"; }
       $("#simModeNote").innerHTML = simState.mode === "simple"
-        ? "<b>損失を含まない理想化されたシミュレーションです。</b>毎日必ず同じpipsを獲得する前提は現実的ではありません。" + esc(refNote(ecbRef("USD", "JPY"))).replace("初期値", "レートの初期値")
+        ? "入力項目は参考サイト（FX複利運用計算シミュレータ）と同じです。毎日その日の資金で持てる最大の枚数で取引し、利益をそのまま次の日に回した場合を300日分計算します。<b>毎日必ず同じpipsを獲得する前提の、損失を含まない理想化された計算です。</b><br><span id=\"simRateNote\"></span>"
         : simState.mode === "practical" ? "勝率とリスクリワードから、勝ち負けの順番をランダムに入れ替えて何通りも計算します（モンテカルロ法）。<b>理論上の期待値と、試算の結果（中央値など）は別のものです。</b>"
           : "利回りが毎月一定と仮定した計算です。毎月の積立・出金は、その月の利息を付けたあと月末に反映します。";
+      // 日次pipsは日別の表だけ、他のモードは月別・年別
       $("#simGranDay").hidden = simState.mode !== "simple";
-      if (simState.mode !== "simple" && simState.gran === "day") simState.gran = "month";
+      $$('#simGran [data-g="month"], #simGran [data-g="year"]').forEach(function (b) { b.hidden = simState.mode === "simple"; });
+      simState.gran = simState.mode === "simple" ? "day" : (simState.gran === "day" ? "month" : simState.gran);
+      if (simState.mode === "simple") rateNote(v);
       refreshScen();
     }
     function persist(v) { store.mode = simState.mode; store.inputs = store.inputs || {}; store.inputs[simState.mode] = v; LS.set("mp_sim_v1", store); }
@@ -3335,12 +3389,12 @@ window.PORTAL_ANALYSIS = {
     form.addEventListener("change", function (e) {
       applyShow(form, SIM_DEFS[simState.mode]);
       if (simState.mode === "simple" && e.target.getAttribute("data-k") === "symbol") {
-        var sp = F.PAIRS[e.target.value], pr = $('[data-k="price"]', form);
-        var r = sp && sp.base !== "XAU" ? ecbRef(sp.base, sp.quote) : null;
-        pr.value = r ? r.v : "";
-        var us = $('[data-k="unitSize"]', form);
-        if (sp && sp.base === "XAU" && Number(us.value) >= 1000) us.value = "100";
-        if (sp && sp.base !== "XAU" && Number(us.value) < 1000) us.value = "10000";
+        var cur = readForm(form, SIM_DEFS.simple); cur.price = null; cur.quoteToJPY = null; fillRates(cur);
+        $('[data-k="price"]', form).value = cur.price === null ? "" : cur.price;
+        var q = $('[data-k="quoteToJPY"]', form); if (q) q.value = cur.quoteToJPY === null ? "" : cur.quoteToJPY;
+        var lab = $('[data-f="quoteToJPY"] .fld-label', form), sp = F.PAIRS[cur.symbol];
+        if (lab && sp) lab.textContent = sp.quote + "/円 のレート（損益の円換算用）";
+        rateNote(cur);
       }
     });
     form.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); calc(); } });
@@ -3404,7 +3458,7 @@ window.PORTAL_ANALYSIS = {
       }).join("") + "</ul>" +
         '<p class="fine">期待値は「勝率×RR −（1−勝率）− コスト」です。理論上の平均は入出金・下限・ロット制約がない場合の計算値で、試算の中央値は通常それより小さくなります（大きく増える一部の試行が平均を押し上げるため）。資金の下限＝' + esc(F.yen(v.floor || 0)) + "以下になった試行は、その時点で以後の取引を止めています。ドローダウンは入出金を含む資金の最高値からの下落率です。計算時間 " + L.ms + "ミリ秒。</p>";
     } else if (mode === "simple") {
-      extra = '<p class="fine">1ロット・1日あたりの損益 ' + esc(F.yen(r.dayPLPerLot)) + "（スプレッド・手数料込み）、1ロットの必要証拠金 " + esc(F.yen(r.marginPerLot)) + "。ロットは毎日「資金÷1ロットの必要証拠金」を刻み幅で切り捨てて決めています（ロット上限があればそこまで）。単利は初日のロット数を最後まで使う計算です。</p>";
+      extra = '<p class="fine">取引枚数 ＝ その日の初めの資金 × レバレッジ ÷ 1枚（1万通貨）の円建て金額 ' + esc(F.yen(r.yenPer10k)) + "（" + (v.unit === "man" ? "1枚単位" : "0.1枚＝1千通貨単位") + "で切り捨て" + (v.lotCap > 0 ? "、上限 " + fmt(v.lotCap) + "枚" : "、上限なし") + "）。損益 ＝ 枚数 × 1万通貨 × 獲得pips × 1pipの値幅" + (F.PAIRS[v.symbol].quote !== "JPY" ? " × " + esc(F.PAIRS[v.symbol].quote) + "/円レート" : "") + "。スプレッド・手数料・スワップは含みません。参考サイトの内部の計算式は公開されていないため、公開されている説明から同じ考え方で再現しています（端数処理などで細かい差が出ることがあります）。</p>";
     } else {
       extra = r.shortfall ? '<p class="warn-note">出金が資金を上回った月があり、資金を0円で止めています。</p>' : "";
     }
@@ -3417,9 +3471,8 @@ window.PORTAL_ANALYSIS = {
   function monthlySeries() {
     var L = simState.last, r = L.r, out = [];
     if (L.mode === "simple") {
-      var byM = {}; r.rows.forEach(function (x) { byM[x.month] = x; });
-      out.push({ m: 0, eq: L.v.capital, simple: L.v.capital });
-      Object.keys(byM).forEach(function (k) { out.push({ m: Number(k), eq: byM[k].equity, simple: byM[k].simple }); });
+      out.push({ m: 0, eq: L.v.capital });
+      r.rows.forEach(function (x) { out.push({ m: x.day, eq: x.equity }); });
     } else if (L.mode === "practical") {
       r.band.forEach(function (b, i) { out.push({ m: i, eq: b.p50, lo: b.p10, hi: b.p90, simple: r.bandSimple[i] }); });
     } else {
@@ -3430,16 +3483,16 @@ window.PORTAL_ANALYSIS = {
   }
   function drawSimChart() {
     var L = simState.last, pts = monthlySeries(), box = $("#simChart");
-    var names = L.mode === "practical" ? ["資金の中央値（複利）", "下位10%〜上位10%", "単利（固定リスク）の中央値"] : ["複利", "", "単利"];
+    var names = L.mode === "practical" ? ["資金の中央値（複利）", "下位10%〜上位10%", "単利（固定リスク）の中央値"] : L.mode === "simple" ? ["資金（複利）", "", ""] : ["複利", "", "単利"];
     lineChart(box, {
-      x: pts.map(function (p) { return p.m; }), xLabel: function (m) { return m === 0 ? "開始" : m + "か月"; },
+      x: pts.map(function (p) { return p.m; }), xLabel: function (m) { return m === 0 ? "開始" : m + (L.mode === "simple" ? "日" : "か月"); },
       main: pts.map(function (p) { return p.eq; }), lo: L.mode === "practical" ? pts.map(function (p) { return p.lo; }) : null, hi: L.mode === "practical" ? pts.map(function (p) { return p.hi; }) : null,
-      alt: pts.map(function (p) { return p.simple; }), target: L.v.target > 0 ? L.v.target : null, names: names
+      alt: L.mode === "simple" ? null : pts.map(function (p) { return p.simple; }), target: L.v.target > 0 ? L.v.target : null, names: names
     });
   }
   function rowsFor(gran) {
     var L = simState.last, r = L.r;
-    if (L.mode === "simple" && gran === "day") return { head: ["取引日", "月", "ロット", "その日の損益", "資金（複利）", "資金（単利）"], rows: r.rows.map(function (x) { return [x.day, x.month, x.lots, Math.round(x.pl), Math.round(x.equity), Math.round(x.simple)]; }) };
+    if (L.mode === "simple") return { head: ["日数", "資金（取引前）", "取引枚数", "獲得pips", "損益", "資金（取引後）"], rows: r.rows.map(function (x) { return [x.day + "日目", Math.round(x.start), x.short ? "証拠金不足" : x.lots, x.pips, Math.round(x.pl), Math.round(x.equity)]; }) };
     var pts = monthlySeries();
     if (gran === "year") pts = pts.filter(function (p) { return p.m % 12 === 0 || p.m === pts[pts.length - 1].m; });
     if (L.mode === "practical") return { head: ["経過", "中央値", "下位10%", "上位10%", "単利の中央値"], rows: pts.map(function (p) { return [p.m === 0 ? "開始" : p.m + "か月", Math.round(p.eq), Math.round(p.lo), Math.round(p.hi), Math.round(p.simple)]; }) };
